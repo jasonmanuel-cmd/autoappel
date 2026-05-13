@@ -1,6 +1,6 @@
 'use client'
 
-import type { Citation, Ambassador, AuditLog, RedVaultAlert, TreasuryProfile, DeploymentStatus, QAItem } from './types'
+import type { Citation, Ambassador, AuditLog, RedVaultAlert, TreasuryProfile, DeploymentStatus, QAItem, RiskLevel } from './types'
 
 const DEFAULT_DEPLOYMENT: DeploymentStatus = {
   city: 'Houston',
@@ -23,26 +23,26 @@ const DEFAULT_DEPLOYMENT: DeploymentStatus = {
 }
 
 const DEFAULT_QA: QAItem[] = [
-  { id: '1',  category: 'Landing Page',     item: 'Houston landing page loads correctly',        weight: 3, passed: false },
-  { id: '2',  category: 'Landing Page',     item: 'CTA button functional',                       weight: 3, passed: false },
-  { id: '3',  category: 'Intake Funnel',    item: 'All required fields present',                 weight: 5, passed: false },
-  { id: '4',  category: 'Intake Funnel',    item: 'Citation upload functional',                  weight: 5, passed: false },
-  { id: '5',  category: 'Intake Funnel',    item: 'Form validation working',                     weight: 4, passed: false },
-  { id: '6',  category: 'Countdown Engine', item: 'Countdown generates on citation upload',      weight: 5, passed: false },
-  { id: '7',  category: 'Countdown Engine', item: 'Risk levels display correctly',               weight: 4, passed: false },
-  { id: '8',  category: 'Countdown Engine', item: 'SMS/email reminders configured',              weight: 4, passed: false },
-  { id: '9',  category: 'Red Vault™',       item: 'Red Vault monitoring active',                 weight: 8, passed: false },
-  { id: '10', category: 'Red Vault™',       item: 'Audit logging operational',                   weight: 7, passed: false },
-  { id: '11', category: 'Red Vault™',       item: 'Permission anomaly detection active',         weight: 6, passed: false },
-  { id: '12', category: 'Red Vault™',       item: 'Emergency shutdown controls operational',     weight: 8, passed: false },
-  { id: '13', category: 'Founder Dashboard™', item: 'All controls visible and operational',      weight: 7, passed: false },
-  { id: '14', category: 'Founder Dashboard™', item: 'Disable/enable controls work',              weight: 6, passed: false },
-  { id: '15', category: 'Ambassador System', item: 'Referral routing operational',               weight: 4, passed: false },
-  { id: '16', category: 'Ambassador System', item: 'Founder override controls work',             weight: 5, passed: false },
-  { id: '17', category: 'Treasury',          item: 'Banking verification fields present',        weight: 4, passed: false },
-  { id: '18', category: 'Treasury',          item: 'Founder authorization gate active',          weight: 6, passed: false },
-  { id: '19', category: 'Security',          item: 'No unauthorized access paths',               weight: 7, passed: false },
-  { id: '20', category: 'Security',          item: 'Biometric confirmation template ready',      weight: 3, passed: false },
+  { id: '1', category: 'Landing Page', item: 'Houston landing page loads correctly', weight: 3, passed: false },
+  { id: '2', category: 'Landing Page', item: 'CTA button functional', weight: 3, passed: false },
+  { id: '3', category: 'Intake Funnel', item: 'All required fields present', weight: 5, passed: false },
+  { id: '4', category: 'Intake Funnel', item: 'Citation upload functional', weight: 5, passed: false },
+  { id: '5', category: 'Intake Funnel', item: 'Form validation working', weight: 4, passed: false },
+  { id: '6', category: 'Countdown Engine', item: 'Countdown generates on citation upload', weight: 5, passed: false },
+  { id: '7', category: 'Countdown Engine', item: 'Risk levels display correctly', weight: 4, passed: false },
+  { id: '8', category: 'Countdown Engine', item: 'SMS/email reminders configured', weight: 4, passed: false },
+  { id: '9', category: 'Red Vault™', item: 'Red Vault monitoring active', weight: 8, passed: false },
+  { id: '10', category: 'Red Vault™', item: 'Audit logging operational', weight: 7, passed: false },
+  { id: '11', category: 'Red Vault™', item: 'Permission anomaly detection active', weight: 6, passed: false },
+  { id: '12', category: 'Red Vault™', item: 'Emergency shutdown controls operational', weight: 8, passed: false },
+  { id: '13', category: 'Founder Dashboard™', item: 'All controls visible and operational', weight: 7, passed: false },
+  { id: '14', category: 'Founder Dashboard™', item: 'Disable/enable controls work', weight: 6, passed: false },
+  { id: '15', category: 'Ambassador System', item: 'Referral routing operational', weight: 4, passed: false },
+  { id: '16', category: 'Ambassador System', item: 'Founder override controls work', weight: 5, passed: false },
+  { id: '17', category: 'Treasury', item: 'Banking verification fields present', weight: 4, passed: false },
+  { id: '18', category: 'Treasury', item: 'Founder authorization gate active', weight: 6, passed: false },
+  { id: '19', category: 'Security', item: 'No unauthorized access paths', weight: 7, passed: false },
+  { id: '20', category: 'Security', item: 'Biometric confirmation template ready', weight: 3, passed: false },
 ]
 
 function getLS<T>(key: string, fallback: T): T {
@@ -121,7 +121,11 @@ export const store = {
     return total === 0 ? 0 : Math.round((earned / total) * 100)
   },
 
-  computeRisk: (deadlineStr: string): import('./types').RiskLevel => {
+  getCitationById: (id: string): Citation | undefined => {
+    return store.getCitations().find(c => c.id === id)
+  },
+
+  computeRisk: (deadlineStr: string): RiskLevel => {
     if (!deadlineStr) return 'green'
     const diff = new Date(deadlineStr).getTime() - Date.now()
     const days = diff / 86400000
