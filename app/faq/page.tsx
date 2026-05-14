@@ -45,32 +45,32 @@ export default function FAQPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#070d18] to-[#0d1b2e] py-12">
+    <div className="min-h-screen py-12" style={{ background: 'var(--gradient-bg)' }}>
       <div className="max-w-4xl mx-auto px-4">
         <div className="mb-12">
           <h1 className="text-4xl font-black mb-3">Frequently Asked Questions</h1>
-          <p className="text-[#8aafd4] text-lg">Find answers to common questions about our appeal process.</p>
+          <p className="text-muted-fg text-lg">Find answers to common questions about our appeal process.</p>
         </div>
 
         <div className="space-y-6">
           {faqs.map((faq, i) => (
             <details
               key={i}
-              className="card cursor-pointer group hover:border-[#1d6ef3]/50 transition-colors"
+              className="card cursor-pointer group hover:border-primary/50 transition-colors"
             >
-              <summary className="font-bold text-lg text-white flex items-center justify-between">
+              <summary className="font-bold text-lg text-text flex items-center justify-between">
                 {faq.q}
-                <span className="text-[#1d6ef3] group-open:rotate-180 transition-transform">▼</span>
+                <span className="text-primary group-open:rotate-180 transition-transform">▼</span>
               </summary>
-              <p className="text-[#5b7fa6] mt-4 leading-relaxed">{faq.a}</p>
+              <p className="text-muted mt-4 leading-relaxed">{faq.a}</p>
             </details>
           ))}
         </div>
 
         {/* CTA */}
-        <div className="card bg-[#1d6ef3]/10 border-[#1d6ef3]/30 mt-12 text-center">
+        <div className="card bg-primary/10 border-primary/30 mt-12 text-center">
           <h2 className="text-2xl font-bold mb-3">Still have questions?</h2>
-          <p className="text-[#8aafd4] mb-6">Our support team is here to help.</p>
+          <p className="text-muted-fg mb-6">Our support team is here to help.</p>
           <Link href="/contact" className="btn-primary">
             Contact Support
           </Link>

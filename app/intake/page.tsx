@@ -24,6 +24,7 @@ export default function IntakePage() {
     citationNumber: '', citationDate: '', responseDeadline: '',
     county: '', court: '', jurisdiction: '', violationType: '',
   })
+  const [disclaimerAck, setDisclaimerAck] = useState(false)
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }))
 
@@ -41,6 +42,9 @@ export default function IntakePage() {
       if (!form.citationDate)   e.citationDate   = 'Citation date is required'
       if (!form.county.trim())         e.county         = 'County is required'
       if (!form.violationType)  e.violationType  = 'Violation type is required'
+    }
+    if (step === 2) {
+      if (!disclaimerAck) e.disclaimerAcknowledged = 'You must acknowledge the disclaimer to proceed'
     }
     setErrors(e)
     return Object.keys(e).length === 0
@@ -90,19 +94,19 @@ export default function IntakePage() {
   )
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#070d18] to-[#0d1b2e] py-12">
+    <div className="min-h-screen py-12" style={{ background: 'var(--gradient-bg)' }}>
       <div className="max-w-2xl mx-auto px-4">
         <div className="mb-8">
           <h1 className="text-4xl font-black mb-2">Start Your Appeal</h1>
-          <p className="text-[#8aafd4]">Complete this form to begin your Houston traffic citation appeal process.</p>
+          <p className="text-muted-fg">Complete this form to begin your Houston traffic citation appeal process.</p>
         </div>
 
         {/* Progress Bar */}
         <div className="flex gap-2 mb-10">
           {STEPS.map((s, i) => (
             <div key={s} className="flex-1">
-              <div className={`h-2 rounded-full transition-colors ${i <= step ? 'bg-[#1d6ef3]' : 'bg-[#1a3355]'}`} />
-              <p className={`text-xs font-semibold mt-2 ${i === step ? 'text-[#1d6ef3]' : i < step ? 'text-[#4ade80]' : 'text-[#27415e]'}`}>{s}</p>
+              <div className={`h-2 rounded-full transition-colors ${i <= step ? 'bg-primary' : 'bg-border'}`} />
+              <p className={`text-xs font-semibold mt-2 ${i === step ? 'text-primary' : i < step ? 'text-success' : 'text-subtle'}`}>{s}</p>
             </div>
           ))}
         </div>
@@ -111,7 +115,7 @@ export default function IntakePage() {
         <div className="card space-y-6">
           {step === 0 && (
             <>
-              <h2 className="text-xl font-bold text-[#1d6ef3] mb-4">Your Contact Information</h2>
+              <h2 className="text-xl font-bold text-primary mb-4">Your Contact Information</h2>
               <div className="grid grid-cols-2 gap-4">
                 {field('First Name', 'firstName', 'text', 'John')}
                 {field('Last Name', 'lastName', 'text', 'Smith')}
@@ -131,11 +135,11 @@ export default function IntakePage() {
 
           {step === 1 && (
             <>
-              <h2 className="text-xl font-bold text-[#1d6ef3] mb-4">Citation Information</h2>
+              <h2 className="text-xl font-bold text-primary mb-4">Citation Information</h2>
               {field('Citation Number', 'citationNumber', 'text', 'TX-2026-XXXXXX')}
               {field('Citation Date', 'citationDate', 'date')}
               {field('Response Deadline', 'responseDeadline', 'date')}
-              <p className="text-xs text-[#27415e]">If you know your response deadline, enter it here. This helps us track urgency.</p>
+              <p className="text-xs text-subtle">If you know your response deadline, enter it here. This helps us track urgency.</p>
               <div>
                 <label className="label">County</label>
                 <select className="input" value={form.county} onChange={e => set('county', e.target.value)} disabled={loading}>
@@ -165,56 +169,73 @@ export default function IntakePage() {
 
           {step === 2 && (
             <>
-              <h2 className="text-xl font-bold text-[#1d6ef3] mb-4">Review Your Information</h2>
-              <div className="bg-[#08111e] border border-[#1a3355] rounded-lg p-6 space-y-4">
+              <h2 className="text-xl font-bold text-primary mb-4">Review Your Information</h2>
+              <div className="bg-bg-elevated border border-border rounded-lg p-6 space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-xs text-[#27415e] font-semibold">Full Name</p>
-                    <p className="text-[#e8f1ff]">{form.firstName} {form.lastName}</p>
+                    <p className="text-xs text-subtle font-semibold">Full Name</p>
+                    <p className="text-text">{form.firstName} {form.lastName}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-[#27415e] font-semibold">Email</p>
-                    <p className="text-[#e8f1ff]">{form.email}</p>
+                    <p className="text-xs text-subtle font-semibold">Email</p>
+                    <p className="text-text">{form.email}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-[#27415e] font-semibold">Phone</p>
-                    <p className="text-[#e8f1ff]">{form.phone}</p>
+                    <p className="text-xs text-subtle font-semibold">Phone</p>
+                    <p className="text-text">{form.phone}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-[#27415e] font-semibold">Preferred Contact</p>
-                    <p className="text-[#e8f1ff] capitalize">{form.preferredContact.replace('both', 'Email & SMS')}</p>
+                    <p className="text-xs text-subtle font-semibold">Preferred Contact</p>
+                    <p className="text-text capitalize">{form.preferredContact.replace('both', 'Email & SMS')}</p>
                   </div>
                 </div>
 
-                <div className="border-t border-[#1a3355] pt-4 mt-4">
-                  <h3 className="font-bold text-[#1d6ef3] mb-3">Citation Details</h3>
+                <div className="border-t border-border pt-4 mt-4">
+                  <h3 className="font-bold text-primary mb-3">Citation Details</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="text-xs text-[#27415e] font-semibold">Citation #</p>
-                      <p className="text-[#e8f1ff]">{form.citationNumber}</p>
+                      <p className="text-xs text-subtle font-semibold">Citation #</p>
+                      <p className="text-text">{form.citationNumber}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-[#27415e] font-semibold">Violation</p>
-                      <p className="text-[#e8f1ff]">{form.violationType}</p>
+                      <p className="text-xs text-subtle font-semibold">Violation</p>
+                      <p className="text-text">{form.violationType}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-[#27415e] font-semibold">Citation Date</p>
-                      <p className="text-[#e8f1ff]">{form.citationDate}</p>
+                      <p className="text-xs text-subtle font-semibold">Citation Date</p>
+                      <p className="text-text">{form.citationDate}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-[#27415e] font-semibold">Response Deadline</p>
-                      <p className="text-[#e8f1ff]">{form.responseDeadline || 'Not provided'}</p>
+                      <p className="text-xs text-subtle font-semibold">Response Deadline</p>
+                      <p className="text-text">{form.responseDeadline || 'Not provided'}</p>
                     </div>
                     <div className="col-span-2">
-                      <p className="text-xs text-[#27415e] font-semibold">Court</p>
-                      <p className="text-[#e8f1ff]">{form.court}</p>
+                      <p className="text-xs text-subtle font-semibold">Court</p>
+                      <p className="text-text">{form.court}</p>
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <div className="bg-[#1d6ef3]/10 border border-[#1d6ef3]/30 rounded-lg p-4 mt-4">
-                  <p className="text-sm text-[#1d6ef3]">✓ Your information is secure and encrypted. We'll send you regular updates about your appeal status.</p>
+              {/* Attorney Review Gate & Disclaimer */}
+              <div className="bg-orange/10 border border-orange/30 rounded-lg p-4 space-y-3">
+                <h3 className="font-bold text-orange text-sm">⚖️ Important Legal Notice</h3>
+                <div className="text-xs text-muted space-y-2">
+                  <p><strong>AutoAppeal™ is not a law firm.</strong> We do not provide legal advice. We assist with document preparation and connect you with licensed Texas attorneys who handle your case.</p>
+                  <p>No attorney-client relationship is created by submitting this form. A licensed Texas attorney will review your case before any legal strategy is determined.</p>
+                  <p>Court deadlines vary. Our countdown engine provides estimates only - your assigned attorney will confirm all actual deadlines.</p>
+                  <p>Results are not guaranteed. Outcomes depend on individual case facts, court rulings, and other factors beyond our control.</p>
                 </div>
+                <label className="flex items-start gap-3 cursor-pointer pt-2">
+                  <input
+                    type="checkbox"
+                    checked={disclaimerAck}
+                    onChange={e => setDisclaimerAck(e.target.checked)}
+                    className="mt-0.5"
+                  />
+                  <span className="text-sm text-text">I understand and acknowledge the above. I am submitting my citation information for review by a licensed Texas attorney. I understand this does not create an attorney-client relationship.</span>
+                </label>
+                {errors.disclaimerAcknowledged && <p className="text-danger text-xs">{errors.disclaimerAcknowledged}</p>}
               </div>
             </>
           )}
@@ -238,10 +259,10 @@ export default function IntakePage() {
           </div>
         </div>
 
-        <p className="text-center text-xs text-[#27415e] mt-8">
+        <p className="text-center text-xs text-subtle mt-8">
           By submitting, you agree to our{' '}
-          <a href="/terms" className="text-[#1d6ef3] hover:underline">Terms of Service</a> and{' '}
-          <a href="/privacy" className="text-[#1d6ef3] hover:underline">Privacy Policy</a>
+          <a href="/terms" className="text-primary hover:underline">Terms of Service</a> and{' '}
+          <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>
         </p>
       </div>
     </div>

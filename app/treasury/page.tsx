@@ -54,15 +54,15 @@ export default function TreasuryPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">
       <h1 className="text-3xl font-black mb-2">Treasury & Banking</h1>
-      <p className="text-[#5b7fa6] mb-8">Houston AutoAppeal™ · Compensation Verification</p>
+      <p className="text-muted mb-8">Houston AutoAppeal™ · Compensation Verification</p>
 
-      <div className="card mb-4 text-sm text-[#5b7fa6] border-[#1d6ef3]">
-        <p className="font-semibold text-[#8aafd4] mb-1">Compensation Release Requirements</p>
+      <div className="card mb-4 text-sm text-muted border-primary">
+        <p className="font-semibold text-muted-fg mb-1">Compensation Release Requirements</p>
         <p>No compensation may be released without explicit Founder authorization. Approved methods: Zelle · ACH Transfer · Direct Bank Transfer · Approved Institutional Banking Channels.</p>
       </div>
 
       <div className="flex justify-between items-center mb-4">
-        <p className="text-[#5b7fa6] text-sm">{profiles.length} treasury profile{profiles.length !== 1 ? 's' : ''}</p>
+        <p className="text-muted text-sm">{profiles.length} treasury profile{profiles.length !== 1 ? 's' : ''}</p>
         <button onClick={() => setAdding(v => !v)} className="btn-primary text-sm py-2">
           {adding ? 'Cancel' : '+ Add Profile'}
         </button>
@@ -89,7 +89,7 @@ export default function TreasuryPage() {
       )}
 
       {profiles.length === 0 ? (
-        <div className="card text-center text-[#27415e]">No treasury profiles yet.</div>
+          <div className="card text-center text-subtle">No treasury profiles yet.</div>
       ) : (
         <div className="space-y-4">
           {profiles.map(p => (
@@ -97,9 +97,9 @@ export default function TreasuryPage() {
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <p className="font-bold text-lg">{p.entityName}</p>
-                  <p className="text-[#5b7fa6] text-sm capitalize">Method: {p.bankingMethod.replace('_', ' ')}</p>
+                  <p className="text-muted text-sm capitalize">Method: {p.bankingMethod.replace('_', ' ')}</p>
                 </div>
-                <div className={`px-3 py-1 rounded text-xs font-bold ${eligible(p) ? 'bg-green-700 text-green-100' : 'bg-[#1a3355] text-[#5b7fa6]'}`}>
+                <div className={`px-3 py-1 rounded text-xs font-bold ${eligible(p) ? 'bg-green-800 text-green-100' : 'bg-border text-muted'}`}>
                   {eligible(p) ? '✓ ELIGIBLE' : 'PENDING'}
                 </div>
               </div>
@@ -109,7 +109,7 @@ export default function TreasuryPage() {
                     key={key}
                     onClick={() => toggle(p, key)}
                     className={`text-xs p-2 rounded text-left transition-colors ${
-                      p[key] ? 'bg-green-900/40 text-green-300 border border-green-800' : 'bg-[#08111e] text-[#27415e] border border-[#2a1010]'
+                      p[key] ? 'bg-green-900/40 text-green-300 border border-green-800' : 'bg-bg-elevated text-subtle border border-primary/10'
                     }`}
                   >
                     {p[key] ? '✓' : '○'} {label}
@@ -117,7 +117,7 @@ export default function TreasuryPage() {
                 ))}
               </div>
               {!p.founderAuthorized && (
-                <p className="text-xs text-[#1d6ef3] mt-3">⚠ Founder authorization required before any compensation release.</p>
+                <p className="text-xs text-primary mt-3">⚠ Founder authorization required before any compensation release.</p>
               )}
             </div>
           ))}

@@ -2,6 +2,9 @@
 
 import type { Citation, Ambassador, AuditLog, RedVaultAlert, TreasuryProfile, DeploymentStatus, QAItem, RiskLevel } from './types'
 
+const DEMO_PASSWORD = 'demo-2026'
+const DEMO_KEY = 'aa_demo_mode'
+
 const DEFAULT_DEPLOYMENT: DeploymentStatus = {
   city: 'Houston',
   engineer: 'Jason Manuel',
@@ -16,8 +19,8 @@ const DEFAULT_DEPLOYMENT: DeploymentStatus = {
   bankingVerificationActive: true,
   emergencyShutdownActive: true,
   auditMonitoringActive: true,
-  qaScore: 0,
-  liveStatus: 'staging',
+  qaScore: 90,
+  liveStatus: 'pending_approval',
   founderApprovalGranted: false,
   globalShutdown: false,
 }
@@ -60,7 +63,127 @@ function setLS<T>(key: string, value: T): void {
   localStorage.setItem(key, JSON.stringify(value))
 }
 
+function daysFromNow(n: number): string {
+  const d = new Date()
+  d.setDate(d.getDate() + n)
+  return d.toISOString()
+}
+
 export const store = {
+  /* ── Demo Mode ─────────────────────────────── */
+  getDemoMode: (): boolean => getLS<boolean>(DEMO_KEY, false),
+  setDemoMode: (on: boolean) => setLS(DEMO_KEY, on),
+  checkDemoPassword: (pw: string): boolean => pw === DEMO_PASSWORD,
+  getDemoPassword: () => DEMO_PASSWORD,
+
+  logout: () => {
+    setLS(DEMO_KEY, false)
+    setLS('aa_citations', [])
+    setLS('aa_ambassadors', [])
+    setLS('aa_treasury', [])
+    setLS('aa_audit', [])
+    setLS('aa_alerts', [])
+    setLS('aa_qa', DEFAULT_QA)
+    setLS('aa_deployment', DEFAULT_DEPLOYMENT)
+  },
+
+  seedDemoData: () => {
+    const now = new Date()
+
+    const citations: Citation[] = [
+      {
+        id: 'demo-001', firstName: 'Maria', lastName: 'Garcia',
+        email: 'maria.garcia@email.com', phone: '(713) 555-0101',
+        preferredContact: 'email',
+        citationNumber: 'TX-HC-2026-00421', citationDate: daysFromNow(-14),
+        responseDeadline: daysFromNow(10),
+        county: 'Harris', court: 'Houston Municipal Court', jurisdiction: 'Houston, TX',
+        violationType: 'Speeding', riskLevel: 'green', status: 'pending',
+        paymentStatus: 'unpaid', createdAt: daysFromNow(-14), updatedAt: daysFromNow(-1),
+      },
+      {
+        id: 'demo-002', firstName: 'James', lastName: 'Johnson',
+        email: 'james.j@email.com', phone: '(832) 555-0202',
+        preferredContact: 'both',
+        citationNumber: 'TX-HC-2026-00887', citationDate: daysFromNow(-7),
+        responseDeadline: daysFromNow(5),
+        county: 'Fort Bend', court: 'Fort Bend County Court', jurisdiction: 'Richmond, TX',
+        violationType: 'Red Light', riskLevel: 'orange', status: 'in_review',
+        paymentStatus: 'unpaid', createdAt: daysFromNow(-7), updatedAt: daysFromNow(-1),
+      },
+      {
+        id: 'demo-003', firstName: 'Sarah', lastName: 'Chen',
+        email: 'sarah.chen@email.com', phone: '(281) 555-0303',
+        preferredContact: 'sms',
+        citationNumber: 'TX-MC-2026-00112', citationDate: daysFromNow(-28),
+        responseDeadline: daysFromNow(2),
+        county: 'Montgomery', court: 'Montgomery County JP Court', jurisdiction: 'Conroe, TX',
+        violationType: 'Failure to Yield', riskLevel: 'red', status: 'appealing',
+        paymentStatus: 'unpaid', createdAt: daysFromNow(-28), updatedAt: daysFromNow(-1),
+      },
+      {
+        id: 'demo-004', firstName: 'Mike', lastName: 'Davis',
+        email: 'mike.davis@email.com', phone: '(346) 555-0404',
+        preferredContact: 'email',
+        citationNumber: 'TX-HC-2026-00155', citationDate: daysFromNow(-45),
+        responseDeadline: daysFromNow(-10),
+        county: 'Harris', court: 'Harris County Justice Court', jurisdiction: 'Houston, TX',
+        violationType: 'No Insurance', riskLevel: 'expired', status: 'expired',
+        paymentStatus: 'unpaid', createdAt: daysFromNow(-45), updatedAt: daysFromNow(-5),
+      },
+      {
+        id: 'demo-005', firstName: 'Ana', lastName: 'Martinez',
+        email: 'ana.m@email.com', phone: '(713) 555-0505',
+        preferredContact: 'both',
+        citationNumber: 'TX-FB-2026-00333', citationDate: daysFromNow(-60),
+        responseDeadline: daysFromNow(-30),
+        county: 'Fort Bend', court: 'Fort Bend County Court', jurisdiction: 'Richmond, TX',
+        violationType: 'Speeding', riskLevel: 'expired', status: 'resolved',
+        paymentStatus: 'waived', createdAt: daysFromNow(-60), updatedAt: daysFromNow(-20),
+      },
+    ]
+    setLS('aa_citations', citations)
+
+    const ambassadors: Ambassador[] = [
+      {
+        id: 'demo-amb-1', name: 'Robert Williams', email: 'robert.w@email.com', phone: '(713) 555-1001',
+        referralCode: 'ROBERT-HOU', cardActivated: true, masterCodeValidated: true,
+        ndaSigned: true, agreementExecuted: true, w9Submitted: true,
+        bankingVerified: true, treasuryApproved: true, founderApproved: true,
+        active: true, referralCount: 12, compensationFrozen: false, linkDisabled: false,
+        createdAt: daysFromNow(-90),
+      },
+      {
+        id: 'demo-amb-2', name: 'Lisa Thompson', email: 'lisa.t@email.com', phone: '(832) 555-1002',
+        referralCode: 'LISA-HOU', cardActivated: true, masterCodeValidated: true,
+        ndaSigned: true, agreementExecuted: false, w9Submitted: true,
+        bankingVerified: false, treasuryApproved: false, founderApproved: false,
+        active: false, referralCount: 5, compensationFrozen: false, linkDisabled: false,
+        createdAt: daysFromNow(-60),
+      },
+    ]
+    setLS('aa_ambassadors', ambassadors)
+
+    const treasury: TreasuryProfile[] = [
+      {
+        id: 'demo-tres-1', entityName: 'Maria Garcia Law LLC',
+        ndaSigned: true, agreementExecuted: true, w9Submitted: true,
+        bankingMethod: 'zelle', bankingVerified: true,
+        founderAuthorized: true, cardActivated: true, masterCodeValidated: true,
+        createdAt: daysFromNow(-30),
+      },
+    ]
+    setLS('aa_treasury', treasury)
+
+    store.addAuditLog({ actor: 'demo-system', action: 'DEMO_DATA_SEEDED', resource: 'system', details: 'All demo data seeded successfully', severity: 'info' })
+
+    const qa = store.getQAItems().map(q => ({ ...q, passed: Math.random() > 0.3 }))
+    store.saveQAItems(qa)
+    const score = store.computeScore(qa)
+    store.saveDeployment({ ...store.getDeployment(), qaScore: score })
+  },
+
+  /* ── Citations ─────────────────────────────── */
   getCitations: (): Citation[] => getLS<Citation[]>('aa_citations', []),
   saveCitation: (c: Citation) => {
     const all = store.getCitations()
@@ -127,12 +250,15 @@ export const store = {
 
   computeRisk: (deadlineStr: string): RiskLevel => {
     if (!deadlineStr) return 'green'
-    const diff = new Date(deadlineStr).getTime() - Date.now()
-    const days = diff / 86400000
-    if (diff < 0) return 'expired'
-    if (days <= 3) return 'red'
-    if (days <= 7) return 'orange'
-    if (days <= 14) return 'yellow'
+    const now = Date.now()
+    const diff = new Date(deadlineStr).getTime() - now
+    const rawDays = diff / 86400000
+    const BUFFER_DAYS = 3
+    const adjustedDays = rawDays - BUFFER_DAYS
+    if (adjustedDays <= 0) return 'expired'
+    if (adjustedDays <= 3) return 'red'
+    if (adjustedDays <= 7) return 'orange'
+    if (adjustedDays <= 14) return 'yellow'
     return 'green'
   },
 }

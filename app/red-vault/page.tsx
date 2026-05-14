@@ -56,7 +56,7 @@ export default function RedVaultPage() {
         <span className="text-3xl">🔴</span>
         <h1 className="text-3xl font-black">Red Vault™ Security Monitor</h1>
       </div>
-      <p className="text-[#5b7fa6] mb-8">
+      <p className="text-muted mb-8">
         LAGNAF™ network LLC · Houston Deployment · All activity monitored and logged
       </p>
 
@@ -77,7 +77,7 @@ export default function RedVaultPage() {
             </div>
           ))}
         </div>
-        <div className="mt-4 p-3 bg-[#08111e] rounded text-xs text-[#5b7fa6]">
+        <div className="mt-4 p-3 bg-bg-elevated rounded text-xs text-muted">
           No deployment may go live unless all Red Vault™ protections are active. Founder authority supersedes all automation.
         </div>
       </div>
@@ -90,16 +90,16 @@ export default function RedVaultPage() {
         </div>
 
         {alerts.length === 0 ? (
-          <p className="text-[#27415e] text-sm">No alerts recorded.</p>
+          <p className="text-subtle text-sm">No alerts recorded.</p>
         ) : (
           <div className="space-y-3">
             {alerts.map(a => (
-              <div key={a.id} className={`p-3 rounded-lg border text-sm ${a.resolved ? 'border-[#2a1010] opacity-50' : 'border-[#1d6ef3]'}`}>
+                <div key={a.id} className={`p-3 rounded-lg border text-sm ${a.resolved ? 'border-primary/20 opacity-50' : 'border-primary'}`}>
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <span className="font-semibold text-[#1d6ef3]">{ALERT_LABELS[a.type] || a.type}</span>
-                    <p className="text-[#5b7fa6] mt-0.5">{a.description}</p>
-                    <p className="text-[#27415e] text-xs mt-1">{new Date(a.timestamp).toLocaleString()}</p>
+                    <span className="font-semibold text-primary">{ALERT_LABELS[a.type] || a.type}</span>
+                    <p className="text-muted mt-0.5">{a.description}</p>
+                    <p className="text-subtle text-xs mt-1">{new Date(a.timestamp).toLocaleString()}</p>
                   </div>
                   {!a.resolved && (
                     <button onClick={() => resolve(a.id)} className="btn-secondary text-xs py-1 px-2 shrink-0">
@@ -118,21 +118,21 @@ export default function RedVaultPage() {
       <div className="card">
         <h2 className="font-bold text-lg mb-4">Audit Log</h2>
         {logs.length === 0 ? (
-          <p className="text-[#27415e] text-sm">No audit entries yet.</p>
+          <p className="text-subtle text-sm">No audit entries yet.</p>
         ) : (
           <div className="space-y-2 max-h-96 overflow-y-auto">
             {logs.map(l => (
-              <div key={l.id} className="flex items-start gap-3 text-xs p-2 bg-[#08111e] rounded">
+              <div key={l.id} className="flex items-start gap-3 text-xs p-2 bg-bg-elevated rounded">
                 <span className={
-                  l.severity === 'critical' ? 'text-red-400' :
-                  l.severity === 'warn' ? 'text-yellow-400' : 'text-[#5b7fa6]'
+                  l.severity === 'critical' ? 'text-danger' :
+                  l.severity === 'warn' ? 'text-warning' : 'text-muted'
                 }>
                   {l.severity.toUpperCase()}
                 </span>
-                <span className="text-[#27415e] shrink-0">{new Date(l.timestamp).toLocaleTimeString()}</span>
-                <span className="text-[#8aafd4]">{l.actor}</span>
-                <span className="text-white font-medium">{l.action}</span>
-                <span className="text-[#5b7fa6]">{l.details}</span>
+                <span className="text-subtle shrink-0">{new Date(l.timestamp).toLocaleTimeString()}</span>
+                <span className="text-muted-fg">{l.actor}</span>
+                <span className="text-text font-medium">{l.action}</span>
+                <span className="text-muted">{l.details}</span>
               </div>
             ))}
           </div>

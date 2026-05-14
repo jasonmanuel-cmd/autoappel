@@ -58,15 +58,15 @@ export default function AmbassadorsPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">
       <h1 className="text-3xl font-black mb-2">Brand Ambassador System</h1>
-      <p className="text-[#5b7fa6] mb-8">Houston AutoAppeal™ · Referral & Compensation Management</p>
+      <p className="text-muted mb-8">Houston AutoAppeal™ · Referral & Compensation Management</p>
 
-      <div className="card mb-4 text-sm text-[#5b7fa6] border-[#1d6ef3]">
-        <p className="font-semibold text-[#8aafd4]">Founder Control Notice</p>
+      <div className="card mb-4 text-sm text-muted border-primary">
+        <p className="font-semibold text-muted-fg">Founder Control Notice</p>
         <p>Ambassadors cannot activate until all compliance requirements are verified. Founder may disable links, pause routing, freeze compensation, or suspend access at any time.</p>
       </div>
 
       <div className="flex justify-between items-center mb-4">
-        <p className="text-[#5b7fa6] text-sm">{ambassadors.length} ambassador{ambassadors.length !== 1 ? 's' : ''} registered</p>
+        <p className="text-muted text-sm">{ambassadors.length} ambassador{ambassadors.length !== 1 ? 's' : ''} registered</p>
         <button onClick={() => setAdding(v => !v)} className="btn-primary text-sm py-2">
           {adding ? 'Cancel' : '+ Add Ambassador'}
         </button>
@@ -86,7 +86,7 @@ export default function AmbassadorsPage() {
       )}
 
       {ambassadors.length === 0 ? (
-        <div className="card text-center text-[#27415e]">No ambassadors registered yet.</div>
+          <div className="card text-center text-subtle">No ambassadors registered yet.</div>
       ) : (
         <div className="space-y-4">
           {ambassadors.map(a => (
@@ -94,25 +94,25 @@ export default function AmbassadorsPage() {
               <div className="flex items-start justify-between gap-4 flex-wrap mb-4">
                 <div>
                   <p className="font-bold text-lg">{a.name}</p>
-                  <p className="text-[#5b7fa6] text-sm">{a.email} · {a.phone}</p>
-                  <p className="text-[#27415e] text-xs">Referral: {a.referralCode} · {a.referralCount} referrals</p>
+                  <p className="text-muted text-sm">{a.email} · {a.phone}</p>
+                  <p className="text-subtle text-xs">Referral: {a.referralCode} · {a.referralCount} referrals</p>
                 </div>
                 <div className="flex gap-2 flex-wrap">
                   <button
                     onClick={() => toggle(a, 'active')}
-                    className={`px-3 py-1 rounded text-xs font-bold ${a.active ? 'bg-green-700 text-green-100' : 'bg-[#1a3355] text-[#5b7fa6]'}`}
+                    className={`px-3 py-1 rounded text-xs font-bold ${a.active ? 'bg-green-800 text-green-100' : 'bg-border text-muted'}`}
                   >
                     {a.active ? 'ACTIVE' : 'INACTIVE'}
                   </button>
                   <button
                     onClick={() => toggle(a, 'linkDisabled')}
-                    className={`px-3 py-1 rounded text-xs font-bold ${a.linkDisabled ? 'bg-red-800 text-red-200' : 'bg-[#2a1010] text-[#5b7fa6]'}`}
+                    className={`px-3 py-1 rounded text-xs font-bold ${a.linkDisabled ? 'bg-red-800 text-red-200' : 'bg-primary/5 text-muted'}`}
                   >
                     {a.linkDisabled ? 'LINK DISABLED' : 'Link Active'}
                   </button>
                   <button
                     onClick={() => toggle(a, 'compensationFrozen')}
-                    className={`px-3 py-1 rounded text-xs font-bold ${a.compensationFrozen ? 'bg-yellow-800 text-yellow-200' : 'bg-[#2a1010] text-[#5b7fa6]'}`}
+                    className={`px-3 py-1 rounded text-xs font-bold ${a.compensationFrozen ? 'bg-yellow-800 text-yellow-200' : 'bg-primary/5 text-muted'}`}
                   >
                     {a.compensationFrozen ? '❄ FROZEN' : 'Comp Active'}
                   </button>
@@ -125,7 +125,7 @@ export default function AmbassadorsPage() {
                     key={key}
                     onClick={() => toggle(a, key)}
                     className={`text-xs p-2 rounded text-left transition-colors ${
-                      a[key] ? 'bg-green-900/40 text-green-300 border border-green-800' : 'bg-[#08111e] text-[#27415e] border border-[#2a1010]'
+                      a[key] ? 'bg-green-900/40 text-green-300 border border-green-800' : 'bg-bg-elevated text-subtle border border-primary/10'
                     }`}
                   >
                     {a[key] ? '✓' : '○'} {label}

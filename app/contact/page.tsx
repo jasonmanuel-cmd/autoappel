@@ -23,11 +23,11 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#070d18] to-[#0d1b2e] py-12">
+    <div className="min-h-screen py-12" style={{ background: 'var(--gradient-bg)' }}>
       <div className="max-w-4xl mx-auto px-4">
         <div className="mb-12">
           <h1 className="text-4xl font-black mb-3">Contact Us</h1>
-          <p className="text-[#8aafd4] text-lg">Get in touch with our support team for assistance with your appeal.</p>
+          <p className="text-muted-fg text-lg">Get in touch with our support team for assistance with your appeal.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
@@ -35,8 +35,8 @@ export default function ContactPage() {
           <div className="card text-center">
             <div className="text-3xl mb-3">📧</div>
             <h3 className="font-bold text-lg mb-2">Email</h3>
-            <p className="text-[#5b7fa6] text-sm mb-3">For non-urgent inquiries</p>
-            <a href="mailto:support@autoappeal.com" className="text-[#1d6ef3] font-semibold hover:underline">
+            <p className="text-muted text-sm mb-3">For non-urgent inquiries</p>
+            <a href="mailto:support@autoappeal.com" className="text-primary font-semibold hover:underline">
               support@autoappeal.com
             </a>
           </div>
@@ -45,8 +45,8 @@ export default function ContactPage() {
           <div className="card text-center">
             <div className="text-3xl mb-3">📞</div>
             <h3 className="font-bold text-lg mb-2">Phone</h3>
-            <p className="text-[#5b7fa6] text-sm mb-3">Mon-Fri, 9AM-6PM CST</p>
-            <a href="tel:+17135550100" className="text-[#1d6ef3] font-semibold hover:underline">
+            <p className="text-muted text-sm mb-3">Mon-Fri, 9AM-6PM CST</p>
+            <a href="tel:+17135550100" className="text-primary font-semibold hover:underline">
               (713) 555-0100
             </a>
           </div>
@@ -55,7 +55,7 @@ export default function ContactPage() {
           <div className="card text-center">
             <div className="text-3xl mb-3">🕐</div>
             <h3 className="font-bold text-lg mb-2">Business Hours</h3>
-            <p className="text-[#5b7fa6] text-sm">
+            <p className="text-muted text-sm">
               Monday - Friday<br/>
               9:00 AM - 6:00 PM CST<br/>
               <span className="text-xs">Closed weekends & holidays</span>
@@ -69,8 +69,8 @@ export default function ContactPage() {
             <h2 className="text-2xl font-bold mb-6">Send us a Message</h2>
 
             {submitted && (
-              <div className="bg-[#4ade80]/10 border border-[#4ade80]/30 rounded-lg p-4 mb-6">
-                <p className="text-[#4ade80]">✓ Message sent successfully! We'll get back to you soon.</p>
+              <div className="bg-success/10 border border-success/30 rounded-lg p-4 mb-6">
+                <p className="text-success">✓ Message sent successfully! We'll get back to you soon.</p>
               </div>
             )}
 
@@ -133,9 +133,9 @@ export default function ContactPage() {
           </div>
 
           {/* Additional Info */}
-          <div className="mt-8 card bg-[#1d6ef3]/5 border-[#1d6ef3]/20">
-            <h3 className="font-bold text-[#1d6ef3] mb-3">Response Time</h3>
-            <p className="text-[#5b7fa6] text-sm">
+          <div className="mt-8 card bg-primary/5 border-primary/20">
+            <h3 className="font-bold text-primary mb-3">Response Time</h3>
+            <p className="text-muted text-sm">
               We aim to respond to all inquiries within 24 business hours. For urgent matters regarding deadlines, please call us immediately.
             </p>
           </div>

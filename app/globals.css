@@ -1,45 +1,78 @@
+@import '../assets/css/design-tokens.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --bg: #070d18;
-  --card: #0d1b2e;
-  --border: #1a3355;
-  --accent: #1d6ef3;
-  --accent-light: #4b8df7;
-  --text: #e8f1ff;
-  --muted: #5b7fa6;
-}
-
 body {
-  background-color: var(--bg);
-  color: var(--text);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
 }
 
-.card {
-  @apply bg-[#0d1b2e] border border-[#1a3355] rounded-xl p-6;
-}
+@layer components {
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--card-radius);
+    padding: var(--card-padding);
+  }
 
-.btn-primary {
-  @apply bg-[#1d6ef3] hover:bg-[#4b8df7] text-white font-bold py-3 px-6 rounded-lg transition-colors cursor-pointer;
-}
+  .btn-primary {
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--btn-radius);
+    transition: background 0.2s, transform 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary:hover {
+    background: var(--btn-bg-hover);
+  }
 
-.btn-secondary {
-  @apply border border-[#1a3355] hover:border-[#1d6ef3] text-[#e8f1ff] font-semibold py-3 px-6 rounded-lg transition-colors cursor-pointer;
-}
+  .btn-secondary {
+    background: var(--btn-secondary-bg);
+    color: var(--btn-secondary-text);
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--btn-radius);
+    border: 1px solid var(--btn-secondary-border);
+    transition: border-color 0.2s, color 0.2s;
+    cursor: pointer;
+  }
+  .btn-secondary:hover {
+    border-color: var(--btn-secondary-border-hover);
+  }
 
-.input {
-  @apply w-full bg-[#08111e] border border-[#1a3355] rounded-lg px-4 py-3 text-[#e8f1ff] focus:outline-none focus:border-[#1d6ef3] placeholder-[#27415e];
-}
+  .input {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--input-radius);
+    padding: 0.75rem 1rem;
+    color: var(--input-text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .input:focus {
+    border-color: var(--input-border-focus);
+  }
+  .input::placeholder {
+    color: var(--input-placeholder);
+  }
 
-.label {
-  @apply block text-sm font-medium text-[#8aafd4] mb-1;
-}
+  .label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--label-text);
+    margin-bottom: 0.25rem;
+  }
 
-.risk-green  { color: #4ade80; }
-.risk-yellow { color: #facc15; }
-.risk-orange { color: #fb923c; }
-.risk-red    { color: #f87171; }
-.risk-expired{ color: #6b7280; }
+  .risk-green  { color: var(--green-400); }
+  .risk-yellow { color: var(--yellow-400); }
+  .risk-orange { color: var(--orange-400); }
+  .risk-red    { color: var(--red-400); }
+  .risk-expired{ color: var(--gray-400); }
+}

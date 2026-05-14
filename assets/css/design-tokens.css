@@ -1,0 +1,131 @@
+/* ============================================
+   AUTOAPPEAL DESIGN TOKENS
+   Three-layer architecture: Primitive → Semantic → Component
+   ============================================ */
+
+/* ── Primitive Layer ──────────────────────── */
+:root {
+  /* Grays / Base */
+  --gray-900: #070d18;
+  --gray-850: #08111e;
+  --gray-800: #0d1b2e;
+  --gray-700: #142540;
+  --gray-600: #1a3355;
+  --gray-500: #27415e;
+  --gray-400: #5b7fa6;
+  --gray-300: #8aafd4;
+  --gray-100: #e8f1ff;
+  --white:    #ffffff;
+
+  /* Brand Blues */
+  --blue-600: #1d6ef3;
+  --blue-400: #4b8df7;
+  --blue-300: #7aabfa;
+
+  /* Status */
+  --green-400: #4ade80;
+  --green-800: #166534;
+  --yellow-400: #facc15;
+  --orange-400: #fb923c;
+  --red-400:   #f87171;
+  --red-500:   #ef4444;
+  --red-800:   #991b1b;
+  --red-900:   #450a0a;
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Spacing scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  /* Border radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+}
+
+/* ── Semantic Layer ───────────────────────── */
+:root {
+  --color-bg:           var(--gray-900);
+  --color-bg-elevated:  var(--gray-850);
+  --color-card:         var(--gray-800);
+  --color-card-hover:   var(--gray-700);
+  --color-border:       var(--gray-600);
+  --color-border-hover: var(--blue-600);
+  --color-primary:      var(--blue-600);
+  --color-primary-hover: var(--blue-400);
+  --color-primary-light: var(--blue-400);
+  --color-text:         var(--gray-100);
+  --color-text-muted:   var(--gray-400);
+  --color-text-subtle:  var(--gray-500);
+  --color-muted-fg:     var(--gray-300);
+
+  /* Status semantic */
+  --color-success:      var(--green-400);
+  --color-warning:      var(--yellow-400);
+  --color-danger:       var(--red-400);
+  --color-danger-bg:    var(--red-900);
+  --color-danger-border: var(--red-800);
+  --color-orange:       var(--orange-400);
+
+  /* Gradient */
+  --gradient-bg: linear-gradient(to bottom, var(--gray-900), var(--gray-800));
+}
+
+/* ── Component Layer ──────────────────────── */
+:root {
+  /* Button */
+  --btn-bg:         var(--color-primary);
+  --btn-bg-hover:   var(--color-primary-hover);
+  --btn-text:       var(--white);
+  --btn-shadow:     0 0 0 0 transparent;
+  --btn-radius:     var(--radius-lg);
+
+  /* Button Secondary */
+  --btn-secondary-bg:       transparent;
+  --btn-secondary-border:   var(--color-border);
+  --btn-secondary-border-hover: var(--color-primary);
+  --btn-secondary-text:     var(--color-text);
+  --btn-secondary-text-hover: var(--color-text);
+
+  /* Card */
+  --card-bg:        var(--color-card);
+  --card-border:    var(--color-border);
+  --card-radius:    var(--radius-xl);
+  --card-padding:   var(--space-6);
+
+  /* Input */
+  --input-bg:          var(--color-bg-elevated);
+  --input-border:      var(--color-border);
+  --input-border-focus: var(--color-primary);
+  --input-text:        var(--color-text);
+  --input-placeholder: var(--color-text-subtle);
+  --input-radius:      var(--radius-lg);
+
+  /* Label */
+  --label-text:     var(--color-text-muted);
+
+  /* Nav */
+  --nav-bg:           var(--color-bg-elevated);
+  --nav-border:       var(--color-border);
+  --nav-link-active-bg: var(--color-primary);
+  --nav-link-active-text: var(--white);
+  --nav-link-text:    var(--color-text-muted);
+  --nav-link-hover-bg: var(--color-card-hover);
+  --nav-link-hover-text: var(--white);
+
+  /* Slide / Page */
+  --slide-bg:       var(--color-bg);
+  --slide-text:     var(--color-text);
+  --heading-font:   var(--font-sans);
+}
