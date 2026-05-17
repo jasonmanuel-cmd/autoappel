@@ -69,9 +69,22 @@ export default function IntakePage() {
       }
       store.saveCitation(citation)
       
-      // Simulate sending confirmation email
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
+      try {
+        await fetch('/api/citations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(citation),
+        })
+      } catch { /* server submission is best-effort for demo */ }
+
+      try {
+        await fetch('/api/notifications/email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ to: form.email, subject: 'Appeal Confirmation - AutoAppeal', citationId: citation.id }),
+        })
+      } catch { /* email send is best-effort for demo */ }
+
       router.push(`/confirmation?id=${citation.id}`)
     } finally {
       setLoading(false)
@@ -89,7 +102,7 @@ export default function IntakePage() {
         onChange={e => set(key, e.target.value)}
         disabled={loading}
       />
-      {errors[key] && <p className="text-red-400 text-xs mt-1">{errors[key]}</p>}
+      {errors[key] && <p className="text-danger text-xs mt-1">{errors[key]}</p>}
     </div>
   )
 
@@ -152,7 +165,7 @@ export default function IntakePage() {
                   <option value="Chambers">Chambers County</option>
                   <option value="Other">Other</option>
                 </select>
-                {errors.county && <p className="text-red-400 text-xs mt-1">{errors.county}</p>}
+                {errors.county && <p className="text-danger text-xs mt-1">{errors.county}</p>}
               </div>
               {field('Court Name', 'court', 'text', 'Houston Municipal Court')}
               {field('City/Jurisdiction', 'jurisdiction', 'text', 'Houston, TX')}
@@ -162,7 +175,7 @@ export default function IntakePage() {
                   <option value="">Select violation type...</option>
                   {VIOLATION_TYPES.map(v => <option key={v} value={v}>{v}</option>)}
                 </select>
-                {errors.violationType && <p className="text-red-400 text-xs mt-1">{errors.violationType}</p>}
+                {errors.violationType && <p className="text-danger text-xs mt-1">{errors.violationType}</p>}
               </div>
             </>
           )}

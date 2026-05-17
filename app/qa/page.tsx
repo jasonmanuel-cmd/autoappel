@@ -1,19 +1,26 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { store } from '@/lib/store'
 import type { QAItem, DeploymentStatus } from '@/lib/types'
 
 const CATEGORIES = ['Landing Page', 'Intake Funnel', 'Countdown Engine', 'Red Vault™', 'Founder Dashboard™', 'Ambassador System', 'Treasury', 'Security']
 
 export default function QAPage() {
+  const router = useRouter()
+  const [gate, setGate] = useState<'loading' | 'ok'>('loading')
   const [items, setItems] = useState<QAItem[]>([])
   const [deployment, setDeployment] = useState<DeploymentStatus | null>(null)
 
   useEffect(() => {
+    if (!store.getDemoMode()) { router.replace('/login'); return }
+    setGate('ok')
     setItems(store.getQAItems())
     setDeployment(store.getDeployment())
-  }, [])
+  }, [router])
+
+  if (gate !== 'ok') return null
 
   const toggle = (id: string) => {
     const updated = items.map(i => i.id === id ? { ...i, passed: !i.passed } : i)

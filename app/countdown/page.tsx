@@ -236,7 +236,7 @@ function TrackingContent() {
 
 export default function TrackingPage() {
   return (
-    <Suspense fallback={<div className="p-12 text-center text-[#5b7fa6]">Loading your appeals...</div>}>
+    <Suspense fallback={<div className="p-12 text-center text-muted">Loading your appeals...</div>}>
       <TrackingContent />
     </Suspense>
   )

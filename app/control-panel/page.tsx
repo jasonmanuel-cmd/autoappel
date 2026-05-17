@@ -2,20 +2,47 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { store } from '@/lib/store'
+import { api } from '@/lib/api'
 import type { DeploymentStatus, Citation, Ambassador } from '@/lib/types'
 
 export default function ControlPanelPage() {
+  const router = useRouter()
+  const [gate, setGate] = useState<'loading' | 'ok'>('loading')
   const [deployment, setDeployment] = useState<DeploymentStatus | null>(null)
   const [citations, setCitations] = useState<Citation[]>([])
   const [ambassadors, setAmbassadors] = useState<Ambassador[]>([])
   const [shutdownConfirm, setShutdownConfirm] = useState(false)
+  const [tab, setTab] = useState<'overview' | 'submissions'>('overview')
+  const [submissions, setSubmissions] = useState<any[]>([])
+  const [loadingSubmissions, setLoadingSubmissions] = useState(false)
 
   useEffect(() => {
+    if (!store.getDemoMode()) { router.replace('/login'); return }
+    setGate('ok')
     setDeployment(store.getDeployment())
     setCitations(store.getCitations())
     setAmbassadors(store.getAmbassadors())
-  }, [])
+  }, [router])
+
+  useEffect(() => {
+    if (tab === 'submissions' && submissions.length === 0) {
+      setLoadingSubmissions(true)
+      fetch('/api/citations').then(r => r.json()).then(d => { setSubmissions(d.data?.citations || []); setLoadingSubmissions(false) }).catch(() => setLoadingSubmissions(false))
+    }
+  }, [tab, submissions.length])
+
+  const handleStatus = async (id: string, status: string) => {
+    try {
+      await fetch(`/api/citations/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) })
+      const res = await fetch('/api/citations')
+      const d = await res.json()
+      setSubmissions(d.data?.citations || [])
+    } catch { /* ignore */ }
+  }
+
+  if (gate !== 'ok') return null
 
   if (!deployment) return null
 
@@ -74,17 +101,21 @@ export default function ControlPanelPage() {
       <p className="text-xs text-subtle mb-8">Internal backend administration for deployment, routing, security, and case operations.</p>
 
       <div className="flex gap-2 flex-wrap mb-8">
-        <Link href="/control-panel" className="btn-secondary text-xs py-2">Overview</Link>
+        <button onClick={() => setTab('overview')} className={`text-xs py-2 px-4 rounded-lg font-semibold transition-colors ${tab === 'overview' ? 'bg-primary text-white' : 'btn-secondary text-xs'}`}>Overview</button>
+        <button onClick={() => setTab('submissions')} className={`text-xs py-2 px-4 rounded-lg font-semibold transition-colors ${tab === 'submissions' ? 'bg-primary text-white' : 'btn-secondary text-xs'}`}>Submissions</button>
         <Link href="/ambassadors" className="btn-secondary text-xs py-2">Ambassadors</Link>
         <Link href="/treasury" className="btn-secondary text-xs py-2">Treasury</Link>
         <Link href="/red-vault" className="btn-secondary text-xs py-2">Red Vault</Link>
         <Link href="/qa" className="btn-secondary text-xs py-2">QA</Link>
       </div>
 
+      {tab === 'overview' ? (
+        <>
+
       {deployment.globalShutdown && (
-        <div className="bg-red-900 border border-red-500 rounded-xl p-4 mb-6 text-center">
-          <p className="font-black text-red-300 text-lg">🛑 EMERGENCY SHUTDOWN ACTIVE</p>
-          <p className="text-red-400 text-sm">All intake and ambassador systems disabled. Founder re-authorization required to restore.</p>
+        <div className="bg-danger/20 border border-danger/50 rounded-xl p-4 mb-6 text-center">
+          <p className="font-black text-danger text-lg">🛑 EMERGENCY SHUTDOWN ACTIVE</p>
+          <p className="text-danger/70 text-sm">All intake and ambassador systems disabled. Founder re-authorization required to restore.</p>
           <button onClick={() => save({ ...deployment, globalShutdown: false, liveStatus: 'staging' })} className="btn-primary mt-3 text-sm">
             Restore Operations
           </button>
@@ -97,15 +128,15 @@ export default function ControlPanelPage() {
           <div className="text-muted text-sm">Total Citations</div>
         </div>
         <div className="card text-center">
-          <div className="text-3xl font-black text-red-400">{riskCounts.red}</div>
+          <div className="text-3xl font-black text-danger">{riskCounts.red}</div>
           <div className="text-muted text-sm">Critical Risk</div>
         </div>
         <div className="card text-center">
-          <div className="text-3xl font-black text-orange-400">{riskCounts.orange}</div>
+          <div className="text-3xl font-black text-orange">{riskCounts.orange}</div>
           <div className="text-muted text-sm">High Urgency</div>
         </div>
         <div className="card text-center">
-          <div className="text-3xl font-black text-[#8aafd4]">{ambassadors.filter(a => a.active).length}</div>
+          <div className="text-3xl font-black text-primary">{ambassadors.filter(a => a.active).length}</div>
           <div className="text-muted text-sm">Active Ambassadors</div>
         </div>
       </div>
@@ -116,12 +147,12 @@ export default function ControlPanelPage() {
           {controls.map(({ label, key }) => {
             const active = deployment[key] as boolean
             return (
-              <div key={key} className="flex items-center justify-between p-3 bg-[#08111e] rounded-lg">
+              <div key={key} className="flex items-center justify-between p-3 bg-bg rounded-lg">
                 <span className="text-sm font-medium">{label}</span>
                 <button
                   onClick={() => toggle(key)}
                   className={`px-4 py-1.5 rounded text-xs font-bold transition-colors ${
-                    active ? 'bg-green-800 hover:bg-green-600 text-green-100' : 'bg-border hover:bg-primary text-muted hover:text-white'
+                    active ? 'bg-success/30 hover:bg-success/50 text-success' : 'bg-border hover:bg-primary text-muted hover:text-white'
                   }`}
                 >
                   {active ? 'ACTIVE' : 'DISABLED'}
@@ -149,7 +180,7 @@ export default function ControlPanelPage() {
           </div>
           <div>
             <p className="text-subtle">QA Score</p>
-            <p className={`font-bold text-lg ${deployment.qaScore >= 90 ? 'text-green-400' : 'text-yellow-400'}`}>
+            <p className={`font-bold text-lg ${deployment.qaScore >= 90 ? 'text-success' : 'text-warning'}`}>
               {deployment.qaScore}/100
             </p>
           </div>
@@ -169,7 +200,7 @@ export default function ControlPanelPage() {
           ))}
           <button
             onClick={() => save({ ...deployment, founderApprovalGranted: !deployment.founderApprovalGranted })}
-            className={`px-3 py-1.5 rounded text-xs font-bold ${deployment.founderApprovalGranted ? 'bg-green-800 text-green-100' : 'bg-border text-muted'}`}
+            className={`px-3 py-1.5 rounded text-xs font-bold ${deployment.founderApprovalGranted ? 'bg-success/30 text-success' : 'bg-border text-muted'}`}
           >
             Founder Approval: {deployment.founderApprovalGranted ? 'GRANTED' : 'PENDING'}
           </button>
@@ -179,24 +210,86 @@ export default function ControlPanelPage() {
         </p>
       </div>
 
-      <div className="card border-red-900">
-        <h2 className="font-bold text-red-400 mb-2">Emergency Shutdown</h2>
+      <div className="card border-danger/30">
+        <h2 className="font-bold text-danger mb-2">Emergency Shutdown</h2>
         <p className="text-muted text-sm mb-4">
           Immediately disables all intake, ambassador, and routing systems. Requires Founder re-authorization to restore.
         </p>
         {shutdownConfirm ? (
           <div className="flex gap-3">
-            <button onClick={emergencyShutdown} className="bg-red-700 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg">
+            <button onClick={emergencyShutdown} className="bg-danger hover:bg-danger/80 text-white font-bold py-2 px-6 rounded-lg">
               CONFIRM SHUTDOWN
             </button>
             <button onClick={() => setShutdownConfirm(false)} className="btn-secondary">Cancel</button>
           </div>
         ) : (
-          <button onClick={emergencyShutdown} className="bg-red-900 hover:bg-red-700 text-red-300 font-bold py-2 px-6 rounded-lg transition-colors">
+          <button onClick={emergencyShutdown} className="bg-danger/20 hover:bg-danger/40 text-danger font-bold py-2 px-6 rounded-lg transition-colors">
             🛑 Trigger Emergency Shutdown
           </button>
         )}
       </div>
+        </>
+      ) : (
+        <div className="card">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-bold text-lg">Inbound Submissions</h2>
+            {submissions.length > 0 && <span className="text-xs text-muted">{submissions.filter(s => s.status === 'new').length} new</span>}
+          </div>
+
+          {loadingSubmissions ? (
+            <p className="text-muted text-sm py-8 text-center">Loading submissions...</p>
+          ) : submissions.length === 0 ? (
+            <div className="text-center py-8 text-muted">
+              <p className="mb-2">No submissions yet.</p>
+              <p className="text-xs text-subtle">Submissions from the intake form will appear here.</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border text-xs text-subtle uppercase">
+                    <th className="text-left py-2 pr-3">Name</th>
+                    <th className="text-left py-2 pr-3">Citation</th>
+                    <th className="text-left py-2 pr-3">County</th>
+                    <th className="text-left py-2 pr-3">Violation</th>
+                    <th className="text-left py-2 pr-3">Status</th>
+                    <th className="text-left py-2 pr-3">Submitted</th>
+                    <th className="text-right py-2">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {submissions.map(s => (
+                    <tr key={s.id} className="border-b border-border hover:bg-bg-elevated/50">
+                      <td className="py-3 pr-3 text-text font-medium">{s.data?.firstName} {s.data?.lastName}</td>
+                      <td className="py-3 pr-3 text-muted font-mono text-xs">{s.data?.citationNumber}</td>
+                      <td className="py-3 pr-3 text-muted">{s.data?.county}</td>
+                      <td className="py-3 pr-3 text-muted">{s.data?.violationType}</td>
+                      <td className="py-3 pr-3">
+                        <span className={`text-xs font-semibold px-2 py-1 rounded ${
+                          s.status === 'new' ? 'bg-primary/20 text-primary' :
+                          s.status === 'accepted' ? 'bg-success/20 text-success' :
+                          s.status === 'rejected' ? 'bg-danger/20 text-danger' :
+                          s.status === 'flagged' ? 'bg-warning/20 text-warning' :
+                          'bg-bg-elevated text-muted'
+                        }`}>{s.status.replace('_', ' ')}</span>
+                      </td>
+                      <td className="py-3 pr-3 text-muted text-xs">{new Date(s.createdAt).toLocaleDateString()}</td>
+                      <td className="py-3 text-right">
+                        <div className="flex gap-1 justify-end">
+                          {s.status === 'new' && <button onClick={() => handleStatus(s.id, 'in_review')} className="bg-primary/20 hover:bg-primary/30 text-primary text-xs px-2 py-1 rounded">Review</button>}
+                          {['in_review', 'new'].includes(s.status) && <button onClick={() => handleStatus(s.id, 'accepted')} className="bg-success/20 hover:bg-success/30 text-success text-xs px-2 py-1 rounded">Accept</button>}
+                          {['in_review', 'new'].includes(s.status) && <button onClick={() => handleStatus(s.id, 'rejected')} className="bg-danger/20 hover:bg-danger/30 text-danger text-xs px-2 py-1 rounded">Reject</button>}
+                          <button onClick={() => handleStatus(s.id, s.status === 'flagged' ? 'new' : 'flagged')} className="bg-warning/20 hover:bg-warning/30 text-warning text-xs px-2 py-1 rounded">{s.status === 'flagged' ? 'Unflag' : 'Flag'}</button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }

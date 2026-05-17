@@ -72,12 +72,20 @@ function daysFromNow(n: number): string {
 export const store = {
   /* ── Demo Mode ─────────────────────────────── */
   getDemoMode: (): boolean => getLS<boolean>(DEMO_KEY, false),
-  setDemoMode: (on: boolean) => setLS(DEMO_KEY, on),
+  setDemoMode: (on: boolean) => {
+    setLS(DEMO_KEY, on)
+    if (typeof window !== 'undefined') {
+      document.cookie = `aa_demo=${on}; path=/; max-age=${on ? 86400 * 30 : 0}; SameSite=Lax`
+    }
+  },
   checkDemoPassword: (pw: string): boolean => pw === DEMO_PASSWORD,
   getDemoPassword: () => DEMO_PASSWORD,
 
   logout: () => {
     setLS(DEMO_KEY, false)
+    if (typeof window !== 'undefined') {
+      document.cookie = 'aa_demo=false; path=/; max-age=0; SameSite=Lax'
+    }
     setLS('aa_citations', [])
     setLS('aa_ambassadors', [])
     setLS('aa_treasury', [])

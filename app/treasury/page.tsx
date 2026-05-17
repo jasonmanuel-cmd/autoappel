@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { store } from '@/lib/store'
 import type { TreasuryProfile } from '@/lib/types'
 
@@ -17,11 +18,19 @@ const blank = (): Omit<TreasuryProfile, 'id' | 'createdAt'> => ({
 })
 
 export default function TreasuryPage() {
+  const router = useRouter()
+  const [gate, setGate] = useState<'loading' | 'ok'>('loading')
   const [profiles, setProfiles] = useState<TreasuryProfile[]>([])
   const [form, setForm] = useState(blank())
   const [adding, setAdding] = useState(false)
 
-  useEffect(() => { setProfiles(store.getTreasuryProfiles()) }, [])
+  useEffect(() => {
+    if (!store.getDemoMode()) { router.replace('/login'); return }
+    setGate('ok')
+    setProfiles(store.getTreasuryProfiles())
+  }, [router])
+
+  if (gate !== 'ok') return null
 
   const refresh = () => setProfiles(store.getTreasuryProfiles())
 

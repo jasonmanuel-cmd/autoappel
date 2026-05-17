@@ -17,6 +17,7 @@ const links = [
 export default function Nav() {
   const path = usePathname()
   const [demo, setDemo] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     setDemo(store.getDemoMode())
@@ -24,13 +25,17 @@ export default function Nav() {
     return () => clearInterval(interval)
   }, [])
 
+  useEffect(() => { setMenuOpen(false) }, [path])
+
   return (
     <nav className="border-b border-border bg-bg-elevated sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between py-4">
         <Link href="/" className="text-primary font-black text-xl whitespace-nowrap">
           AutoAppeal™
         </Link>
-        <div className="flex items-center gap-1 overflow-x-auto">
+
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center gap-1">
           {links.map(l => (
             <Link
               key={l.href}
@@ -66,7 +71,60 @@ export default function Nav() {
             </Link>
           )}
         </div>
+
+        {/* Hamburger Button */}
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="md:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-card-hover transition-colors"
+          aria-label="Toggle navigation menu"
+        >
+          <span className={`block w-5 h-0.5 bg-text transition-transform ${menuOpen ? 'rotate-45 translate-y-1' : ''}`} />
+          <span className={`block w-5 h-0.5 bg-text transition-opacity ${menuOpen ? 'opacity-0' : ''}`} />
+          <span className={`block w-5 h-0.5 bg-text transition-transform ${menuOpen ? '-rotate-45 -translate-y-1' : ''}`} />
+        </button>
       </div>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="md:hidden border-t border-border bg-bg-elevated">
+          <div className="px-4 py-3 flex flex-col gap-1">
+            {links.map(l => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={clsx(
+                  'px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                  path === l.href
+                    ? 'bg-primary text-white'
+                    : 'text-muted-fg hover:text-white hover:bg-card-hover'
+                )}
+              >
+                {l.label}
+              </Link>
+            ))}
+            {demo ? (
+              <Link
+                href="/test-dashboard"
+                className={clsx(
+                  'px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                  path === '/test-dashboard'
+                    ? 'bg-warning text-black'
+                    : 'text-warning hover:text-black hover:bg-warning/70'
+                )}
+              >
+                🛠 Test Dashboard
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="px-3 py-2.5 rounded-lg text-sm font-medium text-subtle hover:text-muted-fg transition-colors"
+              >
+                Demo Login
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   )
 }

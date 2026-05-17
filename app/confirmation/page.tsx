@@ -22,14 +22,14 @@ function ConfirmationContent() {
   }, [id])
 
   if (loading) {
-    return <div className="p-12 text-center text-[#5b7fa6]">Loading...</div>
+    return <div className="p-12 text-center text-muted">Loading...</div>
   }
 
   if (!citation) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-16">
         <div className="card text-center">
-          <p className="text-[#5b7fa6] mb-4">Appeal not found</p>
+          <p className="text-muted mb-4">Appeal not found</p>
           <Link href="/intake" className="btn-primary">Start New Appeal</Link>
         </div>
       </div>
@@ -178,7 +178,7 @@ function ConfirmationContent() {
 
 export default function ConfirmationPage() {
   return (
-    <Suspense fallback={<div className="p-12 text-center text-[#5b7fa6]">Loading...</div>}>
+    <Suspense fallback={<div className="p-12 text-center text-muted">Loading...</div>}>
       <ConfirmationContent />
     </Suspense>
   )

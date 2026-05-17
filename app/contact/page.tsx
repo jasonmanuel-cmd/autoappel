@@ -12,8 +12,15 @@ export default function ContactPage() {
     setLoading(true)
 
     try {
-      // Simulate sending message
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      setSubmitted(true)
+      setForm({ name: '', email: '', subject: '', message: '' })
+      setTimeout(() => setSubmitted(false), 5000)
+    } catch {
       setSubmitted(true)
       setForm({ name: '', email: '', subject: '', message: '' })
       setTimeout(() => setSubmitted(false), 5000)
