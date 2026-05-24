@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { store } from '@/lib/store'
+import { useAuth } from '@/lib/use-auth'
 import type { AuditLog, RedVaultAlert, DeploymentStatus } from '@/lib/types'
 
 const ALERT_LABELS: Record<string, string> = {
@@ -16,21 +16,18 @@ const ALERT_LABELS: Record<string, string> = {
 }
 
 export default function RedVaultPage() {
-  const router = useRouter()
-  const [gate, setGate] = useState<'loading' | 'ok'>('loading')
+  const authStatus = useAuth()
+  if (authStatus !== 'authenticated') return null
+
   const [alerts, setAlerts] = useState<RedVaultAlert[]>([])
   const [logs, setLogs] = useState<AuditLog[]>([])
   const [deployment, setDeployment] = useState<DeploymentStatus | null>(null)
 
   useEffect(() => {
-    if (!store.getDemoMode()) { router.replace('/login'); return }
-    setGate('ok')
     setAlerts(store.getAlerts())
     setLogs(store.getAuditLogs())
     setDeployment(store.getDeployment())
-  }, [router])
-
-  if (gate !== 'ok') return null
+  }, [])
 
   const resolve = (id: string) => {
     store.resolveAlert(id)

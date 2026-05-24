@@ -70,6 +70,28 @@ function daysFromNow(n: number): string {
 }
 
 export const store = {
+  /* ── Supabase Auth ──────────────────────────── */
+  loginWithSupabase: async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
+    try {
+      const { createClientSupabase } = await import('./supabase')
+      const supabase = createClientSupabase()
+      if (!supabase) return { success: false, error: 'Supabase not configured. Use demo password instead.' }
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
+      if (error) return { success: false, error: error.message }
+      return { success: true }
+    } catch {
+      return { success: false, error: 'Auth service unavailable' }
+    }
+  },
+
+  logoutFromSupabase: async () => {
+    try {
+      const { createClientSupabase } = await import('./supabase')
+      const supabase = createClientSupabase()
+      if (supabase) await supabase.auth.signOut()
+    } catch {}
+  },
+
   /* ── Demo Mode ─────────────────────────────── */
   getDemoMode: (): boolean => getLS<boolean>(DEMO_KEY, false),
   setDemoMode: (on: boolean) => {
@@ -82,9 +104,11 @@ export const store = {
   getDemoPassword: () => DEMO_PASSWORD,
 
   logout: () => {
+    store.logoutFromSupabase()
     setLS(DEMO_KEY, false)
     if (typeof window !== 'undefined') {
       document.cookie = 'aa_demo=false; path=/; max-age=0; SameSite=Lax'
+      document.cookie = 'sb-access-token=; path=/; max-age=0; SameSite=Lax'
     }
     setLS('aa_citations', [])
     setLS('aa_ambassadors', [])

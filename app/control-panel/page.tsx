@@ -2,14 +2,15 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { store } from '@/lib/store'
+import { useAuth } from '@/lib/use-auth'
 import { api } from '@/lib/api'
 import type { DeploymentStatus, Citation, Ambassador } from '@/lib/types'
 
 export default function ControlPanelPage() {
-  const router = useRouter()
-  const [gate, setGate] = useState<'loading' | 'ok'>('loading')
+  const authStatus = useAuth()
+  if (authStatus !== 'authenticated') return null
+
   const [deployment, setDeployment] = useState<DeploymentStatus | null>(null)
   const [citations, setCitations] = useState<Citation[]>([])
   const [ambassadors, setAmbassadors] = useState<Ambassador[]>([])
@@ -17,21 +18,40 @@ export default function ControlPanelPage() {
   const [tab, setTab] = useState<'overview' | 'submissions'>('overview')
   const [submissions, setSubmissions] = useState<any[]>([])
   const [loadingSubmissions, setLoadingSubmissions] = useState(false)
+  const [submissionsSource, setSubmissionsSource] = useState<'server' | 'local' | null>(null)
 
   useEffect(() => {
-    if (!store.getDemoMode()) { router.replace('/login'); return }
-    setGate('ok')
     setDeployment(store.getDeployment())
     setCitations(store.getCitations())
     setAmbassadors(store.getAmbassadors())
-  }, [router])
+  }, [])
 
   useEffect(() => {
-    if (tab === 'submissions' && submissions.length === 0) {
+    if (tab === 'submissions') {
       setLoadingSubmissions(true)
-      fetch('/api/citations').then(r => r.json()).then(d => { setSubmissions(d.data?.citations || []); setLoadingSubmissions(false) }).catch(() => setLoadingSubmissions(false))
+      fetch('/api/citations')
+        .then(r => r.json())
+        .then(d => {
+          const serverSubs = d.data?.citations || []
+          if (serverSubs.length > 0) {
+            setSubmissions(serverSubs)
+            setSubmissionsSource('server')
+          } else {
+            // Fallback: show client-side citations (localStorage / demo mode)
+            const local = store.getCitations()
+            setSubmissions(local.map(c => ({ id: c.id, status: c.status, createdAt: c.createdAt, data: c })))
+            setSubmissionsSource('local')
+          }
+          setLoadingSubmissions(false)
+        })
+        .catch(() => {
+          const local = store.getCitations()
+          setSubmissions(local.map(c => ({ id: c.id, status: c.status, createdAt: c.createdAt, data: c })))
+          setSubmissionsSource('local')
+          setLoadingSubmissions(false)
+        })
     }
-  }, [tab, submissions.length])
+  }, [tab])
 
   const handleStatus = async (id: string, status: string) => {
     try {
@@ -41,8 +61,6 @@ export default function ControlPanelPage() {
       setSubmissions(d.data?.citations || [])
     } catch { /* ignore */ }
   }
-
-  if (gate !== 'ok') return null
 
   if (!deployment) return null
 
@@ -241,52 +259,64 @@ export default function ControlPanelPage() {
           ) : submissions.length === 0 ? (
             <div className="text-center py-8 text-muted">
               <p className="mb-2">No submissions yet.</p>
-              <p className="text-xs text-subtle">Submissions from the intake form will appear here.</p>
+              <p className="text-xs text-subtle">Submissions from the intake form will appear here. In demo mode, data is stored locally in your browser.</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border text-xs text-subtle uppercase">
-                    <th className="text-left py-2 pr-3">Name</th>
-                    <th className="text-left py-2 pr-3">Citation</th>
-                    <th className="text-left py-2 pr-3">County</th>
-                    <th className="text-left py-2 pr-3">Violation</th>
-                    <th className="text-left py-2 pr-3">Status</th>
-                    <th className="text-left py-2 pr-3">Submitted</th>
-                    <th className="text-right py-2">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {submissions.map(s => (
-                    <tr key={s.id} className="border-b border-border hover:bg-bg-elevated/50">
-                      <td className="py-3 pr-3 text-text font-medium">{s.data?.firstName} {s.data?.lastName}</td>
-                      <td className="py-3 pr-3 text-muted font-mono text-xs">{s.data?.citationNumber}</td>
-                      <td className="py-3 pr-3 text-muted">{s.data?.county}</td>
-                      <td className="py-3 pr-3 text-muted">{s.data?.violationType}</td>
-                      <td className="py-3 pr-3">
-                        <span className={`text-xs font-semibold px-2 py-1 rounded ${
-                          s.status === 'new' ? 'bg-primary/20 text-primary' :
-                          s.status === 'accepted' ? 'bg-success/20 text-success' :
-                          s.status === 'rejected' ? 'bg-danger/20 text-danger' :
-                          s.status === 'flagged' ? 'bg-warning/20 text-warning' :
-                          'bg-bg-elevated text-muted'
-                        }`}>{s.status.replace('_', ' ')}</span>
-                      </td>
-                      <td className="py-3 pr-3 text-muted text-xs">{new Date(s.createdAt).toLocaleDateString()}</td>
-                      <td className="py-3 text-right">
-                        <div className="flex gap-1 justify-end">
-                          {s.status === 'new' && <button onClick={() => handleStatus(s.id, 'in_review')} className="bg-primary/20 hover:bg-primary/30 text-primary text-xs px-2 py-1 rounded">Review</button>}
-                          {['in_review', 'new'].includes(s.status) && <button onClick={() => handleStatus(s.id, 'accepted')} className="bg-success/20 hover:bg-success/30 text-success text-xs px-2 py-1 rounded">Accept</button>}
-                          {['in_review', 'new'].includes(s.status) && <button onClick={() => handleStatus(s.id, 'rejected')} className="bg-danger/20 hover:bg-danger/30 text-danger text-xs px-2 py-1 rounded">Reject</button>}
-                          <button onClick={() => handleStatus(s.id, s.status === 'flagged' ? 'new' : 'flagged')} className="bg-warning/20 hover:bg-warning/30 text-warning text-xs px-2 py-1 rounded">{s.status === 'flagged' ? 'Unflag' : 'Flag'}</button>
-                        </div>
-                      </td>
+            <>
+              {submissionsSource === 'local' && (
+                <div className="bg-warning/10 border border-warning/30 rounded-lg p-3 mb-4 text-xs text-warning">
+                  ℹ️ Showing locally stored submissions (demo mode). Connect Supabase for persistent server-side storage.
+                </div>
+              )}
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border text-xs text-subtle uppercase">
+                      <th className="text-left py-2 pr-3">Name</th>
+                      <th className="text-left py-2 pr-3">Citation</th>
+                      <th className="text-left py-2 pr-3">County</th>
+                      <th className="text-left py-2 pr-3">Violation</th>
+                      <th className="text-left py-2 pr-3">Status</th>
+                      <th className="text-left py-2 pr-3">Submitted</th>
+                      <th className="text-right py-2">Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {submissions.map(s => (
+                      <tr key={s.id} className="border-b border-border hover:bg-bg-elevated/50">
+                        <td className="py-3 pr-3 text-text font-medium">{s.data?.firstName} {s.data?.lastName}</td>
+                        <td className="py-3 pr-3 text-muted font-mono text-xs">{s.data?.citationNumber}</td>
+                        <td className="py-3 pr-3 text-muted">{s.data?.county}</td>
+                        <td className="py-3 pr-3 text-muted">{s.data?.violationType}</td>
+                        <td className="py-3 pr-3">
+                          <span className={`text-xs font-semibold px-2 py-1 rounded ${
+                            s.status === 'new' ? 'bg-primary/20 text-primary' :
+                            s.status === 'in_review' ? 'bg-primary/20 text-primary' :
+                            s.status === 'accepted' ? 'bg-success/20 text-success' :
+                            s.status === 'pending' ? 'bg-primary/20 text-primary' :
+                            s.status === 'rejected' ? 'bg-danger/20 text-danger' :
+                            s.status === 'flagged' ? 'bg-warning/20 text-warning' :
+                            s.status === 'appealing' ? 'bg-orange/20 text-orange' :
+                            s.status === 'resolved' ? 'bg-success/20 text-success' :
+                            s.status === 'expired' ? 'bg-gray-700 text-gray-400' :
+                            'bg-bg-elevated text-muted'
+                          }`}>{s.status.replace(/_/g, ' ')}</span>
+                        </td>
+                        <td className="py-3 pr-3 text-muted text-xs">{new Date(s.createdAt).toLocaleDateString()}</td>
+                        <td className="py-3 text-right">
+                          <div className="flex gap-1 justify-end">
+                            {['new', 'pending', 'in_review'].includes(s.status) && <button onClick={() => handleStatus(s.id, 'in_review')} className="bg-primary/20 hover:bg-primary/30 text-primary text-xs px-2 py-1 rounded">Review</button>}
+                            {['new', 'pending', 'in_review', 'appealing'].includes(s.status) && <button onClick={() => handleStatus(s.id, 'accepted')} className="bg-success/20 hover:bg-success/30 text-success text-xs px-2 py-1 rounded">Accept</button>}
+                            {['new', 'pending', 'in_review', 'appealing'].includes(s.status) && <button onClick={() => handleStatus(s.id, 'rejected')} className="bg-danger/20 hover:bg-danger/30 text-danger text-xs px-2 py-1 rounded">Reject</button>}
+                            <button onClick={() => handleStatus(s.id, s.status === 'flagged' ? 'pending' : 'flagged')} className="bg-warning/20 hover:bg-warning/30 text-warning text-xs px-2 py-1 rounded">{s.status === 'flagged' ? 'Unflag' : 'Flag'}</button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
           )}
         </div>
       )}

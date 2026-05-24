@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { store } from '@/lib/store'
+import { useAuth } from '@/lib/use-auth'
 import type { Ambassador } from '@/lib/types'
 
 const blank = (): Omit<Ambassador, 'id' | 'createdAt'> => ({
@@ -14,19 +14,16 @@ const blank = (): Omit<Ambassador, 'id' | 'createdAt'> => ({
 })
 
 export default function AmbassadorsPage() {
-  const router = useRouter()
-  const [gate, setGate] = useState<'loading' | 'ok'>('loading')
+  const authStatus = useAuth()
+  if (authStatus !== 'authenticated') return null
+
   const [ambassadors, setAmbassadors] = useState<Ambassador[]>([])
   const [form, setForm] = useState(blank())
   const [adding, setAdding] = useState(false)
 
   useEffect(() => {
-    if (!store.getDemoMode()) { router.replace('/login'); return }
-    setGate('ok')
     setAmbassadors(store.getAmbassadors())
-  }, [router])
-
-  if (gate !== 'ok') return null
+  }, [])
 
   const refresh = () => setAmbassadors(store.getAmbassadors())
 

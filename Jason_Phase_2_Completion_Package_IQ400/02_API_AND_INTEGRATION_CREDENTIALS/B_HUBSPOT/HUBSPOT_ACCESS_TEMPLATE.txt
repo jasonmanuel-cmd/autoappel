@@ -1,0 +1,7 @@
+HUBSPOT PRIVATE APP ACCESS TOKEN=PASTE_TOKEN_HERE
+Portal/account owner: Founder-controlled
+Required objects: Contacts, Deals/Leads as approved
+Pipeline ID: PASTE_PIPELINE_ID_HERE
+Deal Stage ID(s): PASTE_STAGE_IDS_HERE
+HubSpot Form ID if using forms: PASTE_FORM_ID_HERE
+Security: No super admin permission. No billing. No delete. No export unless explicitly approved.

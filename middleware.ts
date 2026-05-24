@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { createServerSupabase } from '@/lib/supabase'
 
 const adminRoutes = [
   '/control-panel', '/ambassadors', '/treasury', '/red-vault', '/qa',
   '/test-dashboard', '/demo-payment',
 ]
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   const isAdminRoute = adminRoutes.some(route => pathname === route || pathname.startsWith(`${route}/`))
@@ -14,6 +15,15 @@ export function middleware(request: NextRequest) {
 
   const demoCookie = request.cookies.get('aa_demo')
   if (demoCookie?.value === 'true') return NextResponse.next()
+
+  const supabase = createServerSupabase()
+  if (supabase) {
+    const token = request.cookies.get('sb-access-token')?.value
+    if (token) {
+      const { data: { user } } = await supabase.auth.getUser(token)
+      if (user) return NextResponse.next()
+    }
+  }
 
   return NextResponse.redirect(new URL('/login', request.url))
 }

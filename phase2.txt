@@ -1,0 +1,42 @@
+Phase 1 uses demo mode authentication:
+- Password: set via `DEMO_PASSWORD` in `lib/store.ts` (default: `demo-2026`)
+- Login at `/login` sets a `aa_demo` cookie
+- `middleware.ts` protects admin routes server-side
+- Each admin page has a secondary client-side gate as safety net
+- **Phase 2**: Replace with proper auth (Supabase Auth, NextAuth, etc.)
+
+## Data Flow
+
+```
+User → Intake Form → POST /api/citations → Server Store (memory)
+                  → localStorage (client store for demo/offline)
+
+Admin → Control Panel → GET /api/citations → Submissions table
+                      → PATCH /api/citations/:id → Status update
+
+Contact → Contact Form → POST /api/contact → Server Store
+```
+
+## Phase 2 Integration Points
+
+These require external services and credentials from the founder:
+
+| Service | Purpose | What's Needed |
+|---------|---------|---------------|
+| Email (Resend/SendGrid) | Confirmation + reminder emails | API key + verified sender |
+| HubSpot | CRM lead capture | Private app token or form ID |
+| SMS (Twilio) | Deadline reminder texts | Account SID + auth token + phone number |
+| Database (Supabase) | Persistent data storage | Connection string / project URL |
+
+## Deployment
+
+Deployed on Vercel. Connected via GitHub repository.
+
+```bash
+# Deploy via Vercel CLI
+npx vercel --prod
+```
+
+## License
+
+AutoAppeal™ — LAGNAF™ network LLC. All rights reserved.

@@ -14,11 +14,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'Invalid email address' }, { status: 400 })
     }
 
-    const entry = serverStore.addContact({ name, email, subject, message })
+    const entry = await serverStore.addContact({ name, email, subject, message })
 
     return NextResponse.json({
       success: true,
-      data: { id: entry.id, message: 'Message received. We will get back to you within 24 hours.' },
+      data: { id: entry.id, message: entry.message },
     })
   } catch {
     return NextResponse.json({ success: false, error: 'Invalid request body' }, { status: 400 })
@@ -26,6 +26,6 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
-  const contacts = serverStore.getContacts()
+  const contacts = await serverStore.getContacts()
   return NextResponse.json({ success: true, data: contacts })
 }

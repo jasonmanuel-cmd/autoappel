@@ -1,0 +1,6 @@
+EMAIL PROVIDER: Resend
+Domain: lagnafnetwork.com
+Verified sender: info@lagnafnetwork.com
+RESEND_API_KEY=PASTE_KEY_HERE
+DNS DKIM/SPF/verification records: PASTE_HERE
+Notes: Do not commit this key to GitHub. Store in Vercel Environment Variables only.

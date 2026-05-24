@@ -1,0 +1,13 @@
+AutoAppeal Field,HubSpot Property,Required,Notes
+First Name,firstname,Yes,From intake
+Last Name,lastname,Yes,From intake
+Email,email,Yes,Primary contact
+Phone,phone,Yes,SMS eligible if consent provided
+City,city,Yes,Deployment territory
+State,state,Yes,Jurisdiction context
+Citation Number,autoappeal_citation_number,Yes,Custom property
+Violation Date,autoappeal_violation_date,Yes,Custom property
+Court/Agency,autoappeal_agency,If available,Custom property
+Deadline,autoappeal_deadline,Yes,Countdown logic
+Referral Code,lagnaf_referral_code,If present,Attribution field
+Status,autoappeal_case_status,Yes,Admin workflow

@@ -1,0 +1,13 @@
+Category,Points,Pass/Fail,Notes
+Build compiles clean,10,,
+Public pages load,8,,
+Mobile readability,8,,
+Intake API works,10,,
+Admin workflow works,10,,
+Email integration works,8,,
+HubSpot routing works,8,,
+SMS readiness/test,6,,
+Database persistence,10,,
+Security/no exposed secrets,10,,
+Founder deployment controls,6,,
+Docs complete,6,,

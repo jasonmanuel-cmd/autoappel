@@ -1,0 +1,6 @@
+ENV SECURITY RULES
+1. Never commit .env.local or real secrets to GitHub.
+2. Use .env.example only for blank templates.
+3. Rotate any key that may have been exposed.
+4. Service role/database admin secrets are server-side only.
+5. Founder approval required before production variable activation.

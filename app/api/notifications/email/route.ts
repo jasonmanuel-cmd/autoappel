@@ -1,21 +1,22 @@
 import { NextResponse } from 'next/server'
+import { sendEmail } from '@/lib/resend'
 
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { to, subject } = body
+    const { to, subject, html } = body
 
     if (!to || !subject) {
       return NextResponse.json({ success: false, error: 'Missing required fields: to, subject' }, { status: 400 })
     }
 
-    console.log(`[MOCK EMAIL] To: ${to} | Subject: ${subject} | Sent at: ${new Date().toISOString()}`)
+    const result = await sendEmail(to, subject, html || '')
 
     return NextResponse.json({
       success: true,
-      data: { messageId: `msg_${crypto.randomUUID().slice(0, 8)}`, message: 'Email queued successfully.' },
+      data: { messageId: result.messageId, message: 'Email sent successfully.' },
     })
-  } catch {
-    return NextResponse.json({ success: false, error: 'Invalid request body' }, { status: 400 })
+  } catch (err) {
+    return NextResponse.json({ success: false, error: err instanceof Error ? err.message : 'Failed to send email' }, { status: 500 })
   }
 }

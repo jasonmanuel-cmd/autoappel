@@ -52,22 +52,22 @@ export default function Nav() {
           ))}
           {demo ? (
             <Link
-              href="/test-dashboard"
+              href="/control-panel"
               className={clsx(
                 'px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors',
-                path === '/test-dashboard'
-                  ? 'bg-warning text-black'
-                  : 'text-warning hover:text-black hover:bg-warning/70'
+                path.startsWith('/control-panel') || path.startsWith('/test-dashboard')
+                  ? 'bg-primary text-white'
+                  : 'text-muted-fg hover:text-white hover:bg-card-hover'
               )}
             >
-              🛠 Test
+              Admin
             </Link>
           ) : (
             <Link
               href="/login"
               className="px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap text-subtle hover:text-muted-fg transition-colors"
             >
-              Demo
+              Login
             </Link>
           )}
         </div>
@@ -104,22 +104,22 @@ export default function Nav() {
             ))}
             {demo ? (
               <Link
-                href="/test-dashboard"
+                href="/control-panel"
                 className={clsx(
                   'px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
-                  path === '/test-dashboard'
-                    ? 'bg-warning text-black'
-                    : 'text-warning hover:text-black hover:bg-warning/70'
+                  path.startsWith('/control-panel')
+                    ? 'bg-primary text-white'
+                    : 'text-muted-fg hover:text-white hover:bg-card-hover'
                 )}
               >
-                🛠 Test Dashboard
+                Admin Panel
               </Link>
             ) : (
               <Link
                 href="/login"
                 className="px-3 py-2.5 rounded-lg text-sm font-medium text-subtle hover:text-muted-fg transition-colors"
               >
-                Demo Login
+                Login
               </Link>
             )}
           </div>

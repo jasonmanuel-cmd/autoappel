@@ -1,0 +1,6 @@
+TWILIO_ACCOUNT_SID=PASTE_SID_HERE
+TWILIO_AUTH_TOKEN=PASTE_AUTH_TOKEN_HERE
+TWILIO_PHONE_NUMBER=PASTE_NUMBER_HERE
+Founder alert phone: 949-350-8804
+Use: SMS intake confirmations, deadline reminders, escalation reminders, internal alerts.
+Do not expose token in frontend.

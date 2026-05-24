@@ -1,0 +1,5 @@
+EMAIL PROVIDER: SendGrid
+Verified sender: info@lagnafnetwork.com
+SENDGRID_API_KEY=PASTE_KEY_HERE
+Sender authentication/DNS records: PASTE_HERE
+Notes: Use only if Resend is not selected.

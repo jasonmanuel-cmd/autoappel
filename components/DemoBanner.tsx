@@ -20,12 +20,12 @@ export default function DemoBanner() {
 
   return (
     <div className="bg-warning/20 border-b border-warning/30 text-warning text-xs text-center py-2 px-4 flex items-center justify-center gap-3 flex-wrap">
-      <span className="font-bold">🔬 DEMO MODE</span>
+      <span className="font-bold">🔬 Staging Environment</span>
       <span className="text-warning/70">|</span>
-      <span>Seeded test data — no real citations</span>
+      <span>Pre-production — data is not live</span>
       <span className="text-warning/70">|</span>
-      <Link href="/test-dashboard" className="underline hover:no-underline font-semibold">
-        Test Dashboard →
+      <Link href="/control-panel" className="underline hover:no-underline font-semibold">
+        Control Panel →
       </Link>
       <button
         onClick={() => { store.logout(); window.location.href = '/' }}
