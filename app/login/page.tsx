@@ -36,11 +36,7 @@ export default function LoginPage() {
     }
   }
 
-  const handleDemoAdminLogin = () => {
-    store.setDemoMode(true)
-    store.addAuditLog({ actor: 'demo-admin', action: 'DEMO_ADMIN_LOGIN', resource: 'system', details: 'Demo admin panel access', severity: 'info' })
-    router.push('/control-panel')
-  }
+
 
   const handleAuthLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -125,14 +121,6 @@ export default function LoginPage() {
 
               <button type="submit" className="btn-primary w-full">
                 Enter Demo Mode
-              </button>
-
-              <button 
-                type="button"
-                onClick={handleDemoAdminLogin}
-                className="btn-secondary w-full"
-              >
-                View Admin Panel (Demo)
               </button>
             </form>
           ) : authMode === 'login' ? (

@@ -8,7 +8,7 @@ import { api } from '@/lib/api'
 import type { DeploymentStatus, Citation, Ambassador } from '@/lib/types'
 
 export default function ControlPanelPage() {
-  const authStatus = useAuth()
+  const authStatus = useAuth('/login')
   if (authStatus !== 'authenticated') return null
 
   const [deployment, setDeployment] = useState<DeploymentStatus | null>(null)

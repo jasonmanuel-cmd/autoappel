@@ -12,6 +12,14 @@ export function useAuth(redirectTo = '/login'): AuthStatus {
 
   useEffect(() => {
     async function check() {
+      // Check for admin auth state
+      if (typeof window !== 'undefined') {
+        try {
+          const adminAuth = localStorage.getItem('aa_admin_auth')
+          if (adminAuth) { setStatus('authenticated'); return }
+        } catch {}
+      }
+
       const demo = store.getDemoMode()
       if (demo) { setStatus('authenticated'); return }
 
