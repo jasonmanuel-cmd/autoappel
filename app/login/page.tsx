@@ -36,6 +36,12 @@ export default function LoginPage() {
     }
   }
 
+  const handleDemoAdminLogin = () => {
+    store.setDemoMode(true)
+    store.addAuditLog({ actor: 'demo-admin', action: 'DEMO_ADMIN_LOGIN', resource: 'system', details: 'Demo admin panel access', severity: 'info' })
+    router.push('/control-panel')
+  }
+
   const handleAuthLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -120,6 +126,14 @@ export default function LoginPage() {
               <button type="submit" className="btn-primary w-full">
                 Enter Demo Mode
               </button>
+
+              <button 
+                type="button"
+                onClick={handleDemoAdminLogin}
+                className="btn-secondary w-full"
+              >
+                View Admin Panel (Demo)
+              </button>
             </form>
           ) : authMode === 'login' ? (
             <form onSubmit={handleAuthLogin} className="space-y-4">
@@ -150,11 +164,11 @@ export default function LoginPage() {
                 {loading ? 'Signing in...' : 'Sign In'}
               </button>
 
-              <div className="text-center pt-4 border-t border-border">
+              <div className="text-center pt-4 border-t border-border space-y-2">
                 <button
                   type="button"
                   onClick={() => { setAuthMode('signup'); setError(''); setEmail(''); setAuthPassword(''); setConfirmPassword('') }}
-                  className="text-xs text-primary hover:underline cursor-pointer bg-transparent border-none"
+                  className="text-xs text-primary hover:underline cursor-pointer bg-transparent border-none w-full"
                 >
                   Don't have an account? Sign up
                 </button>
