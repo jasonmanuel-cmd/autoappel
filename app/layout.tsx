@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Nav from '@/components/Nav'
 import DemoBanner from '@/components/DemoBanner'
+import { Analytics } from '@vercel/analytics/next'
 
 export const metadata: Metadata = {
   title: 'AutoAppeal™ Houston — Professional Traffic Citation Appeals',
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <DemoBanner />
         <Nav />
         <main>{children}</main>
+        <Analytics />
       </body>
     </html>
   )
