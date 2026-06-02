@@ -1,16 +1,24 @@
 # Admin Panel Access Guide
 
-## Quick Access (While Waiting for Supabase Setup)
+## Production Admin Login
 
 ### Local Development
 1. Go to: **http://localhost:3000/login**
-2. Click the **"View Admin Panel (Demo)"** button
-3. You'll be taken to the control panel with demo data
+2. Select **"Admin Login"** tab
+3. Enter credentials:
+   - Email: `marc@lagnafnetwork.com`
+   - Password: `Coai2026`
+4. Click **"Sign In"**
+5. You'll be taken to the control panel with full admin access
 
 ### Production (Vercel)
 1. Go to: **https://autoappel1.vercel.app/login**
-2. Click the **"View Admin Panel (Demo)"** button
-3. You'll be taken to the control panel with demo data
+2. Select **"Admin Login"** tab
+3. Enter credentials:
+   - Email: `marc@lagnafnetwork.com`
+   - Password: `Coai2026`
+4. Click **"Sign In"**
+5. Full admin access to all production systems
 
 ---
 
@@ -34,31 +42,32 @@ Shows all citation submissions with:
 
 ---
 
-## After Supabase Setup
-
-Once Marc sets up Supabase:
-1. Go to: **http://localhost:3000/login** (or production URL)
-2. Click **"Admin Login"**
-3. Use credentials: `marc@lagnafnetwork.com` / `Coai2026`
-4. You'll be authenticated with real Supabase data
-
-The demo button will still work anytime.
-
----
-
-## Features Available in Demo Mode
+## Features Available in Admin Panel
 ✅ View system deployment status  
 ✅ Toggle ambassador system on/off  
 ✅ Toggle citation intake on/off  
-✅ View all submissions (demo data)  
+✅ View all submissions (real or demo data)  
 ✅ Update citation status  
 ✅ View risk dashboard  
 ✅ Emergency shutdown capability  
-✅ Audit log access
+✅ Audit log access  
+✅ Full founder control
+
+---
+
+## Demo Mode (Testing)
+
+If you want to test with sample data instead:
+1. Go to **Login** page
+2. In dev mode, you can toggle to **"Demo Mode"**
+3. Use password: `demo-2026`
+4. Visit **/test-dashboard** for demo experience
 
 ---
 
 ## Links
-- **Local**: http://localhost:3000/login → "View Admin Panel (Demo)"
-- **Production**: https://autoappel1.vercel.app/login → "View Admin Panel (Demo)"
-- **Direct (after auth)**: http://localhost:3000/control-panel
+- **Local Admin**: http://localhost:3000/login
+- **Production Admin**: https://autoappel1.vercel.app/login
+- **After Auth - Local**: http://localhost:3000/control-panel
+- **After Auth - Production**: https://autoappel1.vercel.app/control-panel
+
