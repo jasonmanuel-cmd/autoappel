@@ -84,6 +84,19 @@ export const store = {
     }
   },
 
+  signUpWithSupabase: async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
+    try {
+      const { createClientSupabase } = await import('./supabase')
+      const supabase = createClientSupabase()
+      if (!supabase) return { success: false, error: 'Supabase not configured. Use demo password instead.' }
+      const { error } = await supabase.auth.signUp({ email, password })
+      if (error) return { success: false, error: error.message }
+      return { success: true }
+    } catch {
+      return { success: false, error: 'Auth service unavailable' }
+    }
+  },
+
   logoutFromSupabase: async () => {
     try {
       const { createClientSupabase } = await import('./supabase')

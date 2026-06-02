@@ -12,9 +12,11 @@ const initialMode = isProd ? 'auth' : 'demo'
 export default function LoginPage() {
   const router = useRouter()
   const [mode, setMode] = useState<'demo' | 'auth'>(initialMode)
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login')
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
   const [authPassword, setAuthPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [showHint, setShowHint] = useState(false)
@@ -48,16 +50,46 @@ export default function LoginPage() {
     }
   }
 
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (authPassword !== confirmPassword) {
+      setError('Passwords do not match')
+      return
+    }
+    if (authPassword.length < 6) {
+      setError('Password must be at least 6 characters')
+      return
+    }
+    setLoading(true)
+    setError('')
+    const result = await store.signUpWithSupabase(email, authPassword)
+    setLoading(false)
+    if (result.success) {
+      setError('')
+      setAuthMode('login')
+      setEmail('')
+      setAuthPassword('')
+      setConfirmPassword('')
+      setError('Account created! Please sign in.')
+    } else {
+      setError(result.error || 'Sign up failed')
+    }
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'var(--gradient-bg)' }}>
       <div className="max-w-md w-full">
         <div className="card">
           <div className="text-center mb-6">
-            <h1 className="text-3xl font-black mb-2">{mode === 'demo' ? 'Demo Access' : 'Admin Login'}</h1>
+            <h1 className="text-3xl font-black mb-2">
+              {mode === 'demo' ? 'Demo Access' : authMode === 'login' ? 'Admin Login' : 'Create Account'}
+            </h1>
             <p className="text-muted text-sm">
               {mode === 'demo'
                 ? 'Enter the test password to explore the system.'
-                : 'Sign in with your credentials.'}
+                : authMode === 'login'
+                ? 'Sign in with your credentials.'
+                : 'Create a new account to get started.'}
             </p>
           </div>
 
@@ -89,7 +121,7 @@ export default function LoginPage() {
                 Enter Demo Mode
               </button>
             </form>
-          ) : (
+          ) : authMode === 'login' ? (
             <form onSubmit={handleAuthLogin} className="space-y-4">
               <div>
                 <label className="label">Email</label>
@@ -117,13 +149,75 @@ export default function LoginPage() {
               <button type="submit" className="btn-primary w-full" disabled={loading}>
                 {loading ? 'Signing in...' : 'Sign In'}
               </button>
+
+              <div className="text-center pt-4 border-t border-border">
+                <button
+                  type="button"
+                  onClick={() => { setAuthMode('signup'); setError(''); setEmail(''); setAuthPassword(''); setConfirmPassword('') }}
+                  className="text-xs text-primary hover:underline cursor-pointer bg-transparent border-none"
+                >
+                  Don't have an account? Sign up
+                </button>
+              </div>
+            </form>
+          ) : (
+            <form onSubmit={handleSignUp} className="space-y-4">
+              <div>
+                <label className="label">Email</label>
+                <input
+                  type="email"
+                  className="input"
+                  value={email}
+                  onChange={e => { setEmail(e.target.value); setError('') }}
+                  placeholder="you@example.com"
+                  autoFocus
+                  required
+                />
+              </div>
+              <div>
+                <label className="label">Password</label>
+                <input
+                  type="password"
+                  className="input"
+                  value={authPassword}
+                  onChange={e => { setAuthPassword(e.target.value); setError('') }}
+                  placeholder="At least 6 characters"
+                  required
+                />
+              </div>
+              <div>
+                <label className="label">Confirm Password</label>
+                <input
+                  type="password"
+                  className="input"
+                  value={confirmPassword}
+                  onChange={e => { setConfirmPassword(e.target.value); setError('') }}
+                  placeholder="Confirm your password"
+                  required
+                />
+                {error && <p className="text-danger text-xs mt-1">{error}</p>}
+              </div>
+
+              <button type="submit" className="btn-primary w-full" disabled={loading}>
+                {loading ? 'Creating account...' : 'Create Account'}
+              </button>
+
+              <div className="text-center pt-4 border-t border-border">
+                <button
+                  type="button"
+                  onClick={() => { setAuthMode('login'); setError(''); setEmail(''); setAuthPassword(''); setConfirmPassword('') }}
+                  className="text-xs text-primary hover:underline cursor-pointer bg-transparent border-none"
+                >
+                  Already have an account? Sign in
+                </button>
+              </div>
             </form>
           )}
 
           {!isProd && (
             <div className="mt-6 pt-4 border-t border-border">
               <button
-                onClick={() => { setMode(m => m === 'demo' ? 'auth' : 'demo'); setError('') }}
+                onClick={() => { setMode(m => m === 'demo' ? 'auth' : 'demo'); setError(''); setAuthMode('login'); setEmail(''); setAuthPassword(''); setConfirmPassword('') }}
                 className="text-xs text-primary hover:underline cursor-pointer bg-transparent border-none"
               >
                 {mode === 'demo' ? 'Use email & password login instead' : 'Use demo password instead'}
