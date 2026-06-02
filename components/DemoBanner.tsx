@@ -15,6 +15,8 @@ export default function DemoBanner() {
     return () => clearInterval(interval)
   }, [])
 
+  // Never show in production
+  if (process.env.NODE_ENV === 'production') return null
   if (!demo) return null
   if (path === '/login' || path === '/test-dashboard' || path === '/demo-payment') return null
 

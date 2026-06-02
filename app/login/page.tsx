@@ -5,9 +5,13 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { store } from '@/lib/store'
 
+// Production mode: auth-only. Development: allow demo toggle.
+const isProd = process.env.NODE_ENV === 'production'
+const initialMode = isProd ? 'auth' : 'demo'
+
 export default function LoginPage() {
   const router = useRouter()
-  const [mode, setMode] = useState<'demo' | 'auth'>('demo')
+  const [mode, setMode] = useState<'demo' | 'auth'>(initialMode)
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
   const [authPassword, setAuthPassword] = useState('')
@@ -116,25 +120,27 @@ export default function LoginPage() {
             </form>
           )}
 
-          <div className="mt-6 pt-4 border-t border-border">
-            <button
-              onClick={() => { setMode(m => m === 'demo' ? 'auth' : 'demo'); setError('') }}
-              className="text-xs text-primary hover:underline cursor-pointer bg-transparent border-none"
-            >
-              {mode === 'demo' ? 'Use email & password login instead' : 'Use demo password instead'}
-            </button>
+          {!isProd && (
+            <div className="mt-6 pt-4 border-t border-border">
+              <button
+                onClick={() => { setMode(m => m === 'demo' ? 'auth' : 'demo'); setError('') }}
+                className="text-xs text-primary hover:underline cursor-pointer bg-transparent border-none"
+              >
+                {mode === 'demo' ? 'Use email & password login instead' : 'Use demo password instead'}
+              </button>
 
-            {mode === 'demo' && (
-              <details className="text-xs text-muted cursor-pointer mt-2">
-                <summary className="font-semibold hover:text-muted-fg">Need the demo password?</summary>
-                <p className="mt-2 p-2 bg-bg-elevated rounded font-mono text-primary text-sm">demo-2026</p>
-              </details>
-            )}
+              {mode === 'demo' && (
+                <details className="text-xs text-muted cursor-pointer mt-2">
+                  <summary className="font-semibold hover:text-muted-fg">Need the demo password?</summary>
+                  <p className="mt-2 p-2 bg-bg-elevated rounded font-mono text-primary text-sm">demo-2026</p>
+                </details>
+              )}
 
-            <p className="text-xs text-subtle mt-3">
-              Demo mode seeds sample data. Auth mode connects to the production database.
-            </p>
-          </div>
+              <p className="text-xs text-subtle mt-3">
+                Demo mode seeds sample data. Auth mode connects to the production database.
+              </p>
+            </div>
+          )}
         </div>
 
         <p className="text-center text-xs text-subtle mt-6">

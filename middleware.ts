@@ -4,7 +4,7 @@ import { createServerSupabase } from '@/lib/supabase'
 
 const adminRoutes = [
   '/control-panel', '/ambassadors', '/treasury', '/red-vault', '/qa',
-  '/test-dashboard', '/demo-payment',
+  ...(process.env.NODE_ENV === 'production' ? [] : ['/test-dashboard', '/demo-payment']),
 ]
 
 export async function middleware(request: NextRequest) {
@@ -13,8 +13,11 @@ export async function middleware(request: NextRequest) {
   const isAdminRoute = adminRoutes.some(route => pathname === route || pathname.startsWith(`${route}/`))
   if (!isAdminRoute) return NextResponse.next()
 
+  // Only allow demo cookie in development
   const demoCookie = request.cookies.get('aa_demo')
-  if (demoCookie?.value === 'true') return NextResponse.next()
+  if (process.env.NODE_ENV !== 'production' && demoCookie?.value === 'true') {
+    return NextResponse.next()
+  }
 
   const supabase = createServerSupabase()
   if (supabase) {
