@@ -301,7 +301,7 @@ export default function CitationDetailPage() {
                     </div>
                     {citation.status !== 'pending' && (
                       <div className="flex items-center gap-2">
-                        <span className={`inline-block w-3 h-3 rounded-full ${citation.status === 'pending' ? 'bg-muted' : 'bg-primary'}`}></span>
+                        <span className={`inline-block w-3 h-3 rounded-full ${citation.status === 'resolved' ? 'bg-success' : citation.status === 'expired' ? 'bg-destructive' : 'bg-primary'}`}></span>
                         <span className="text-sm">
                           Status changed to <strong className="capitalize">{citation.status}</strong> {formatDateTime(citation.updatedAt)}
                         </span>
