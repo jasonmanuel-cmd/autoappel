@@ -6,8 +6,8 @@ import StarsBackground from '@/components/StarsBackground'
 import { Analytics } from '@vercel/analytics/next'
 
 export const metadata: Metadata = {
-  title: 'AutoAppeal™ Houston — Professional Traffic Citation Appeals',
-  description: 'Professional traffic citation appeal service for Houston, Texas.',
+  title: 'AutoAppeal™ — Traffic Ticket Paperwork Assistance for Houston',
+  description: 'Traffic ticket paperwork assistance platform for Houston drivers. We help prepare citation documentation, track deadlines, and navigate the appeal process.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

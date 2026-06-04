@@ -107,24 +107,25 @@ export default function HoustonLanding() {
         </div>
       </section>
 
-      {/* Stats */}
+      {/* Response Time */}
       <section className="py-16 px-4 bg-bg-elevated/50">
         <div className="max-w-5xl mx-auto">
           <div className="card mb-6 text-center">
             <p className="text-sm text-muted">Individual results vary. We handle each citation on a case-by-case basis.</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            {[
-              { stat: '500+', label: 'Citations Filed' },
-              { stat: 'Thousands', label: 'Houston Drivers Helped' },
-              { stat: '24hr', label: 'Typical Response Time' },
-              { stat: '4.8/5', label: 'Client Rating' },
-            ].map((item, i) => (
-              <div key={i} className="card">
-                <p className="text-4xl font-black text-primary mb-2">{item.stat}</p>
-                <p className="text-muted">{item.label}</p>
-              </div>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            <div className="card">
+              <p className="text-4xl font-black text-primary mb-2">24hr</p>
+              <p className="text-muted">Typical Initial Response Time</p>
+            </div>
+            <div className="card">
+              <p className="text-4xl font-black text-primary mb-2">✓</p>
+              <p className="text-muted">Free Citation Review</p>
+            </div>
+            <div className="card">
+              <p className="text-4xl font-black text-primary mb-2">🔒</p>
+              <p className="text-muted">Encrypted Submission</p>
+            </div>
           </div>
         </div>
       </section>
@@ -216,7 +217,7 @@ export default function HoustonLanding() {
                 <img src="/autoappellogo.png" alt="AutoAppeal" className="h-8 w-auto" />
                 <span className="font-black text-primary">AutoAppeal™</span>
               </div>
-              <p className="text-muted text-sm">Houston's traffic citation appeal assistance platform.</p>
+              <p className="text-muted text-sm">Traffic ticket paperwork assistance platform for Houston drivers.</p>
             </div>
             <div>
               <p className="font-semibold text-text mb-3">Company</p>
