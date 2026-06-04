@@ -30,8 +30,9 @@ export default function Nav() {
   return (
     <nav className="border-b border-border bg-bg-elevated sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between py-4">
-        <Link href="/" className="text-primary font-black text-xl whitespace-nowrap">
-          AutoAppeal™
+        <Link href="/" className="flex items-center gap-2 whitespace-nowrap">
+          <img src="/autoappellogo.png" alt="AutoAppeal" className="h-8 w-auto" />
+          <span className="text-primary font-black text-xl">AutoAppeal™</span>
         </Link>
 
         {/* Desktop Nav */}

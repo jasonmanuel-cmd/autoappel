@@ -6,6 +6,10 @@ export default function HoustonLanding() {
       {/* Hero Section */}
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
+          <div className="flex justify-center mb-6">
+            <img src="/autoappellogo.png" alt="AutoAppeal" className="h-16 sm:h-20 w-auto" />
+          </div>
+
           <div className="inline-block bg-primary text-white text-xs font-black px-4 py-2 rounded-full mb-6 uppercase tracking-widest">
             ✓ Traffic Citation Help — Free Review
           </div>
@@ -188,7 +192,7 @@ export default function HoustonLanding() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 px-4" style={{ background: 'linear-gradient(to bottom, var(--gray-900), var(--gray-800))' }}>
+      <section className="py-20 px-4" style={{ background: 'var(--gradient-bg)' }}>
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-4xl font-black mb-4">Ready to Get Started?</h2>
           <p className="text-muted-fg text-lg mb-8">
@@ -208,7 +212,10 @@ export default function HoustonLanding() {
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
-              <p className="font-black text-primary mb-4">AutoAppeal™</p>
+              <div className="flex items-center gap-2 mb-4">
+                <img src="/autoappellogo.png" alt="AutoAppeal" className="h-8 w-auto" />
+                <span className="font-black text-primary">AutoAppeal™</span>
+              </div>
               <p className="text-muted text-sm">Houston's traffic citation appeal assistance platform.</p>
             </div>
             <div>
