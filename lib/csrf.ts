@@ -44,9 +44,11 @@ export function invalidateCSRFToken(sessionId: string): void {
 // Cleanup old tokens periodically
 setInterval(() => {
   const now = Date.now()
-  for (const [key, value] of csrfTokenStore.entries()) {
+  const entriesToDelete: string[] = []
+  csrfTokenStore.forEach((value, key) => {
     if (now - value.createdAt > CSRF_TOKEN_EXPIRY_MS) {
-      csrfTokenStore.delete(key)
+      entriesToDelete.push(key)
     }
-  }
+  })
+  entriesToDelete.forEach(key => csrfTokenStore.delete(key))
 }, 60 * 60 * 1000) // Cleanup every hour
