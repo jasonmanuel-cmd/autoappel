@@ -1,4 +1,4 @@
-import { createServerSupabase, supabaseConfig } from './supabase'
+import { createServerSupabase } from './supabase'
 
 /* ── Types ──────────────────────────────────── */
 type CitationStatus = 'pending' | 'in_review' | 'accepted' | 'rejected' | 'flagged' | 'expired' | 'resolved'
