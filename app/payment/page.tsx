@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { createClientSupabase } from '@/lib/supabase'
 import type { Citation } from '@/lib/types'
 
+export const dynamic = 'force-dynamic'
+
 interface CitationRow {
   id: string
   first_name: string
