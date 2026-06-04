@@ -1,6 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
+  staticPageGenerationTimeout: 120,
+  onDemandEntries: {
+    maxInactiveAge: 60 * 1000,
+    pagesBufferLength: 5,
+  },
+  experimental: {
+    dynamicIO: true,
+  },
   headers: async () => {
     return [
       {

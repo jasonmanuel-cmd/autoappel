@@ -408,3 +408,43 @@ export function adminNewSubmissionEmail(data: EmailTemplateData): string {
     </html>
   `
 }
+
+// Email template registry
+const templates: Record<string, { subject: string; generate: (data: EmailTemplateData) => string }> = {
+  welcome: {
+    subject: 'Welcome to AutoAppeal',
+    generate: welcomeEmail,
+  },
+  verification: {
+    subject: 'Verify Your Email Address',
+    generate: welcomeEmail, // Use welcome template as fallback
+  },
+  password_reset: {
+    subject: 'Reset Your Password',
+    generate: welcomeEmail, // Use welcome template as fallback
+  },
+  deadline_alert: {
+    subject: 'Citation Deadline Alert',
+    generate: deadlineAlertEmail,
+  },
+  submission_received: {
+    subject: 'Submission Received',
+    generate: submissionReceivedEmail,
+  },
+  submission_approved: {
+    subject: 'Submission Approved',
+    generate: submissionApprovedEmail,
+  },
+  payment_received: {
+    subject: 'Payment Received',
+    generate: paymentConfirmationEmail,
+  },
+  appeal_decision: {
+    subject: 'Appeal Decision',
+    generate: submissionApprovedEmail, // Use approved template as fallback
+  },
+}
+
+export function getEmailTemplate(type: string): { subject: string; generate: (data: EmailTemplateData) => string } | null {
+  return templates[type] || null
+}
