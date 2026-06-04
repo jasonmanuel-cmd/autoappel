@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js'
 
 function missing(key: string): boolean {
   const v = process.env[key]
-  return !v || v.startsWith('PASTE_') || v === ''
+  return !v || v.startsWith('PASTE_') || v.startsWith('sb_') || v === ''
 }
 
 function isConfigured(): boolean {

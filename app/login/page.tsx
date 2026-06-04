@@ -15,6 +15,13 @@ export default function CustomerLoginPage() {
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('mode') === 'signup') {
+      setAuthMode('signup')
+    }
+  }, [])
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -186,10 +193,10 @@ export default function CustomerLoginPage() {
           <Link href="/" className="text-primary hover:underline">Return to site</Link>
         </p>
 
-        {/* Hidden admin link */}
-        <div className="text-center mt-4 opacity-0 hover:opacity-100 transition-opacity">
-          <Link href="/admin/login" className="text-xs text-subtle hover:text-muted">
-            admin
+        {/* Admin login link */}
+        <div className="text-center mt-4">
+          <Link href="/admin/login" className="text-xs text-subtle hover:text-muted hover:underline">
+            Admin Access
           </Link>
         </div>
       </div>

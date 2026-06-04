@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { store } from '@/lib/store'
 import type { Citation } from '@/lib/types'
 
@@ -17,6 +18,23 @@ export default function IntakePage() {
   const [step, setStep] = useState(0)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
+  const [authLoading, setAuthLoading] = useState(true)
+  const [authenticated, setAuthenticated] = useState(false)
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const { createClientSupabase } = await import('@/lib/supabase')
+        const supabase = createClientSupabase()
+        if (supabase) {
+          const { data: { user } } = await supabase.auth.getUser()
+          setAuthenticated(!!user)
+        }
+      } catch {}
+      setAuthLoading(false)
+    }
+    checkAuth()
+  }, [])
 
   const [form, setForm] = useState({
     firstName: '', lastName: '', email: '', phone: '',
@@ -75,7 +93,9 @@ export default function IntakePage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(citation),
         })
-      } catch { /* server submission is best-effort for demo */ }
+      } catch (err) {
+        console.error('Failed to submit citation to server:', err)
+      }
 
       try {
         await fetch('/api/notifications/email', {
@@ -83,7 +103,9 @@ export default function IntakePage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ to: form.email, subject: 'Appeal Confirmation - AutoAppeal', citationId: citation.id }),
         })
-      } catch { /* email send is best-effort for demo */ }
+      } catch (err) {
+        console.error('Failed to send confirmation email:', err)
+      }
 
       router.push(`/confirmation?id=${citation.id}`)
     } finally {
@@ -105,6 +127,39 @@ export default function IntakePage() {
       {errors[key] && <p className="text-danger text-xs mt-1">{errors[key]}</p>}
     </div>
   )
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen py-12" style={{ background: 'var(--gradient-bg)' }}>
+        <div className="max-w-2xl mx-auto px-4 text-center">
+          <div className="card py-12">
+            <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"/>
+            <p className="text-muted">Checking authentication...</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!authenticated) {
+    return (
+      <div className="min-h-screen py-12" style={{ background: 'var(--gradient-bg)' }}>
+        <div className="max-w-md mx-auto px-4 text-center">
+          <div className="card py-12">
+            <h1 className="text-3xl font-black mb-4">Sign In Required</h1>
+            <p className="text-muted mb-8">Create an account or sign in to start your free review.</p>
+            <div className="space-y-3">
+              <Link href="/login" className="btn-primary w-full inline-block">Sign In</Link>
+              <Link href="/login?mode=signup" className="btn-secondary w-full inline-block">Create Account</Link>
+            </div>
+            <p className="text-xs text-subtle mt-8">
+              Already have an account? <Link href="/login" className="text-primary hover:underline">Sign in</Link>
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen py-12" style={{ background: 'var(--gradient-bg)' }}>
@@ -134,7 +189,7 @@ export default function IntakePage() {
                 {field('Last Name', 'lastName', 'text', 'Smith')}
               </div>
               {field('Email Address', 'email', 'email', 'john@email.com')}
-              {field('Phone Number', 'phone', 'tel', '(713) 555-0100')}
+              {field('Phone Number', 'phone', 'tel', '(555) 123-4567')}
               <div>
                 <label className="label">How should we contact you?</label>
                 <select className="input" value={form.preferredContact} onChange={e => set('preferredContact', e.target.value as any)} disabled={loading}>
@@ -230,13 +285,13 @@ export default function IntakePage() {
                 </div>
               </div>
 
-              {/* Attorney Review Gate & Disclaimer */}
+              {/* Disclaimer */}
               <div className="bg-orange/10 border border-orange/30 rounded-lg p-4 space-y-3">
-                <h3 className="font-bold text-orange text-sm">⚖️ Important Legal Notice</h3>
+                <h3 className="font-bold text-orange text-sm">📋 Important Notice</h3>
                 <div className="text-xs text-muted space-y-2">
-                  <p><strong>AutoAppeal™ is not a law firm.</strong> We do not provide legal advice. We assist with document preparation and connect you with licensed Texas attorneys who handle your case.</p>
-                  <p>No attorney-client relationship is created by submitting this form. A licensed Texas attorney will review your case before any legal strategy is determined.</p>
-                  <p>Court deadlines vary. Our countdown engine provides estimates only - your assigned attorney will confirm all actual deadlines.</p>
+                  <p><strong>AutoAppeal™ is not a law firm.</strong> We do not provide legal advice or legal representation. We are an appeal assistance platform that helps you organize citation information, prepare documentation, and navigate the appeal process.</p>
+                  <p>No attorney-client relationship is created by submitting this form. AutoAppeal™ provides document preparation and filing guidance only.</p>
+                  <p>Court deadlines vary. Our countdown tools provide estimates only — always verify deadlines with the issuing court.</p>
                   <p>Results are not guaranteed. Outcomes depend on individual case facts, court rulings, and other factors beyond our control.</p>
                 </div>
                 <label className="flex items-start gap-3 cursor-pointer pt-2">
@@ -246,7 +301,7 @@ export default function IntakePage() {
                     onChange={e => setDisclaimerAck(e.target.checked)}
                     className="mt-0.5"
                   />
-                  <span className="text-sm text-text">I understand and acknowledge the above. I am submitting my citation information for review by a licensed Texas attorney. I understand this does not create an attorney-client relationship.</span>
+                  <span className="text-sm text-text">I understand and acknowledge the above. I am submitting my citation information for document preparation assistance. I understand AutoAppeal™ is not a law firm and does not provide legal representation.</span>
                 </label>
                 {errors.disclaimerAcknowledged && <p className="text-danger text-xs">{errors.disclaimerAcknowledged}</p>}
               </div>

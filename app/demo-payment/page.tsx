@@ -7,9 +7,9 @@ import { store } from '@/lib/store'
 import { api } from '@/lib/api'
 
 const PLANS = [
-  { id: 'basic', name: 'Basic Filing', price: 49, desc: 'Standard citation paperwork processing' },
-  { id: 'premium', name: 'Premium Review', price: 99, desc: 'Expedited review with attorney consultation' },
-  { id: 'full', name: 'Full Representation', price: 249, desc: 'Complete legal handling of your citation' },
+  { id: 'basic', name: 'Basic Filing', price: 49, desc: 'Standard citation paperwork assistance' },
+  { id: 'premium', name: 'Premium Review', price: 99, desc: 'Expedited review with detailed case analysis' },
+  { id: 'full', name: 'Full Service Package', price: 249, desc: 'Complete citation document preparation and filing guidance' },
 ]
 
 export default function DemoPaymentPage() {

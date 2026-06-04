@@ -172,7 +172,7 @@ export function submissionReceivedEmail(data: EmailTemplateData): string {
         
         <p>Hi ${data.fullName},</p>
         
-        <p>Thank you for submitting your ${data.submissionType}. We've received it and our team will review it shortly.</p>
+        <p>Thank you for submitting your ${data.submissionType}. We've received it and it will be reviewed shortly.</p>
         
         <h2>Submission Details</h2>
         <div class="details">
@@ -183,7 +183,7 @@ export function submissionReceivedEmail(data: EmailTemplateData): string {
         </div>
         
         <h2>What Happens Next?</h2>
-        <p>Our team will review your submission and get back to you within 2-3 business days. You can check the status of your submission in your dashboard anytime.</p>
+        <p>Your submission will be reviewed and we will get back to you within 2-3 business days. You can check the status of your submission in your dashboard anytime.</p>
         
         <a href="${data.citationUrl}" style="${buttonStyle}">Check Status</a>
         

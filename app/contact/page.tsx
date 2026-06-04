@@ -43,8 +43,8 @@ export default function ContactPage() {
             <div className="text-3xl mb-3">📧</div>
             <h3 className="font-bold text-lg mb-2">Email</h3>
             <p className="text-muted text-sm mb-3">For non-urgent inquiries</p>
-            <a href="mailto:support@autoappeal.com" className="text-primary font-semibold hover:underline">
-              support@autoappeal.com
+            <a href="mailto:info@lagnafnetwork.com" className="text-primary font-semibold hover:underline">
+              info@lagnafnetwork.com
             </a>
           </div>
 
@@ -53,8 +53,8 @@ export default function ContactPage() {
             <div className="text-3xl mb-3">📞</div>
             <h3 className="font-bold text-lg mb-2">Phone</h3>
             <p className="text-muted text-sm mb-3">Mon-Fri, 9AM-6PM CST</p>
-            <a href="tel:+17135550100" className="text-primary font-semibold hover:underline">
-              (713) 555-0100
+            <a href="tel:+19493508804" className="text-primary font-semibold hover:underline">
+              (949) 350-8804
             </a>
           </div>
 

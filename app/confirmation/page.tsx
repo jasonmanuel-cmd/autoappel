@@ -55,7 +55,7 @@ function ConfirmationContent() {
               <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-full bg-primary text-white font-bold">1</div>
               <div>
                 <h3 className="font-bold text-text mb-1">Review in Progress</h3>
-                <p className="text-muted text-sm">Our team is analyzing your citation for appeal eligibility and building your defense strategy.</p>
+                <p className="text-muted text-sm">We are reviewing your citation information and assessing your options.</p>
               </div>
             </div>
 
@@ -79,7 +79,7 @@ function ConfirmationContent() {
               <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-full bg-success text-white font-bold">✓</div>
               <div>
                 <h3 className="font-bold text-text mb-1">Resolution</h3>
-                <p className="text-muted text-sm">We'll work with the court on your behalf and keep you informed of the outcome.</p>
+                <p className="text-muted text-sm">We help you prepare the necessary documentation and guide you on what to expect.</p>
               </div>
             </div>
           </div>
@@ -146,7 +146,7 @@ function ConfirmationContent() {
             <li>Do not ignore any official court communications</li>
             <li>Make sure your contact information stays up to date</li>
             <li>Check your spam folder if you don't receive emails</li>
-            <li>Never respond to the court without consulting us first</li>
+            <li>Never respond to the court without reviewing your paperwork first</li>
           </ul>
         </div>
 

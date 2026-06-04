@@ -92,7 +92,7 @@ export const store = {
     try {
       const { createClientSupabase } = await import('./supabase')
       const supabase = createClientSupabase()
-      if (!supabase) return { success: false, error: 'Supabase not configured. Use demo password instead.' }
+      if (!supabase) return { success: false, error: 'Authentication service is not configured. Please contact support.' }
       const { error } = await supabase.auth.signUp({ email, password })
       if (error) return { success: false, error: error.message }
       return { success: true }

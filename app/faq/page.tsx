@@ -4,7 +4,7 @@ export default function FAQPage() {
   const faqs = [
     {
       q: 'How does the appeal process work?',
-      a: 'You submit your citation details through our form, and our legal team reviews it for appeal eligibility. If eligible, we draft and file your appeal with the appropriate court. We handle all communications and keep you updated throughout the process.',
+      a: 'You submit your citation details through our form. We review it for appeal eligibility and help you prepare the necessary documentation. We guide you through the process and keep you updated at each step.',
     },
     {
       q: 'How much does it cost?',
@@ -12,7 +12,7 @@ export default function FAQPage() {
     },
     {
       q: 'Will you guarantee a dismissal?',
-      a: 'We cannot guarantee any specific outcome, as court decisions depend on many factors. However, our legal team will work to build the strongest possible appeal based on the details of your case.',
+      a: 'We cannot guarantee any specific outcome, as court decisions depend on many factors. We help you prepare the strongest possible appeal documentation based on the details of your case.',
     },
     {
       q: 'What if I miss my response deadline?',
@@ -24,7 +24,7 @@ export default function FAQPage() {
     },
     {
       q: 'Do I need to appear in court?',
-      a: 'This depends on your specific case and citation type. Our team will advise you on whether an in-person appearance is necessary. Many appeals can be handled entirely on your behalf.',
+      a: 'This depends on your specific case and citation type. We help you understand the requirements so you know what to expect. Many appeals can be handled through documentation alone.',
     },
     {
       q: 'What information do I need to submit?',
