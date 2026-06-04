@@ -54,7 +54,7 @@ export default function VerifyEmailPage() {
       return
     }
 
-    const { error } = await supabase.auth.resendEnvelope({
+    const { error } = await supabase.auth.resend({
       type: 'signup',
       email: email,
     })
