@@ -70,32 +70,23 @@ function daysFromNow(n: number): string {
 }
 
 export const store = {
-  /* ── Supabase Auth ──────────────────────────── */
-  loginWithSupabase: async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
-    try {
-      const { createClientSupabase } = await import('./supabase')
-      const supabase = createClientSupabase()
-      if (supabase) {
-        const { error } = await supabase.auth.signInWithPassword({ email, password })
-        if (error) return { success: false, error: error.message }
-        return { success: true }
-      }
-      // Fallback: allow admin login with hardcoded credentials when Supabase isn't ready
-      if (email === 'marc@lagnafnetwork.com' && password === 'Coai2026') {
-        // Store auth state in localStorage so useAuth recognizes it
-        setLS('aa_admin_auth', { email, timestamp: Date.now() })
-        return { success: true }
-      }
-      return { success: false, error: 'Invalid email or password' }
-    } catch {
-      // If Supabase fails, try admin credentials
-      if (email === 'marc@lagnafnetwork.com' && password === 'Coai2026') {
-        setLS('aa_admin_auth', { email, timestamp: Date.now() })
-        return { success: true }
-      }
-      return { success: false, error: 'Auth service unavailable' }
-    }
-  },
+   /* ── Supabase Auth (PRODUCTION ONLY) ────────────── */
+   loginWithSupabase: async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
+     try {
+       const { createClientSupabase } = await import('./supabase')
+       const supabase = createClientSupabase()
+       if (!supabase) {
+         return { success: false, error: 'Authentication service is not configured. Please contact support.' }
+       }
+       const { error } = await supabase.auth.signInWithPassword({ email, password })
+       if (error) {
+         return { success: false, error: error.message }
+       }
+       return { success: true }
+     } catch (err) {
+       return { success: false, error: 'Authentication failed. Please try again.' }
+     }
+   },
 
   signUpWithSupabase: async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {

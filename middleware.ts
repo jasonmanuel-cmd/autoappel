@@ -44,6 +44,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
+  // Allow unauthenticated access to /verify-email (users arrive from email links)
+  if (pathname === '/verify-email') {
+    return NextResponse.next()
+  }
+
   const token = request.cookies.get('sb-access-token')?.value
   if (!token) {
     return NextResponse.redirect(new URL('/login', request.url))
@@ -54,9 +59,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  // Verify email for customer routes (unless already on /verify-email)
+  // Verify email for customer routes
   if (customerRoutes.some(route => pathname === route || pathname.startsWith(`${route}/`))) {
-    if (pathname !== '/verify-email' && !user.email_confirmed_at) {
+    if (!user.email_confirmed_at) {
       return NextResponse.redirect(new URL('/verify-email', request.url))
     }
   }
