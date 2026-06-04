@@ -16,7 +16,7 @@ const baseStyles = `
 const buttonStyle = `
   display: inline-block;
   padding: 12px 24px;
-  background-color: #007bff;
+  background-color: #E50000;
   color: white;
   text-decoration: none;
   border-radius: 5px;
@@ -55,11 +55,11 @@ export function welcomeEmail(data: EmailTemplateData): string {
         <meta charset="UTF-8">
         <style>
           body { ${baseStyles} }
-          h1 { color: #007bff; margin-top: 24px; }
+          h1 { color: #E50000; margin-top: 24px; }
           h2 { color: #333; margin-top: 20px; font-size: 18px; }
           ol, ul { margin: 12px 0; padding-left: 20px; }
           li { margin: 8px 0; }
-          a { color: #007bff; }
+          a { color: #E50000; }
           .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
         </style>
       </head>
@@ -106,7 +106,7 @@ export function deadlineAlertEmail(data: EmailTemplateData): string {
           .details p { margin: 8px 0; }
           ol, ul { margin: 12px 0; padding-left: 20px; }
           li { margin: 8px 0; }
-          a { color: #007bff; }
+          a { color: #E50000; }
           .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
         </style>
       </head>
@@ -159,11 +159,11 @@ export function submissionReceivedEmail(data: EmailTemplateData): string {
         <meta charset="UTF-8">
         <style>
           body { ${baseStyles} }
-          h1 { color: #007bff; margin-top: 24px; }
+          h1 { color: #E50000; margin-top: 24px; }
           h2 { color: #333; margin-top: 20px; font-size: 18px; }
           .details { background-color: #f8f9fa; padding: 16px; border-radius: 5px; margin: 16px 0; }
           .details p { margin: 8px 0; }
-          a { color: #007bff; }
+          a { color: #E50000; }
           .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
         </style>
       </head>
@@ -212,7 +212,7 @@ export function submissionApprovedEmail(data: EmailTemplateData): string {
           .alert-box { background-color: #d4edda; border-left: 4px solid #28a745; padding: 16px; margin: 16px 0; }
           .details { background-color: #f8f9fa; padding: 16px; border-radius: 5px; margin: 16px 0; }
           .details p { margin: 8px 0; }
-          a { color: #007bff; }
+          a { color: #E50000; }
           .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
         </style>
       </head>
@@ -265,7 +265,7 @@ export function submissionRejectedEmail(data: EmailTemplateData): string {
           .details p { margin: 8px 0; }
           ul { margin: 12px 0; padding-left: 20px; }
           li { margin: 8px 0; }
-          a { color: #007bff; }
+          a { color: #E50000; }
           .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
         </style>
       </head>
@@ -322,7 +322,7 @@ export function paymentConfirmationEmail(data: EmailTemplateData): string {
           .alert-box { background-color: #d4edda; border-left: 4px solid #28a745; padding: 16px; margin: 16px 0; }
           .receipt { background-color: #f8f9fa; padding: 16px; border-radius: 5px; margin: 16px 0; font-family: monospace; }
           .receipt p { margin: 8px 0; }
-          a { color: #007bff; }
+          a { color: #E50000; }
           .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
         </style>
       </head>
@@ -374,7 +374,7 @@ export function adminNewSubmissionEmail(data: EmailTemplateData): string {
           .alert-box { background-color: #fff3cd; border-left: 4px solid #ff6b6b; padding: 16px; margin: 16px 0; }
           .details { background-color: #f8f9fa; padding: 16px; border-radius: 5px; margin: 16px 0; }
           .details p { margin: 8px 0; }
-          a { color: #007bff; }
+          a { color: #E50000; }
           .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
         </style>
       </head>

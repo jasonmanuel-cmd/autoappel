@@ -10,11 +10,11 @@ const config: Config = {
     extend: {
       colors: {
         vault: {
-          red: '#C0392B',
-          dark: '#1a0a0a',
-          card: '#2d1010',
-          border: '#5c1a1a',
-          muted: '#8B0000',
+          red: '#E50000',
+          dark: '#000000',
+          card: '#111318',
+          border: '#1F2128',
+          muted: '#6B7280',
         },
         /* Semantic tokens — reference CSS variables */
         bg: 'var(--color-bg)',
@@ -38,6 +38,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
       borderRadius: {
         card: 'var(--card-radius)',

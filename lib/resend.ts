@@ -31,7 +31,7 @@ export async function sendEmail(to: string, subject: string, html: string) {
 export async function sendConfirmationEmail(to: string, citationNumber: string) {
   const html = `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
-      <h1 style="color:#1a2942">AutoAppeal™ — Citation Received</h1>
+      <h1 style="color:#E50000">AutoAppeal™ — Citation Received</h1>
       <p>Your citation <strong>${citationNumber}</strong> has been submitted successfully.</p>
       <p>Track your appeal status anytime at <a href="https://autoappeal.lagnafnetwork.com/track">autoappeal.lagnafnetwork.com/track</a></p>
       <hr style="border:none;border-top:1px solid #e2e8f0"/>
@@ -43,7 +43,7 @@ export async function sendConfirmationEmail(to: string, citationNumber: string) 
 export async function sendDeadlineReminder(to: string, citationNumber: string, daysLeft: number, riskLevel: string) {
   const html = `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
-      <h1 style="color:#1a2942">AutoAppeal™ — Deadline Reminder</h1>
+      <h1 style="color:#E50000">AutoAppeal™ — Deadline Reminder</h1>
       <p>Citation <strong>${citationNumber}</strong> has <strong>${daysLeft} day${daysLeft !== 1 ? 's' : ''}</strong> remaining.</p>
       <p>Risk level: <strong style="color:${riskLevel === 'red' ? '#dc2626' : riskLevel === 'orange' ? '#ea580c' : '#ca8a04'}">${riskLevel.toUpperCase()}</strong></p>
       <hr style="border:none;border-top:1px solid #e2e8f0"/>
