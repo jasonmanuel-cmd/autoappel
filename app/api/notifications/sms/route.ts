@@ -1,22 +1,59 @@
-import { NextResponse } from 'next/server'
-import { sendSms } from '@/lib/twilio'
+import { NextRequest, NextResponse } from 'next/server'
+import { createServerSupabase } from '@/lib/supabase'
+import {
+  sendDeadlineAlert48hSMS,
+  sendPaymentReceivedSMS,
+  sendSubmissionDecisionSMS,
+} from '@/lib/sms-service'
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { to, message } = body
+    const { type, phoneNumber, ...rest } = body
 
-    if (!to || !message) {
-      return NextResponse.json({ success: false, error: 'Missing required fields: to, message' }, { status: 400 })
+    if (!type || !phoneNumber) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      )
     }
 
-    const result = await sendSms(to, message)
+    let success = false
 
-    return NextResponse.json({
-      success: true,
-      data: { sid: result.sid, message: 'SMS sent successfully.' },
-    })
-  } catch (err) {
-    return NextResponse.json({ success: false, error: err instanceof Error ? err.message : 'Failed to send SMS' }, { status: 500 })
+    switch (type) {
+      case 'deadline_alert_48h':
+        success = await sendDeadlineAlert48hSMS(phoneNumber, rest.citationNumber, rest.deadline)
+        break
+
+      case 'payment_received':
+        success = await sendPaymentReceivedSMS(phoneNumber, rest.citationNumber, rest.amount)
+        break
+
+      case 'submission_decision':
+        success = await sendSubmissionDecisionSMS(
+          phoneNumber,
+          rest.citationNumber,
+          rest.submissionType,
+          rest.decision
+        )
+        break
+
+      default:
+        return NextResponse.json(
+          { error: 'Unknown notification type' },
+          { status: 400 }
+        )
+    }
+
+    return NextResponse.json(
+      { success, message: success ? 'SMS sent' : 'SMS delivery failed' },
+      { status: success ? 200 : 500 }
+    )
+  } catch (error) {
+    console.error('SMS Notification API error:', error)
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
   }
 }

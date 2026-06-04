@@ -5,48 +5,24 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { store } from '@/lib/store'
 
-// Production mode: auth-only. Development: allow demo toggle.
-const isProd = process.env.NODE_ENV === 'production'
-const initialMode = isProd ? 'auth' : 'demo'
-
-export default function LoginPage() {
+export default function CustomerLoginPage() {
   const router = useRouter()
-  const [mode, setMode] = useState<'demo' | 'auth'>(initialMode)
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login')
-  const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
-  const [authPassword, setAuthPassword] = useState('')
+  const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
-  const [showHint, setShowHint] = useState(false)
 
-  useEffect(() => {
-    if (store.getDemoMode()) router.push('/test-dashboard')
-  }, [router])
-
-  const handleDemoLogin = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (store.checkDemoPassword(password)) {
-      store.setDemoMode(true)
-      store.addAuditLog({ actor: 'demo-user', action: 'DEMO_LOGIN', resource: 'system', details: 'Demo mode activated', severity: 'info' })
-      router.push('/test-dashboard')
-    } else {
-      setError('Invalid password')
-    }
-  }
-
-
-
-  const handleAuthLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
-    const result = await store.loginWithSupabase(email, authPassword)
+    const result = await store.loginWithSupabase(email, password)
     setLoading(false)
     if (result.success) {
-      store.setDemoMode(true)
-      router.push('/control-panel')
+      router.push('/verify-email')
     } else {
       setError(result.error || 'Login failed')
     }
@@ -54,25 +30,32 @@ export default function LoginPage() {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (authPassword !== confirmPassword) {
+    if (password !== confirmPassword) {
       setError('Passwords do not match')
       return
     }
-    if (authPassword.length < 6) {
-      setError('Password must be at least 6 characters')
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters')
+      return
+    }
+    if (!/[A-Z]/.test(password)) {
+      setError('Password must include an uppercase letter')
+      return
+    }
+    if (!/[0-9]/.test(password)) {
+      setError('Password must include a number')
       return
     }
     setLoading(true)
     setError('')
-    const result = await store.signUpWithSupabase(email, authPassword)
+    const result = await store.signUpWithSupabase(email, password)
     setLoading(false)
     if (result.success) {
-      setError('')
+      setSuccess('Account created! Please check your email to verify, then sign in.')
       setAuthMode('login')
       setEmail('')
-      setAuthPassword('')
+      setPassword('')
       setConfirmPassword('')
-      setError('Account created! Please sign in.')
     } else {
       setError(result.error || 'Sign up failed')
     }
@@ -84,49 +67,21 @@ export default function LoginPage() {
         <div className="card">
           <div className="text-center mb-6">
             <h1 className="text-3xl font-black mb-2">
-              {mode === 'demo' ? 'Demo Access' : authMode === 'login' ? 'Admin Login' : 'Create Account'}
+              {authMode === 'login' ? 'Sign In' : 'Create Account'}
             </h1>
             <p className="text-muted text-sm">
-              {mode === 'demo'
-                ? 'Enter the test password to explore the system.'
-                : authMode === 'login'
-                ? 'Sign in with your credentials.'
-                : 'Create a new account to get started.'}
+              {authMode === 'login'
+                ? 'Access your citations and manage your account.'
+                : 'Create an account to get started.'}
             </p>
           </div>
 
-          {mode === 'demo' ? (
-            <form onSubmit={handleDemoLogin} className="space-y-4">
-              <div>
-                <label className="label">Master Password</label>
-                <div className="relative">
-                  <input
-                    type={showHint ? 'text' : 'password'}
-                    className="input pr-20"
-                    value={password}
-                    onChange={e => { setPassword(e.target.value); setError('') }}
-                    placeholder="Enter demo password"
-                    autoFocus
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowHint(v => !v)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted hover:text-muted-fg"
-                  >
-                    {showHint ? 'Hide' : 'Show'}
-                  </button>
-                </div>
-                {error && <p className="text-danger text-xs mt-1">{error}</p>}
-              </div>
+          {success && <p className="text-success text-sm mb-4 p-3 bg-success/10 rounded">{success}</p>}
 
-              <button type="submit" className="btn-primary w-full">
-                Enter Demo Mode
-              </button>
-            </form>
-          ) : authMode === 'login' ? (
-            <form onSubmit={handleAuthLogin} className="space-y-4">
+          {authMode === 'login' ? (
+            <form onSubmit={handleLogin} className="space-y-4">
               <div>
-                <label className="label">Email</label>
+                <label className="label">Email Address</label>
                 <input
                   type="email"
                   className="input"
@@ -134,6 +89,7 @@ export default function LoginPage() {
                   onChange={e => { setEmail(e.target.value); setError('') }}
                   placeholder="you@example.com"
                   autoFocus
+                  required
                 />
               </div>
               <div>
@@ -141,31 +97,36 @@ export default function LoginPage() {
                 <input
                   type="password"
                   className="input"
-                  value={authPassword}
-                  onChange={e => { setAuthPassword(e.target.value); setError('') }}
+                  value={password}
+                  onChange={e => { setPassword(e.target.value); setError('') }}
                   placeholder="Enter your password"
+                  required
                 />
-                {error && <p className="text-danger text-xs mt-1">{error}</p>}
               </div>
+
+              {error && <p className="text-danger text-xs p-2 bg-danger/10 rounded">{error}</p>}
 
               <button type="submit" className="btn-primary w-full" disabled={loading}>
                 {loading ? 'Signing in...' : 'Sign In'}
               </button>
 
-              <div className="text-center pt-4 border-t border-border space-y-2">
+              <div className="text-center pt-4 border-t border-border space-y-3">
                 <button
                   type="button"
-                  onClick={() => { setAuthMode('signup'); setError(''); setEmail(''); setAuthPassword(''); setConfirmPassword('') }}
-                  className="text-xs text-primary hover:underline cursor-pointer bg-transparent border-none w-full"
+                  onClick={() => { setAuthMode('signup'); setError(''); setSuccess(''); setEmail(''); setPassword(''); setConfirmPassword('') }}
+                  className="text-sm text-primary hover:underline cursor-pointer bg-transparent border-none w-full"
                 >
                   Don't have an account? Sign up
                 </button>
+                <Link href="/forgot-password" className="text-xs text-muted hover:text-muted-fg block">
+                  Forgot your password?
+                </Link>
               </div>
             </form>
           ) : (
             <form onSubmit={handleSignUp} className="space-y-4">
               <div>
-                <label className="label">Email</label>
+                <label className="label">Email Address</label>
                 <input
                   type="email"
                   className="input"
@@ -181,11 +142,14 @@ export default function LoginPage() {
                 <input
                   type="password"
                   className="input"
-                  value={authPassword}
-                  onChange={e => { setAuthPassword(e.target.value); setError('') }}
-                  placeholder="At least 6 characters"
+                  value={password}
+                  onChange={e => { setPassword(e.target.value); setError('') }}
+                  placeholder="At least 8 characters with uppercase and number"
                   required
                 />
+                <p className="text-xs text-muted mt-1">
+                  Must include uppercase letter and number
+                </p>
               </div>
               <div>
                 <label className="label">Confirm Password</label>
@@ -194,11 +158,12 @@ export default function LoginPage() {
                   className="input"
                   value={confirmPassword}
                   onChange={e => { setConfirmPassword(e.target.value); setError('') }}
-                  placeholder="Confirm your password"
+                  placeholder="Re-enter your password"
                   required
                 />
-                {error && <p className="text-danger text-xs mt-1">{error}</p>}
               </div>
+
+              {error && <p className="text-danger text-xs p-2 bg-danger/10 rounded">{error}</p>}
 
               <button type="submit" className="btn-primary w-full" disabled={loading}>
                 {loading ? 'Creating account...' : 'Create Account'}
@@ -207,41 +172,26 @@ export default function LoginPage() {
               <div className="text-center pt-4 border-t border-border">
                 <button
                   type="button"
-                  onClick={() => { setAuthMode('login'); setError(''); setEmail(''); setAuthPassword(''); setConfirmPassword('') }}
-                  className="text-xs text-primary hover:underline cursor-pointer bg-transparent border-none"
+                  onClick={() => { setAuthMode('login'); setError(''); setSuccess(''); setEmail(''); setPassword(''); setConfirmPassword('') }}
+                  className="text-sm text-primary hover:underline cursor-pointer bg-transparent border-none w-full"
                 >
                   Already have an account? Sign in
                 </button>
               </div>
             </form>
           )}
-
-          {!isProd && (
-            <div className="mt-6 pt-4 border-t border-border">
-              <button
-                onClick={() => { setMode(m => m === 'demo' ? 'auth' : 'demo'); setError(''); setAuthMode('login'); setEmail(''); setAuthPassword(''); setConfirmPassword('') }}
-                className="text-xs text-primary hover:underline cursor-pointer bg-transparent border-none"
-              >
-                {mode === 'demo' ? 'Use email & password login instead' : 'Use demo password instead'}
-              </button>
-
-              {mode === 'demo' && (
-                <details className="text-xs text-muted cursor-pointer mt-2">
-                  <summary className="font-semibold hover:text-muted-fg">Need the demo password?</summary>
-                  <p className="mt-2 p-2 bg-bg-elevated rounded font-mono text-primary text-sm">demo-2026</p>
-                </details>
-              )}
-
-              <p className="text-xs text-subtle mt-3">
-                Demo mode seeds sample data. Auth mode connects to the production database.
-              </p>
-            </div>
-          )}
         </div>
 
         <p className="text-center text-xs text-subtle mt-6">
           <Link href="/" className="text-primary hover:underline">Return to site</Link>
         </p>
+
+        {/* Hidden admin link */}
+        <div className="text-center mt-4 opacity-0 hover:opacity-100 transition-opacity">
+          <Link href="/admin/login" className="text-xs text-subtle hover:text-muted">
+            admin
+          </Link>
+        </div>
       </div>
     </div>
   )

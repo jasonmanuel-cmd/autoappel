@@ -1,22 +1,46 @@
-import { NextResponse } from 'next/server'
-import { sendEmail } from '@/lib/resend'
+import { NextRequest, NextResponse } from 'next/server'
+import { createServerSupabase } from '@/lib/supabase'
+import { sendWelcomeEmail, sendVerificationEmail } from '@/lib/email-service'
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { to, subject, html } = body
+    const { type, email, firstName, ...rest } = body
 
-    if (!to || !subject) {
-      return NextResponse.json({ success: false, error: 'Missing required fields: to, subject' }, { status: 400 })
+    if (!type || !email || !firstName) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      )
     }
 
-    const result = await sendEmail(to, subject, html || '')
+    let success = false
 
-    return NextResponse.json({
-      success: true,
-      data: { messageId: result.messageId, message: 'Email sent successfully.' },
-    })
-  } catch (err) {
-    return NextResponse.json({ success: false, error: err instanceof Error ? err.message : 'Failed to send email' }, { status: 500 })
+    switch (type) {
+      case 'welcome':
+        success = await sendWelcomeEmail(email, firstName)
+        break
+
+      case 'verification':
+        success = await sendVerificationEmail(email, firstName, rest.verificationUrl)
+        break
+
+      default:
+        return NextResponse.json(
+          { error: 'Unknown notification type' },
+          { status: 400 }
+        )
+    }
+
+    return NextResponse.json(
+      { success, message: success ? 'Email sent' : 'Email delivery failed' },
+      { status: success ? 200 : 500 }
+    )
+  } catch (error) {
+    console.error('Notification API error:', error)
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
   }
 }
