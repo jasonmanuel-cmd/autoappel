@@ -399,6 +399,59 @@ export function adminNewSubmissionEmail(data: EmailTemplateData): string {
   `
 }
 
+// Citation verification needed - sent when citation format is unclear
+export function citationVerificationEmail(data: EmailTemplateData): string {
+  const name = data.firstName || 'Valued Customer'
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="UTF-8">
+        <style>
+          body { ${baseStyles} }
+          h1 { color: #E50000; margin-top: 24px; }
+          h2 { color: #333; margin-top: 20px; font-size: 18px; }
+          .alert-box { background-color: #fff3cd; border-left: 4px solid #E50000; padding: 16px; margin: 16px 0; }
+          .details { background-color: #f8f9fa; padding: 16px; border-radius: 5px; margin: 16px 0; }
+          .details p { margin: 8px 0; }
+          a { color: #E50000; }
+          .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
+        </style>
+      </head>
+      <body>
+        <h1>We Need You to Verify Your Citation Number</h1>
+
+        <p>Hi ${name},</p>
+
+        <div class="alert-box">
+          <p><strong>We received your citation submission, but the citation number "${data.citationNumber}" doesn't match the expected format for ${data.county} County.</strong></p>
+        </div>
+
+        <p>To proceed with your appeal strategy document, we need to confirm your citation number is correct.</p>
+
+        <h2>What To Do</h2>
+        <ol>
+          <li>Check the citation number on your ticket</li>
+          <li>Look for a format like: <strong>${data.expectedFormat || 'TX-XX-YYYY-NNNNN'}</strong></li>
+          <li>Log in to your dashboard and update it, or reply to this email with the correct number</li>
+        </ol>
+
+        <a href="${data.dashboardUrl}" style="${buttonStyle}">Update Citation in Dashboard</a>
+
+        <p>If you entered it correctly, you don't need to do anything — we'll double-check it on our end.</p>
+
+        <h2>Still Need Help?</h2>
+        <p>Reply to this email or <a href="mailto:info@lagnafnetwork.com">contact us</a> with any questions.</p>
+
+        <div class="footer">
+          <p>Best regards,<br/>The AutoAppel Team</p>
+          <p>© ${new Date().getFullYear()} AutoAppel. All rights reserved.</p>
+        </div>
+      </body>
+    </html>
+  `
+}
+
 // Email template registry
 const templates: Record<string, { subject: string; generate: (data: EmailTemplateData) => string }> = {
   welcome: {
@@ -428,6 +481,10 @@ const templates: Record<string, { subject: string; generate: (data: EmailTemplat
   payment_received: {
     subject: 'Payment Received',
     generate: paymentConfirmationEmail,
+  },
+  citation_verification: {
+    subject: 'Please Verify Your Citation Number',
+    generate: citationVerificationEmail,
   },
   appeal_decision: {
     subject: 'Appeal Decision',

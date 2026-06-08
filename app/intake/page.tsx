@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { store } from '@/lib/store'
 import type { Citation } from '@/lib/types'
+import { validateCitationFormat, getCountyHint } from '@/lib/citation-validator'
 
 const STEPS = ['Contact Info', 'Citation Details', 'Review & Submit']
 
@@ -43,8 +44,18 @@ export default function IntakePage() {
     county: '', court: '', jurisdiction: '', violationType: '',
   })
   const [disclaimerAck, setDisclaimerAck] = useState(false)
+  const [citationValidation, setCitationValidation] = useState<{ valid: boolean; confidence: string; message: string } | null>(null)
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }))
+
+  useEffect(() => {
+    if (form.citationNumber.trim() && form.county) {
+      const result = validateCitationFormat(form.citationNumber, form.county)
+      setCitationValidation({ valid: result.valid, confidence: result.confidence, message: result.message })
+    } else {
+      setCitationValidation(null)
+    }
+  }, [form.citationNumber, form.county])
 
   const validateStep = () => {
     const e: Record<string, string> = {}
@@ -225,6 +236,16 @@ export default function IntakePage() {
             <>
               <h2 className="text-xl font-bold text-primary mb-4">Citation Information</h2>
               {field('Citation Number', 'citationNumber', 'text', 'TX-2026-XXXXXX')}
+              {citationValidation && (
+                <div className={`text-xs mt-1 ${citationValidation.valid ? 'text-green-500' : 'text-amber-500'}`}>
+                  {citationValidation.valid ? '✓ ' : '⚠ '}{citationValidation.message}
+                </div>
+              )}
+              {form.county && form.citationNumber.trim() && (
+                <div className="text-xs text-subtle">
+                  Expected format{['Harris', 'Fort Bend', 'Montgomery', 'Galveston', 'Brazoria', 'Chambers'].includes(form.county) ? ` for ${form.county} County: ${getCountyHint(form.county) || 'TX-XX-YYYY-NNNNN'}` : ': TX-XX-YYYY-NNNNN'}
+                </div>
+              )}
               {field('Citation Date', 'citationDate', 'date')}
               {field('Response Deadline', 'responseDeadline', 'date')}
               <p className="text-xs text-subtle">If you know your response deadline, enter it here. This helps us track urgency.</p>

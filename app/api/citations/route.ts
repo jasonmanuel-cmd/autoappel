@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import { serverStore } from '@/lib/server-store'
-import { sendConfirmationEmail } from '@/lib/resend'
+import { sendConfirmationEmail, sendCitationVerificationEmail } from '@/lib/resend'
 import { pushLeadToHubSpot } from '@/lib/hubspot'
+import { validateCitationFormat, getCountyHint } from '@/lib/citation-validator'
 
 export async function POST(request: Request) {
   try {
@@ -17,9 +18,21 @@ export async function POST(request: Request) {
 
     sendConfirmationEmail(body.email, body.citationNumber).catch(() => {})
 
+    const validation = validateCitationFormat(body.citationNumber, body.county)
+    if (!validation.valid || validation.confidence === 'low') {
+      const expectedHint = getCountyHint(body.county)
+      sendCitationVerificationEmail({
+        email: body.email,
+        citationNumber: body.citationNumber,
+        county: body.county,
+        firstName: body.firstName,
+        expectedFormat: expectedHint || 'TX-XX-YYYY-NNNNN',
+      }).catch(() => {})
+    }
+
     pushLeadToHubSpot(body as Record<string, unknown>).catch(() => {})
 
-    return NextResponse.json({ success: true, data: result })
+    return NextResponse.json({ success: true, data: result, validation: { valid: validation.valid, confidence: validation.confidence, message: validation.message } })
   } catch (err) {
     return NextResponse.json({ success: false, error: err instanceof Error ? err.message : 'Invalid request body' }, { status: 400 })
   }

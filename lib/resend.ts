@@ -1,4 +1,5 @@
 import { Resend } from 'resend'
+import { citationVerificationEmail } from './email-templates'
 
 function missing(key: string): boolean {
   const v = process.env[key]
@@ -50,4 +51,15 @@ export async function sendDeadlineReminder(to: string, citationNumber: string, d
       <p style="color:#64748b;font-size:12px">LAGNAF™ network LLC — Houston Deployment</p>
     </div>`
   return sendEmail(to, `AutoAppeal™ — Deadline Alert: ${citationNumber}`, html)
+}
+
+export async function sendCitationVerificationEmail(data: { email: string; citationNumber: string; county: string; firstName: string; expectedFormat: string }) {
+  const html = citationVerificationEmail({
+    citationNumber: data.citationNumber,
+    county: data.county,
+    firstName: data.firstName,
+    expectedFormat: data.expectedFormat,
+    dashboardUrl: 'https://autoappel1.vercel.app/dashboard',
+  })
+  return sendEmail(data.email, 'Please Verify Your Citation Number', html)
 }
