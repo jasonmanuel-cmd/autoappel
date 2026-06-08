@@ -82,6 +82,7 @@ export default function IntakePage() {
         riskLevel: store.computeRisk(form.responseDeadline),
         status: 'pending',
         paymentStatus: 'unpaid',
+        serviceFeeStatus: 'unpaid',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       }
@@ -98,16 +99,35 @@ export default function IntakePage() {
       }
 
       try {
+        const firstName = form.firstName || form.email.split('@')[0]
         await fetch('/api/notifications/email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ to: form.email, subject: 'Appeal Confirmation - AutoAppeal', citationId: citation.id }),
+          body: JSON.stringify({ type: 'welcome', email: form.email, firstName, citationNumber: form.citationNumber }),
         })
       } catch (err) {
         console.error('Failed to send confirmation email:', err)
       }
 
-      router.push(`/confirmation?id=${citation.id}`)
+      if (form.phone && form.preferredContact !== 'email') {
+        try {
+          await fetch('/api/notifications/sms', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              type: 'submission_decision',
+              phoneNumber: form.phone,
+              citationNumber: form.citationNumber,
+              submissionType: 'appeal',
+              decision: 'approved',
+            }),
+          })
+        } catch (err) {
+          console.error('Failed to send SMS notification:', err)
+        }
+      }
+
+      router.push(`/payment/service?citation_id=${citation.id}`)
     } finally {
       setLoading(false)
     }
@@ -147,13 +167,13 @@ export default function IntakePage() {
         <div className="max-w-md mx-auto px-4 text-center">
           <div className="card py-12">
             <h1 className="text-3xl font-black mb-4">Sign In Required</h1>
-            <p className="text-muted mb-8">Create an account or sign in to start your free review.</p>
+             <p className="text-muted mb-8">Create an account or sign in to start your appeal. Flat $149 per citation.</p>
             <div className="space-y-3">
               <Link href="/login" className="btn-primary w-full inline-block">Sign In</Link>
               <Link href="/login?mode=signup" className="btn-secondary w-full inline-block">Create Account</Link>
             </div>
             <p className="text-xs text-subtle mt-8">
-              Already have an account? <Link href="/login" className="text-primary hover:underline">Sign in</Link>
+              Already have an account? <Link href="/login" className="text-sm text-primary hover:underline inline-block py-3">Sign in</Link>
             </p>
           </div>
         </div>
@@ -166,7 +186,7 @@ export default function IntakePage() {
       <div className="max-w-2xl mx-auto px-4">
         <div className="mb-8">
           <h1 className="text-4xl font-black mb-2">Start Your Appeal</h1>
-          <p className="text-muted-fg">Complete this form to begin your Houston traffic citation appeal process.</p>
+          <p className="text-muted-fg">Complete this form to begin. Flat <strong>$149</strong> per citation — you'll pay after we review your details.</p>
         </div>
 
         {/* Progress Bar */}
@@ -184,7 +204,7 @@ export default function IntakePage() {
           {step === 0 && (
             <>
               <h2 className="text-xl font-bold text-primary mb-4">Your Contact Information</h2>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {field('First Name', 'firstName', 'text', 'John')}
                 {field('Last Name', 'lastName', 'text', 'Smith')}
               </div>

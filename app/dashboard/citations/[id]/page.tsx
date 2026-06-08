@@ -25,6 +25,7 @@ interface CitationRow {
   risk_level: RiskLevel
   status: 'pending' | 'in_review' | 'appealing' | 'resolved' | 'expired'
   payment_status: 'unpaid' | 'paid' | 'waived'
+  service_fee_status: 'unpaid' | 'paid' | 'waived'
   created_at: string
   updated_at: string
 }
@@ -150,6 +151,7 @@ export default function CitationDetailPage() {
           riskLevel: row.risk_level,
           status: row.status,
           paymentStatus: row.payment_status,
+          serviceFeeStatus: row.service_fee_status,
           createdAt: row.created_at,
           updatedAt: row.updated_at,
         }

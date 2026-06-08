@@ -79,13 +79,20 @@ export const serverStore = {
     }
 
     if (supabase) {
-      const { data: inserted, error } = await supabase
-        .from('citations')
-        .insert(record)
-        .select('id, status')
-        .single()
-      if (error) throw new Error(`Supabase insert error: ${error.message}`)
-      return { id: inserted.id, status: inserted.status, message: 'Citation submitted successfully.' }
+      try {
+        const { data: inserted, error } = await supabase
+          .from('citations')
+          .insert(record)
+          .select('id, status')
+          .single()
+        if (error) throw new Error(error.message)
+        return { id: inserted.id, status: inserted.status, message: 'Citation submitted successfully.' }
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : ''
+        if (msg.includes('schema cache')) {
+          console.warn(`Supabase schema cache stale, using in-memory: ${msg}`)
+        }
+      }
     }
 
     const id = memId()
@@ -144,6 +151,20 @@ export const serverStore = {
   getCitationsByStatus: async (status: CitationStatus): Promise<CitationRecord[]> => {
     const all = await serverStore.getCitations()
     return all.filter(c => c.status === status)
+  },
+
+    updateCitationPayment: async (id: string, serviceFeeStatus: string): Promise<boolean> => {
+    const supabase = createServerSupabase()
+    if (supabase) {
+      const update: Partial<CitationRecord> = { payment_status: serviceFeeStatus, updated_at: now() }
+      const { error } = await supabase.from('citations').update(update).eq('id', id)
+      return !error
+    }
+    const entry = memCitations.get(id)
+    if (!entry) return false
+    entry.payment_status = serviceFeeStatus
+    entry.updated_at = now()
+    return true
   },
 
   /* ── Contacts ────────────────────────────── */

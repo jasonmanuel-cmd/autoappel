@@ -25,6 +25,7 @@ interface CitationRow {
   risk_level: RiskLevel
   status: 'pending' | 'in_review' | 'appealing' | 'resolved' | 'expired'
   payment_status: 'unpaid' | 'paid' | 'waived'
+  service_fee_status: 'unpaid' | 'paid' | 'waived'
   created_at: string
   updated_at: string
 }
@@ -142,6 +143,7 @@ export default function AdminCitationDetailPage() {
           riskLevel: row.risk_level,
           status: row.status,
           paymentStatus: row.payment_status,
+          serviceFeeStatus: row.service_fee_status,
           createdAt: row.created_at,
           updatedAt: row.updated_at,
         }
@@ -215,6 +217,31 @@ export default function AdminCitationDetailPage() {
       setUpdateError(error.message)
     } else {
       setCitation({ ...citation, paymentStatus: newPaymentStatus as any })
+    }
+  }
+
+  const updateServiceFeeStatus = async (newStatus: string) => {
+    if (!citation) return
+    setUpdating(true)
+    setUpdateError('')
+    const supabase = createClientSupabase()
+    if (!supabase) {
+      setUpdateError('Service unavailable')
+      setUpdating(false)
+      return
+    }
+    const { error } = await supabase
+      .from('citations')
+      .update({
+        service_fee_status: newStatus,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', citation.id)
+    setUpdating(false)
+    if (error) {
+      setUpdateError(error.message)
+    } else {
+      setCitation({ ...citation, serviceFeeStatus: newStatus as any })
     }
   }
 
@@ -397,7 +424,7 @@ export default function AdminCitationDetailPage() {
 
             {/* Payment Management */}
             <div className="card">
-              <h2 className="text-lg font-bold mb-3">Manage Payment</h2>
+              <h2 className="text-lg font-bold mb-3">Manage Court Payment</h2>
               <div className="space-y-2">
                 {(['unpaid', 'paid', 'waived'] as const).map((ps) => (
                   <button
@@ -406,6 +433,31 @@ export default function AdminCitationDetailPage() {
                     disabled={updating || citation.paymentStatus === ps}
                     className={`w-full text-sm font-semibold px-3 py-2 rounded border transition-colors ${
                       citation.paymentStatus === ps
+                        ? ps === 'paid'
+                          ? 'bg-success/10 text-success border-success/20'
+                          : ps === 'waived'
+                          ? 'bg-warning/10 text-warning border-warning/20'
+                          : 'bg-muted/10 text-muted border-muted/20'
+                        : 'bg-muted/5 border-border hover:bg-muted/10'
+                    }`}
+                  >
+                    {ps.toUpperCase()}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Service Fee Management */}
+            <div className="card">
+              <h2 className="text-lg font-bold mb-3">Manage Service Fee ($149)</h2>
+              <div className="space-y-2">
+                {(['unpaid', 'paid', 'waived'] as const).map((ps) => (
+                  <button
+                    key={ps}
+                    onClick={() => updateServiceFeeStatus(ps)}
+                    disabled={updating || citation.serviceFeeStatus === ps}
+                    className={`w-full text-sm font-semibold px-3 py-2 rounded border transition-colors ${
+                      citation.serviceFeeStatus === ps
                         ? ps === 'paid'
                           ? 'bg-success/10 text-success border-success/20'
                           : ps === 'waived'

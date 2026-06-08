@@ -25,6 +25,7 @@ interface CitationRow {
   risk_level: RiskLevel
   status: 'pending' | 'in_review' | 'appealing' | 'resolved' | 'expired'
   payment_status: 'unpaid' | 'paid' | 'waived'
+  service_fee_status: 'unpaid' | 'paid' | 'waived'
   created_at: string
   updated_at: string
 }
@@ -130,6 +131,7 @@ export default function AdminDashboard() {
           riskLevel: row.risk_level,
           status: row.status,
           paymentStatus: row.payment_status,
+          serviceFeeStatus: row.service_fee_status,
           createdAt: row.created_at,
           updatedAt: row.updated_at,
         }))
@@ -341,7 +343,14 @@ export default function AdminDashboard() {
                     {/* Payment Status */}
                     <div className="text-right min-w-max">
                       <span className={`text-xs font-semibold px-2 py-1 rounded ${citation.paymentStatus === 'paid' ? 'bg-success/10 text-success' : citation.paymentStatus === 'waived' ? 'bg-warning/10 text-warning' : 'bg-muted/10 text-muted'}`}>
-                        {citation.paymentStatus.toUpperCase()}
+                        Court: {citation.paymentStatus.toUpperCase()}
+                      </span>
+                    </div>
+
+                    {/* Service Fee Status */}
+                    <div className="text-right min-w-max">
+                      <span className={`text-xs font-semibold px-2 py-1 rounded ${citation.serviceFeeStatus === 'paid' ? 'bg-success/10 text-success' : citation.serviceFeeStatus === 'waived' ? 'bg-warning/10 text-warning' : 'bg-muted/10 text-muted'}`}>
+                        Fee: {citation.serviceFeeStatus.toUpperCase()}
                       </span>
                     </div>
                   </div>

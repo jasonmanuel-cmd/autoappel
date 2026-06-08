@@ -11,27 +11,67 @@ export default function HoustonLanding() {
           </div>
 
           <div className="inline-block bg-primary text-white text-xs font-black px-4 py-2 rounded-full mb-6 uppercase tracking-widest">
-            ✓ Traffic Citation Help — Free Review
+            ✓ Traffic Citation Assistance — Flat $149
           </div>
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-black mb-4 leading-tight">
-            Received a Citation? <span className="text-primary">Let AutoAppeal™ Help Simplify the Next Steps.</span>
+            Received a Citation? <span className="text-primary">Get Your Appeal Strategy.</span>
           </h1>
 
           <p className="text-xl text-muted-fg mb-4 max-w-2xl mx-auto leading-relaxed">
-            AutoAppeal™ is an appeal assistance platform that helps you organize citation information, understand filing requirements, prepare documentation, monitor deadlines, and navigate the appeal process.
+            <strong className="text-white">From Ticket to Strategy in Minutes.</strong> AutoAppeal™ generates a professional, court-specific appeal strategy document to guide you through submitting your own citation appeal — all for a flat <strong className="text-white">$149</strong> per ticket.
           </p>
 
           <p className="text-muted mb-10 text-lg">
-            We are not a law firm. We do not provide legal advice or legal representation. We provide tools and guidance to help you prepare your own appeal submission.
+            We are not a law firm. We do not provide legal advice or legal representation. We provide professionally formatted strategy documents to help you prepare your own appeal submission.
           </p>
 
           <Link href="/intake" className="btn-primary text-lg px-8 py-4 inline-block hover:scale-105 transition-transform">
-            Start My Free Review →
+            Get Your Strategy — $149 →
           </Link>
 
           <p className="text-subtle text-sm">
-            Takes less than 5 minutes. No obligation. Free consultation.
+            Takes less than 5 minutes. $149 flat fee per citation. No hidden charges. PDF delivered by email.
+          </p>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section className="py-16 px-4 bg-bg-elevated/50">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-black text-center mb-4">Simple, Transparent Pricing</h2>
+          <p className="text-muted text-center mb-12 max-w-2xl mx-auto">One flat rate. No tiers. No upsells. No surprises.</p>
+
+          <div className="max-w-md mx-auto">
+            <div className="card text-center border-primary/30 bg-primary/5">
+              <p className="text-subtle text-sm font-semibold uppercase tracking-widest mb-2">Per Citation</p>
+              <p className="text-6xl font-black text-primary mb-2">$149</p>
+              <p className="text-muted mb-6">One-time fee — includes your strategy document</p>
+              <ul className="text-left text-sm text-muted space-y-3 mb-8">
+                <li className="flex items-start gap-3">✓ Personalized appeal strategy document (PDF)</li>
+                <li className="flex items-start gap-3">✓ Step-by-step DIY appeal instructions</li>
+                <li className="flex items-start gap-3">✓ Court-specific filing guidance</li>
+                <li className="flex items-start gap-3">✓ Deadline tracking and monitoring</li>
+                <li className="flex items-start gap-3">✓ Real-time dashboard access</li>
+                <li className="flex items-start gap-3">✓ Email and SMS deadline reminders</li>
+              </ul>
+              <Link href="/intake" className="btn-primary w-full inline-block">
+                Get Your Strategy — $149
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Houston Founding Launch Banner */}
+      <section className="py-8 px-4 bg-primary/10 border-y border-primary/30">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-block bg-primary text-white text-xs font-black px-3 py-1 rounded-full mb-3 uppercase tracking-widest">
+            🚀 Houston Founding Launch
+          </div>
+          <p className="text-lg font-bold text-white mb-1">Limited Founding Participant Availability</p>
+          <p className="text-sm text-muted-fg">
+            Houston-area drivers may qualify for <strong className="text-white">early-access pricing</strong> during our founding launch window. Flat $149 per citation — lock in your rate today.
           </p>
         </div>
       </section>
@@ -51,26 +91,26 @@ export default function HoustonLanding() {
               <p className="text-subtle text-xs">Monitor key dates through your personal dashboard</p>
             </div>
             <div>
-              <p className="text-2xl mb-1">🕐</p>
-              <p className="font-semibold text-sm">Process Transparency</p>
-              <p className="text-subtle text-xs">Clear step-by-step guidance with no hidden fees</p>
+              <p className="text-2xl mb-1">💰</p>
+              <p className="font-semibold text-sm">Flat $149 Pricing</p>
+              <p className="text-subtle text-xs">No hidden fees, no surprises, no tiers</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* How It Works */}
-      <section className="py-16 px-4 bg-bg-elevated/50">
+      <section className="py-16 px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-black text-center mb-4">How It Works</h2>
-          <p className="text-muted text-center mb-12 max-w-2xl mx-auto">A simple, transparent process to help you prepare your traffic citation appeal documentation.</p>
+          <p className="text-muted text-center mb-12 max-w-2xl mx-auto">A simple, transparent process to get your personalized appeal strategy document.</p>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
             {[
-              { step: '1', title: 'Upload Your Citation', desc: 'Submit your ticket details in minutes', icon: '📋' },
-              { step: '2', title: 'We Review Your Citation', desc: 'We review your citation and explain your options', icon: '⚖️' },
-              { step: '3', title: 'We Help Prepare Your Filing Package', desc: 'We help organize your appeal documentation for submission', icon: '📤' },
-              { step: '4', title: 'Track & Update', desc: 'Receive updates on your case status', icon: '✓' },
+              { step: '1', title: 'Submit Your Citation', desc: 'Tell us about your ticket — takes 5 minutes', icon: '📋' },
+              { step: '2', title: 'Pay $149', desc: 'One flat fee covers everything', icon: '💳' },
+              { step: '3', title: 'Get Your Strategy Document', desc: 'We generate a professional appeal strategy PDF tailored to your citation and court', icon: '📄' },
+              { step: '4', title: 'Submit Your Appeal', desc: 'Follow the step-by-step guide to file your own appeal with the court', icon: '✓' },
             ].map((item, i) => (
               <div key={i} className="card text-center hover:border-primary/50 transition-colors">
                 <div className="text-4xl mb-3">{item.icon}</div>
@@ -84,18 +124,18 @@ export default function HoustonLanding() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-16 px-4">
+      <section className="py-16 px-4 bg-bg-elevated/50">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-black text-center mb-12">Why Choose AutoAppeal™?</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
-              { icon: '⚡', title: 'Fast Assistance', desc: 'Most citation reviews completed within 24 hours' },
-              { icon: '✓', title: 'Proven Process', desc: 'Streamlined document preparation and tracking system' },
+              { icon: '⚡', title: 'Fast Delivery', desc: 'Most strategy documents delivered within minutes of payment' },
+              { icon: '💰', title: 'Flat $149 Fee', desc: 'One price, no hidden costs, no tiered plans' },
               { icon: '🔒', title: 'Secure & Private', desc: 'Your data is encrypted and never shared without consent' },
-              { icon: '💰', title: 'Affordable', desc: 'Competitive pricing, flexible payment options, no hidden fees' },
-              { icon: '📱', title: '24/7 Dashboard', desc: 'Monitor your appeal status anytime from any device' },
-              { icon: '📋', title: 'Guided Process', desc: 'Step-by-step assistance throughout your appeal' },
+              { icon: '📱', title: '24/7 Dashboard', desc: 'Access your strategy document and citation status anytime' },
+              { icon: '📄', title: 'Professional PDF', desc: 'Court-specific strategy document with step-by-step instructions' },
+              { icon: '📋', title: 'DIY Appeal Guide', desc: 'Everything you need to submit your own appeal with confidence' },
             ].map((item, i) => (
               <div key={i} className="card">
                 <div className="text-3xl mb-3">{item.icon}</div>
@@ -108,19 +148,19 @@ export default function HoustonLanding() {
       </section>
 
       {/* Response Time */}
-      <section className="py-16 px-4 bg-bg-elevated/50">
+      <section className="py-16 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="card mb-6 text-center">
-            <p className="text-sm text-muted">Individual results vary. We handle each citation on a case-by-case basis.</p>
+            <p className="text-sm text-muted">Your strategy document is generated after payment and delivered by email as a PDF.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
             <div className="card">
-              <p className="text-4xl font-black text-primary mb-2">24hr</p>
-              <p className="text-muted">Typical Initial Response Time</p>
+              <p className="text-4xl font-black text-primary mb-2">Instant</p>
+              <p className="text-muted">Strategy Document Delivery</p>
             </div>
             <div className="card">
-              <p className="text-4xl font-black text-primary mb-2">✓</p>
-              <p className="text-muted">Free Citation Review</p>
+              <p className="text-4xl font-black text-primary mb-2">$149</p>
+              <p className="text-muted">Flat Fee Per Citation</p>
             </div>
             <div className="card">
               <p className="text-4xl font-black text-primary mb-2">🔒</p>
@@ -131,7 +171,7 @@ export default function HoustonLanding() {
       </section>
 
       {/* Service Areas */}
-      <section className="py-16 px-4">
+      <section className="py-16 px-4 bg-bg-elevated/50">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-black text-center mb-12">Houston Metro Service Areas</h2>
 
@@ -147,22 +187,22 @@ export default function HoustonLanding() {
           </div>
 
           <p className="text-center text-muted">
-            Not sure if we cover your area? <Link href="/contact" className="text-primary hover:underline">Contact us</Link> to confirm.
+            Not sure if we cover your area? <Link href="/contact" className="text-primary hover:underline inline-block py-2">Contact us</Link> to confirm.
           </p>
         </div>
       </section>
 
       {/* FAQ Preview */}
-      <section className="py-16 px-4 bg-bg-elevated/50">
+      <section className="py-16 px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-black text-center mb-12">Common Questions</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {[
-              { q: 'Will you guarantee dismissal?', a: 'We\'ll do our best, but outcomes depend on court decisions. Every case is different and results vary.' },
-              { q: 'How much does it cost?', a: 'Pricing varies by citation complexity. We\'ll give you a quote after reviewing your case details.' },
+              { q: 'What do I get for $149?', a: 'You receive a professionally formatted appeal strategy document (PDF) with step-by-step instructions tailored to your citation and court.' },
+              { q: 'Do you file the appeal for me?', a: 'No. We provide a strategy document that guides you through filing your own appeal. We are not a law firm and do not provide legal representation.' },
+              { q: 'How is the strategy document delivered?', a: 'Immediately after payment, we email the PDF directly to your inbox with detailed instructions.' },
               { q: 'What if I miss my deadline?', a: 'Contact us immediately. There may still be options available, but they become more limited.' },
-              { q: 'Do I need to go to court?', a: 'It depends on your citation. We help you prepare the necessary documentation so you understand what\'s required.' },
             ].map((item, i) => (
               <div key={i} className="card">
                 <h3 className="font-bold text-text mb-2">{item.q}</h3>
@@ -172,21 +212,21 @@ export default function HoustonLanding() {
           </div>
 
           <p className="text-center">
-            <Link href="/faq" className="text-primary hover:underline font-semibold">View all FAQs →</Link>
+            <Link href="/faq" className="text-primary hover:underline font-semibold inline-block py-2">View all FAQs →</Link>
           </p>
         </div>
       </section>
 
       {/* Security Notice */}
-      <section className="py-16 px-4">
+      <section className="py-16 px-4 bg-bg-elevated/50">
         <div className="max-w-5xl mx-auto">
           <div className="card bg-primary/10 border-primary/30 text-center">
             <p className="text-lg text-primary font-bold mb-2">🔒 Your Privacy is Protected</p>
             <p className="text-muted mb-4">
-              We use bank-level encryption to secure all your personal and citation information. Read our <Link href="/privacy" className="text-primary hover:underline">Privacy Policy</Link> for details.
+              We use bank-level encryption to secure all your personal and citation information. Read our <Link href="/privacy" className="text-primary hover:underline inline-block py-2">Privacy Policy</Link> for details.
             </p>
             <p className="text-sm text-subtle">
-              Your information is never sold. We only share data with courts as needed to process your citation. No hidden fees, no surprises.
+              Your information is never sold. We only use your citation data to generate your personalized strategy document. Flat $149 fee, no surprises.
             </p>
           </div>
         </div>
@@ -195,15 +235,15 @@ export default function HoustonLanding() {
       {/* Final CTA */}
       <section className="py-20 px-4" style={{ background: 'var(--gradient-bg)' }}>
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-4xl font-black mb-4">Ready to Get Started?</h2>
+          <h2 className="text-4xl font-black mb-4">Ready to Get Your Strategy?</h2>
           <p className="text-muted-fg text-lg mb-8">
-            Let us help you navigate the citation process. Start with a free case review.
+            Get a professional appeal strategy document tailored to your citation. Just $149 per citation, one-time fee.
           </p>
           <Link href="/intake" className="btn-primary text-lg px-8 py-4 inline-block hover:scale-105 transition-transform">
-            Start Your Free Review Now
+            Get Your Strategy — $149
           </Link>
           <p className="text-subtle text-sm mt-4">
-            No credit card required. Free consultation. Takes 5 minutes.
+            Takes 5 minutes. Flat $149. PDF delivered by email.
           </p>
         </div>
       </section>
@@ -217,35 +257,35 @@ export default function HoustonLanding() {
                 <img src="/autoappellogo.png" alt="AutoAppeal" className="h-8 w-auto" />
                 <span className="font-black text-primary">AutoAppeal™</span>
               </div>
-              <p className="text-muted text-sm">Traffic ticket paperwork assistance platform for Houston drivers.</p>
+              <p className="text-muted text-sm">Traffic citation appeal strategy platform for Houston drivers. Flat $149 per citation.</p>
             </div>
             <div>
               <p className="font-semibold text-text mb-3">Company</p>
-              <ul className="space-y-2 text-muted text-sm">
-                <li><Link href="/" className="hover:text-white">Home</Link></li>
-                <li><Link href="/faq" className="hover:text-white">FAQ</Link></li>
-                <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
+              <ul className="text-muted text-sm">
+                <li><Link href="/" className="block hover:text-white py-3">Home</Link></li>
+                <li><Link href="/faq" className="block hover:text-white py-3">FAQ</Link></li>
+                <li><Link href="/contact" className="block hover:text-white py-3">Contact</Link></li>
               </ul>
             </div>
             <div>
               <p className="font-semibold text-text mb-3">Legal</p>
-              <ul className="space-y-2 text-muted text-sm">
-                <li><Link href="/terms" className="hover:text-white">Terms of Service</Link></li>
-                <li><Link href="/privacy" className="hover:text-white">Privacy Policy</Link></li>
+              <ul className="text-muted text-sm">
+                <li><Link href="/terms" className="block hover:text-white py-3">Terms of Service</Link></li>
+                <li><Link href="/privacy" className="block hover:text-white py-3">Privacy Policy</Link></li>
               </ul>
             </div>
             <div>
               <p className="font-semibold text-text mb-3">Contact</p>
-              <ul className="space-y-2 text-muted text-sm">
-                <li><a href="tel:+19493508804" className="hover:text-white">(949) 350-8804</a></li>
-                <li><a href="mailto:info@lagnafnetwork.com" className="hover:text-white">info@lagnafnetwork.com</a></li>
+              <ul className="text-muted text-sm">
+                <li><a href="tel:+19493508804" className="block hover:text-white py-3">(949) 350-8804</a></li>
+                <li><a href="mailto:info@lagnafnetwork.com" className="block hover:text-white py-3">info@lagnafnetwork.com</a></li>
               </ul>
             </div>
           </div>
 
           <div className="border-t border-border pt-8 text-center text-subtle text-sm">
             <p>© 2026 AutoAppeal™. All rights reserved. | Houston Metro Area</p>
-            <p className="mt-2">AutoAppeal™ is an appeal assistance platform. We are not a law firm and do not provide legal representation or legal advice.</p>
+            <p className="mt-2">AutoAppeal™ generates appeal strategy documents to guide users through self-representation. We are not a law firm and do not provide legal representation or legal advice.</p>
           </div>
         </div>
       </footer>

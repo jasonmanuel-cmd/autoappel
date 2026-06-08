@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { createServerSupabase } from '@/lib/supabase'
+import { createServerClient } from '@supabase/ssr'
 import { rateLimit } from '@/lib/rate-limit'
 
 const adminRoutes = [
@@ -18,7 +18,6 @@ const protectedRoutes = [...adminRoutes, ...customerRoutes]
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Apply rate limiting to all requests
   const clientIp = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
   const rateLimitResult = rateLimit(clientIp)
 
@@ -26,11 +25,9 @@ export async function middleware(request: NextRequest) {
     return new NextResponse('Too many requests', { status: 429 })
   }
 
-  // Only check protected routes
   const isProtectedRoute = protectedRoutes.some(route => pathname === route || pathname.startsWith(`${route}/`))
   if (!isProtectedRoute) return NextResponse.next()
 
-  // PRODUCTION: Block all demo mode access
   if (process.env.NODE_ENV === 'production') {
     const demoCookie = request.cookies.get('aa_demo')?.value
     if (demoCookie === 'true') {
@@ -38,39 +35,41 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Check Supabase auth
-  const supabase = createServerSupabase()
-  if (!supabase) {
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
-
-  // Allow unauthenticated access to /verify-email (users arrive from email links)
   if (pathname === '/verify-email') {
     return NextResponse.next()
   }
 
-  const token = request.cookies.get('sb-access-token')?.value
-  if (!token) {
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
+  let supabaseResponse = NextResponse.next({ request })
 
-  const { data: { user }, error } = await supabase.auth.getUser(token)
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll()
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+          supabaseResponse = NextResponse.next({ request })
+          cookiesToSet.forEach(({ name, value, options }) => supabaseResponse.cookies.set(name, value, options))
+        },
+      },
+    }
+  )
+
+  const { data: { user }, error } = await supabase.auth.getUser()
   if (error || !user) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  // Verify email for customer routes
   if (customerRoutes.some(route => pathname === route || pathname.startsWith(`${route}/`))) {
     if (!user.email_confirmed_at) {
       return NextResponse.redirect(new URL('/verify-email', request.url))
     }
   }
 
-  // TODO: Add role-based access control for admin routes
-  // For now, allow all authenticated users to access admin routes
-  // This should be updated to check a user.role or admin_users table
-
-  return NextResponse.next()
+  return supabaseResponse
 }
 
 export const config = {

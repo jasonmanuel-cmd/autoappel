@@ -16,6 +16,10 @@ out/
 npm-debug.log*
 
 .vercel
+.env.vercel
+output/
+
+supabase/.temp/
 
 # backup / docs with secrets
 HOW_TO_RUN_SQL.txt

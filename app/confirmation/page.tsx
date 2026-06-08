@@ -39,11 +39,22 @@ function ConfirmationContent() {
   return (
     <div className="min-h-screen py-12" style={{ background: 'var(--gradient-bg)' }}>
       <div className="max-w-2xl mx-auto px-4">
+        {/* Service Fee Status */}
+        {citation.serviceFeeStatus !== 'paid' && (
+          <div className="card text-center mb-6 border-l-4 border-warning bg-warning/5">
+            <h2 className="text-2xl font-black mb-2 text-warning">Payment Required</h2>
+            <p className="text-muted-fg mb-4">Your citation has been submitted. Pay the <strong className="text-white">$149</strong> service fee to receive your personalized appeal strategy document.</p>
+            <Link href={`/payment/service?citation_id=${citation.id}`} className="btn-primary inline-block">
+              Pay $149 Now
+            </Link>
+          </div>
+        )}
+
         {/* Success Message */}
         <div className="card text-center mb-8 border-l-4 border-success">
           <div className="text-6xl mb-4 animate-bounce">✓</div>
-          <h1 className="text-4xl font-black mb-2 text-success">Appeal Submitted!</h1>
-          <p className="text-muted-fg text-lg">We've received your citation information and are reviewing your appeal.</p>
+          <h1 className="text-4xl font-black mb-2 text-success">Citation Submitted!</h1>
+          <p className="text-muted-fg text-lg">Your citation information has been received.</p>
         </div>
 
         {/* Citation Summary */}
@@ -54,32 +65,32 @@ function ConfirmationContent() {
             <div className="flex gap-4">
               <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-full bg-primary text-white font-bold">1</div>
               <div>
-                <h3 className="font-bold text-text mb-1">Review in Progress</h3>
-                <p className="text-muted text-sm">We are reviewing your citation information and assessing your options.</p>
+                <h3 className="font-bold text-text mb-1">Pay $149 Service Fee</h3>
+                <p className="text-muted text-sm">Pay the one-time fee to generate your personalized appeal strategy document.</p>
               </div>
             </div>
 
             <div className="flex gap-4">
               <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-full bg-primary text-white font-bold">2</div>
               <div>
-                <h3 className="font-bold text-text mb-1">Status Updates</h3>
-                <p className="text-muted text-sm">We'll send you updates via {citation.preferredContact === 'sms' ? 'text message' : citation.preferredContact === 'both' ? 'email and text' : 'email'} as your case progresses.</p>
+                <h3 className="font-bold text-text mb-1">Receive Strategy Document</h3>
+                <p className="text-muted text-sm">We generate a professional PDF with step-by-step instructions tailored to your citation and court, delivered to your email.</p>
               </div>
             </div>
 
             <div className="flex gap-4">
               <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-full bg-primary text-white font-bold">3</div>
               <div>
-                <h3 className="font-bold text-text mb-1">Deadline Monitoring</h3>
-                <p className="text-muted text-sm">We're tracking all critical dates. You can monitor your appeal anytime in your account.</p>
+                <h3 className="font-bold text-text mb-1">Submit Your Appeal</h3>
+                <p className="text-muted text-sm">Follow the instructions in your strategy document to file your appeal with the court before the deadline.</p>
               </div>
             </div>
 
             <div className="flex gap-4">
               <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-full bg-success text-white font-bold">✓</div>
               <div>
-                <h3 className="font-bold text-text mb-1">Resolution</h3>
-                <p className="text-muted text-sm">We help you prepare the necessary documentation and guide you on what to expect.</p>
+                <h3 className="font-bold text-text mb-1">Track & Follow Up</h3>
+                <p className="text-muted text-sm">Monitor your citation status and deadlines from your dashboard. We'll send reminders as your deadline approaches.</p>
               </div>
             </div>
           </div>
@@ -143,10 +154,11 @@ function ConfirmationContent() {
         <div className="card border-orange/20 mb-8">
           <h2 className="text-lg font-bold text-orange mb-4">⚠️ Important</h2>
           <ul className="text-muted text-sm space-y-2 list-disc list-inside">
+            <li>AutoAppeal is not a law firm and does not provide legal representation or legal advice</li>
+            <li>The strategy document is a guide — you are responsible for submitting your own appeal</li>
             <li>Do not ignore any official court communications</li>
             <li>Make sure your contact information stays up to date</li>
             <li>Check your spam folder if you don't receive emails</li>
-            <li>Never respond to the court without reviewing your paperwork first</li>
           </ul>
         </div>
 

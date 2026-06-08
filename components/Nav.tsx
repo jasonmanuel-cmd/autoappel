@@ -29,8 +29,8 @@ export default function Nav() {
 
   return (
     <nav className="border-b border-border bg-bg-elevated sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between py-4">
-        <Link href="/" className="flex items-center gap-2 whitespace-nowrap">
+      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between py-2.5">
+        <Link href="/" className="flex items-center gap-2 whitespace-nowrap py-1 min-h-[44px]">
           <img src="/autoappellogo.png" alt="AutoAppeal" className="h-8 w-auto" />
           <span className="text-primary font-black text-xl">AutoAppeal™</span>
         </Link>
@@ -76,7 +76,7 @@ export default function Nav() {
         {/* Hamburger Button */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-card-hover transition-colors"
+          className="md:hidden flex flex-col items-center justify-center gap-1.5 p-3 rounded-lg hover:bg-card-hover transition-colors min-w-[44px] min-h-[44px]"
           aria-label="Toggle navigation menu"
         >
           <span className={`block w-5 h-0.5 bg-text transition-transform ${menuOpen ? 'rotate-45 translate-y-1' : ''}`} />

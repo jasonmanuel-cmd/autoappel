@@ -10,7 +10,7 @@ export default function TermsPage() {
             { title: '1. Acceptance of Terms', content: 'By accessing and using the AutoAppeal™ website and services, you accept and agree to be bound by the terms of this agreement. If you do not agree to abide by the above, please do not use this service.' },
             { title: '2. Service Description', content: 'AutoAppeal™ provides traffic citation appeal assistance services. We help customers prepare the documentation needed to appeal traffic citations in the Houston metro area. Our services are subject to applicable laws and regulations.' },
             { title: '3. User Responsibilities', content: 'You agree to:', list: ['Provide accurate and complete information', 'Maintain confidentiality of your account', 'Not use our services for any illegal purpose', 'Not interfere with the operation of our website', 'Respond to our communications in a timely manner', 'Notify us of any changes to your information'] },
-            { title: '4. Fees and Payment', content: 'We will provide you with a fee quote before beginning work on your appeal. Payment terms and conditions will be detailed in your service agreement. Fees are non-refundable once services have been rendered, unless otherwise specified.' },
+            { title: '4. Fees and Payment', content: 'Our service fee is a flat $149 per citation submission. Payment is due before services begin. All payments are processed securely through our payment provider. Fees are non-refundable once services have been rendered, unless otherwise specified. We do not offer tiered pricing or hidden fees.' },
             { title: '5. No Guarantee of Outcome', content: 'We cannot guarantee any specific outcome or result. Court decisions depend on many factors beyond our control. We provide our best professional efforts in preparing and filing your appeal, but the final decision rests with the court.' },
             { title: '6. Limitation of Liability', content: 'In no event shall AutoAppeal™, its employees, or agents be liable for any indirect, incidental, special, consequential, or punitive damages, including loss of profits, arising from or in connection with your use of our services.' },
             { title: '7. Intellectual Property', content: 'All content on our website, including text, graphics, logos, and images, are the property of AutoAppeal™ or our content suppliers and are protected by copyright laws. You may not reproduce or distribute any content without permission.' },
@@ -34,7 +34,7 @@ export default function TermsPage() {
           <div className="card bg-primary/10 border-primary/30">
             <h2 className="text-2xl font-bold text-primary mb-4">12. Contact Us</h2>
             <p className="text-muted">If you have any questions about these Terms of Service, please contact us at{' '}
-              <a href="mailto:info@lagnafnetwork.com" className="text-primary hover:underline">info@lagnafnetwork.com</a>
+              <a href="mailto:info@lagnafnetwork.com" className="text-primary hover:underline inline-block py-2">info@lagnafnetwork.com</a>
             </p>
           </div>
         </div>

@@ -8,7 +8,7 @@ export default function FAQPage() {
     },
     {
       q: 'How much does it cost?',
-      a: 'Pricing varies based on the complexity of your citation and location. Contact us for a personalized quote after submitting your citation details.',
+      a: 'A flat $149 per citation. No hidden fees, no tiered plans, no surprises. One price covers citation review, document preparation assistance, deadline tracking, dashboard access, and updates via email and SMS.',
     },
     {
       q: 'Will you guarantee a dismissal?',

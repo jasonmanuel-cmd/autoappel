@@ -20,6 +20,7 @@ export interface Citation {
   riskLevel: RiskLevel
   status: 'pending' | 'in_review' | 'appealing' | 'resolved' | 'expired'
   paymentStatus: 'unpaid' | 'paid' | 'waived'
+  serviceFeeStatus: 'unpaid' | 'paid' | 'waived'
   createdAt: string
   updatedAt: string
 }

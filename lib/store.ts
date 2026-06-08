@@ -148,7 +148,7 @@ export const store = {
         responseDeadline: daysFromNow(10),
         county: 'Harris', court: 'Houston Municipal Court', jurisdiction: 'Houston, TX',
         violationType: 'Speeding', riskLevel: 'green', status: 'pending',
-        paymentStatus: 'unpaid', createdAt: daysFromNow(-14), updatedAt: daysFromNow(-1),
+        paymentStatus: 'unpaid', serviceFeeStatus: 'unpaid', createdAt: daysFromNow(-14), updatedAt: daysFromNow(-1),
       },
       {
         id: 'demo-002', firstName: 'James', lastName: 'Johnson',
@@ -158,7 +158,7 @@ export const store = {
         responseDeadline: daysFromNow(5),
         county: 'Fort Bend', court: 'Fort Bend County Court', jurisdiction: 'Richmond, TX',
         violationType: 'Red Light', riskLevel: 'orange', status: 'in_review',
-        paymentStatus: 'unpaid', createdAt: daysFromNow(-7), updatedAt: daysFromNow(-1),
+        paymentStatus: 'unpaid', serviceFeeStatus: 'unpaid', createdAt: daysFromNow(-7), updatedAt: daysFromNow(-1),
       },
       {
         id: 'demo-003', firstName: 'Sarah', lastName: 'Chen',
@@ -168,7 +168,7 @@ export const store = {
         responseDeadline: daysFromNow(2),
         county: 'Montgomery', court: 'Montgomery County JP Court', jurisdiction: 'Conroe, TX',
         violationType: 'Failure to Yield', riskLevel: 'red', status: 'appealing',
-        paymentStatus: 'unpaid', createdAt: daysFromNow(-28), updatedAt: daysFromNow(-1),
+        paymentStatus: 'unpaid', serviceFeeStatus: 'paid', createdAt: daysFromNow(-28), updatedAt: daysFromNow(-1),
       },
       {
         id: 'demo-004', firstName: 'Mike', lastName: 'Davis',
@@ -178,7 +178,7 @@ export const store = {
         responseDeadline: daysFromNow(-10),
         county: 'Harris', court: 'Harris County Justice Court', jurisdiction: 'Houston, TX',
         violationType: 'No Insurance', riskLevel: 'expired', status: 'expired',
-        paymentStatus: 'unpaid', createdAt: daysFromNow(-45), updatedAt: daysFromNow(-5),
+        paymentStatus: 'unpaid', serviceFeeStatus: 'unpaid', createdAt: daysFromNow(-45), updatedAt: daysFromNow(-5),
       },
       {
         id: 'demo-005', firstName: 'Ana', lastName: 'Martinez',
@@ -188,7 +188,7 @@ export const store = {
         responseDeadline: daysFromNow(-30),
         county: 'Fort Bend', court: 'Fort Bend County Court', jurisdiction: 'Richmond, TX',
         violationType: 'Speeding', riskLevel: 'expired', status: 'resolved',
-        paymentStatus: 'waived', createdAt: daysFromNow(-60), updatedAt: daysFromNow(-20),
+        paymentStatus: 'waived', serviceFeeStatus: 'waived', createdAt: daysFromNow(-60), updatedAt: daysFromNow(-20),
       },
     ]
     setLS('aa_citations', citations)

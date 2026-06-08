@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const SQUARE_API = 'https://connect.squareup.com/v2';
+const SQUARE_ENV = process.env.SQUARE_ENV === 'production' ? 'production' : 'sandbox';
+const SQUARE_API = SQUARE_ENV === 'production'
+  ? 'https://connect.squareup.com/v2'
+  : 'https://connect.squareupsandbox.com/v2';
 const SQUARE_VERSION = '2025-01-23';
 const ALLOWED_ORIGIN = process.env.NEXT_PUBLIC_APP_URL || 'https://autoappel.vercel.app';
 
@@ -27,7 +30,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { plan, amount } = await req.json();
+    const { plan, amount, citation_id } = await req.json();
 
     if (!plan || !amount || amount < 1) {
       return NextResponse.json({ error: 'Plan and amount required' }, { status: 400 });
@@ -50,7 +53,7 @@ export async function POST(req: NextRequest) {
           location_id: process.env.SQUARE_LOCATION_ID,
         },
         checkout_options: {
-          redirect_url: `${appUrl}/payment/success?plan=${encodeURIComponent(plan)}`,
+          redirect_url: `${appUrl}/payment/success?plan=${encodeURIComponent(plan)}${citation_id ? `&citation_id=${encodeURIComponent(citation_id)}` : ''}`,
           ask_for_shipping_address: false,
           enable_coupon: false,
           enable_loyalty: false,

@@ -4,10 +4,14 @@ import Nav from '@/components/Nav'
 import DemoBanner from '@/components/DemoBanner'
 import StarsBackground from '@/components/StarsBackground'
 import { Analytics } from '@vercel/analytics/next'
+import TrackingScripts from '@/components/Analytics'
+
+const gscId = process.env.NEXT_PUBLIC_GSC_VERIFICATION
 
 export const metadata: Metadata = {
   title: 'AutoAppeal™ — Traffic Ticket Paperwork Assistance for Houston',
-  description: 'Traffic ticket paperwork assistance platform for Houston drivers. We help prepare citation documentation, track deadlines, and navigate the appeal process.',
+  description: 'From Ticket to Appeal in Minutes. AutoAppeal™ helps Houston drivers prepare citation paperwork, track deadlines, and navigate the appeal process — flat $149 per ticket.',
+  ...(gscId ? { verification: { google: gscId } } : {}),
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -20,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Nav />
           <main>{children}</main>
           <Analytics />
+          <TrackingScripts />
         </div>
       </body>
     </html>

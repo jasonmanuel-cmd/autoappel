@@ -58,6 +58,11 @@ export default function CustomerLoginPage() {
     const result = await store.signUpWithSupabase(email, password)
     setLoading(false)
     if (result.success) {
+      fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      }).catch(() => {})
       setSuccess('Account created! Please check your email to verify, then sign in.')
       setAuthMode('login')
       setEmail('')
@@ -121,11 +126,11 @@ export default function CustomerLoginPage() {
                 <button
                   type="button"
                   onClick={() => { setAuthMode('signup'); setError(''); setSuccess(''); setEmail(''); setPassword(''); setConfirmPassword('') }}
-                  className="text-sm text-primary hover:underline cursor-pointer bg-transparent border-none w-full"
+                  className="text-sm text-primary hover:underline cursor-pointer bg-transparent border-none w-full py-3"
                 >
                   Don't have an account? Sign up
                 </button>
-                <Link href="/forgot-password" className="text-xs text-muted hover:text-muted-fg block">
+                <Link href="/forgot-password" className="text-sm text-muted hover:text-muted-fg block py-3">
                   Forgot your password?
                 </Link>
               </div>
@@ -180,7 +185,7 @@ export default function CustomerLoginPage() {
                 <button
                   type="button"
                   onClick={() => { setAuthMode('login'); setError(''); setSuccess(''); setEmail(''); setPassword(''); setConfirmPassword('') }}
-                  className="text-sm text-primary hover:underline cursor-pointer bg-transparent border-none w-full"
+                  className="text-sm text-primary hover:underline cursor-pointer bg-transparent border-none w-full py-3"
                 >
                   Already have an account? Sign in
                 </button>
@@ -189,13 +194,13 @@ export default function CustomerLoginPage() {
           )}
         </div>
 
-        <p className="text-center text-xs text-subtle mt-6">
-          <Link href="/" className="text-primary hover:underline">Return to site</Link>
+        <p className="text-center text-sm text-subtle mt-6">
+          <Link href="/" className="text-primary hover:underline inline-block py-3">Return to site</Link>
         </p>
 
         {/* Admin login link */}
         <div className="text-center mt-4">
-          <Link href="/admin/login" className="text-xs text-subtle hover:text-muted hover:underline">
+          <Link href="/admin/login" className="text-sm text-subtle hover:text-muted hover:underline inline-block py-3">
             Admin Access
           </Link>
         </div>

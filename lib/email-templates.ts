@@ -90,8 +90,10 @@ export function welcomeEmail(data: EmailTemplateData): string {
   `
 }
 
-// Deadline alert email - sent 3 days before deadline
+// Deadline alert email - sent when deadline is approaching
 export function deadlineAlertEmail(data: EmailTemplateData): string {
+  const name = data.firstName || data.fullName || 'Valued Customer'
+  const days = data.daysRemaining || 3
   return `
     <!DOCTYPE html>
     <html>
@@ -104,46 +106,34 @@ export function deadlineAlertEmail(data: EmailTemplateData): string {
           .alert-box { background-color: #fff3cd; border-left: 4px solid #ff6b6b; padding: 16px; margin: 16px 0; }
           .details { background-color: #f8f9fa; padding: 16px; border-radius: 5px; margin: 16px 0; }
           .details p { margin: 8px 0; }
-          ol, ul { margin: 12px 0; padding-left: 20px; }
-          li { margin: 8px 0; }
           a { color: #E50000; }
           .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
         </style>
       </head>
       <body>
-        <h1>⚠️ Your Citation Deadline is Approaching – 3 Days Left</h1>
+        <h1>⚠️ Your Citation Deadline is Approaching – ${days} Day${days !== 1 ? 's' : ''} Left</h1>
         
-        <p>Hi ${data.fullName},</p>
+        <p>Hi ${name},</p>
         
         <div class="alert-box">
-          <p><strong>This is a reminder that your citation is due in 3 days.</strong></p>
+          <p><strong>Your citation ${data.citationNumber} is due in ${days} day${days !== 1 ? 's' : ''}.</strong></p>
         </div>
         
         <h2>Citation Details</h2>
         <div class="details">
           <p><strong>Citation Number:</strong> ${data.citationNumber}</p>
-          <p><strong>Violation:</strong> ${data.violationType}</p>
-          <p><strong>Due Date:</strong> ${data.responseDeadline}</p>
-          <p><strong>Fine Amount:</strong> $${data.fineAmount}</p>
+          <p><strong>Due Date:</strong> ${data.deadline || data.responseDeadline}</p>
+          ${data.violationType ? `<p><strong>Violation:</strong> ${data.violationType}</p>` : ''}
         </div>
-        
-        <h2>What You Can Do</h2>
-        <ul>
-          <li><strong>Appeal:</strong> Request a review of the citation</li>
-          <li><strong>Payment Plan:</strong> Request to pay in installments</li>
-          <li><strong>Pay Now:</strong> Settle the fine immediately</li>
-          <li><strong>Request Dismissal:</strong> Ask for the citation to be dismissed</li>
-        </ul>
-        
-        <a href="${data.citationUrl}" style="${dangerButtonStyle}">View Citation & Take Action</a>
         
         <p><strong>Don't wait – act now to avoid late fees and additional penalties!</strong></p>
         
-        <p>Questions? <a href="${data.contactUrl}">Contact us</a></p>
+        <p>Track your appeal: <a href="${data.citationUrl || 'https://autoappel1.vercel.app/dashboard'}">Visit Dashboard</a></p>
+        <p>Questions? <a href="mailto:info@lagnafnetwork.com">Contact us</a></p>
         
         <div class="footer">
-          <p>Best regards,<br/>The AutoAppel Team</p>
-          <p>© ${new Date().getFullYear()} AutoAppel. All rights reserved.</p>
+          <p>Best regards,<br/>The AutoAppeal Team</p>
+          <p>© ${new Date().getFullYear()} AutoAppeal. All rights reserved.</p>
         </div>
       </body>
     </html>

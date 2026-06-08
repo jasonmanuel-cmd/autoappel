@@ -51,7 +51,15 @@ export async function sendEmail(type: EmailType, data: EmailData): Promise<boole
 }
 
 export async function sendWelcomeEmail(email: string, firstName: string): Promise<boolean> {
-  return sendEmail('welcome', { to: email, firstName })
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://autoappel1.vercel.app'
+  return sendEmail('welcome', {
+    to: email,
+    firstName,
+    fullName: firstName,
+    dashboardUrl: `${appUrl}/dashboard`,
+    faqUrl: `${appUrl}/faq`,
+    contactUrl: `${appUrl}/contact`,
+  })
 }
 
 export async function sendVerificationEmail(email: string, firstName: string, verificationUrl: string): Promise<boolean> {

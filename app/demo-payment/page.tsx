@@ -7,9 +7,7 @@ import { store } from '@/lib/store'
 import { api } from '@/lib/api'
 
 const PLANS = [
-  { id: 'basic', name: 'Basic Filing', price: 49, desc: 'Standard citation paperwork assistance' },
-  { id: 'premium', name: 'Premium Review', price: 99, desc: 'Expedited review with detailed case analysis' },
-  { id: 'full', name: 'Full Service Package', price: 249, desc: 'Complete citation document preparation and filing guidance' },
+  { id: 'citation-service', name: 'Citation Appeal Service', price: 149, desc: 'Complete citation appeal assistance — flat $149 per ticket' },
 ]
 
 export default function DemoPaymentPage() {
@@ -112,7 +110,7 @@ export default function DemoPaymentPage() {
 
         {/* Step indicator */}
         <div className="flex gap-2 mb-8">
-          {[{ id: 'plan', label: 'Plan' }, { id: 'payment', label: 'Payment' }, { id: 'processing', label: 'Processing' }, { id: 'receipt', label: 'Receipt' }].map((s, i) => {
+          {[{ id: 'plan', label: 'Service' }, { id: 'payment', label: 'Payment' }, { id: 'processing', label: 'Processing' }, { id: 'receipt', label: 'Receipt' }].map((s, i) => {
             const order = ['plan', 'payment', 'processing', 'receipt']
             const stepIdx = order.indexOf(step)
             const sIdx = order.indexOf(s.id)
@@ -130,7 +128,7 @@ export default function DemoPaymentPage() {
         {/* Step: Plan Selection */}
         {step === 'plan' && (
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-primary mb-4">Choose a Service Plan</h2>
+            <h2 className="text-xl font-bold text-primary mb-4">Service — Flat $149</h2>
             <div className="grid gap-4">
               {PLANS.map(plan => (
                 <button
