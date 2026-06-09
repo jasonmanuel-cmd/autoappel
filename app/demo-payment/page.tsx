@@ -7,7 +7,7 @@ import { store } from '@/lib/store'
 import { api } from '@/lib/api'
 
 const PLANS = [
-  { id: 'citation-service', name: 'Citation Appeal Service', price: 149, desc: 'Complete citation appeal assistance — flat $149 per ticket' },
+  { id: 'citation-service', name: 'Citation Appeal Strategy', price: 79.99, desc: 'Personalized appeal strategy document — flat $79.99 per ticket' },
 ]
 
 export default function DemoPaymentPage() {
@@ -128,7 +128,7 @@ export default function DemoPaymentPage() {
         {/* Step: Plan Selection */}
         {step === 'plan' && (
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-primary mb-4">Service — Flat $149</h2>
+            <h2 className="text-xl font-bold text-primary mb-4">Service — Flat $79.99</h2>
             <div className="grid gap-4">
               {PLANS.map(plan => (
                 <button

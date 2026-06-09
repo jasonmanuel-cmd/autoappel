@@ -8,7 +8,7 @@ export default function FAQPage() {
     },
     {
       q: 'How much does it cost?',
-      a: 'A flat $149 per citation. No hidden fees, no tiered plans, no surprises. One price covers citation review, document preparation assistance, deadline tracking, dashboard access, and updates via email and SMS.',
+      a: 'A flat $79.99 per citation. No hidden fees, no tiered plans, no surprises. One price covers citation review, document preparation assistance, deadline tracking, dashboard access, and updates via email and SMS.',
     },
     {
       q: 'Will you guarantee a dismissal?',

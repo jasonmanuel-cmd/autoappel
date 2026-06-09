@@ -10,7 +10,7 @@ const gscId = process.env.NEXT_PUBLIC_GSC_VERIFICATION
 
 export const metadata: Metadata = {
   title: 'AppealMyTickets.com — Traffic Ticket Paperwork Assistance for Houston',
-  description: 'From Ticket to Appeal in Minutes. AppealMyTickets.com helps Houston drivers prepare citation paperwork, track deadlines, and navigate the appeal process — flat $149 per ticket.',
+  description: 'From Ticket to Appeal in Minutes. AppealMyTickets.com helps Houston drivers prepare citation paperwork, track deadlines, and navigate the appeal process — flat $79.99 per ticket.',
   ...(gscId ? { verification: { google: gscId } } : {}),
 }
 

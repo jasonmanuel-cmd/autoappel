@@ -43,7 +43,7 @@ export default function SuccessContent() {
           {isServiceFee ? (
             <>
               <p className="text-muted mb-2">
-                Your <strong>$149</strong> service fee has been paid.
+                Your <strong>$79.99</strong> service fee has been paid.
               </p>
 
               {generating && (

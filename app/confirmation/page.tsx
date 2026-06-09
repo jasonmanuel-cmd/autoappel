@@ -43,9 +43,9 @@ function ConfirmationContent() {
         {citation.serviceFeeStatus !== 'paid' && (
           <div className="card text-center mb-6 border-l-4 border-warning bg-warning/5">
             <h2 className="text-2xl font-black mb-2 text-warning">Payment Required</h2>
-            <p className="text-muted-fg mb-4">Your citation has been submitted. Pay the <strong className="text-white">$149</strong> service fee to receive your personalized appeal strategy document.</p>
+            <p className="text-muted-fg mb-4">Your citation has been submitted. Pay the <strong className="text-white">$79.99</strong> service fee to receive your personalized appeal strategy document.</p>
             <Link href={`/payment/service?citation_id=${citation.id}`} className="btn-primary inline-block">
-              Pay $149 Now
+              Pay $79.99 Now
             </Link>
           </div>
         )}
@@ -65,7 +65,7 @@ function ConfirmationContent() {
             <div className="flex gap-4">
               <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-full bg-primary text-white font-bold">1</div>
               <div>
-                <h3 className="font-bold text-text mb-1">Pay $149 Service Fee</h3>
+                <h3 className="font-bold text-text mb-1">Pay $79.99 Service Fee</h3>
                 <p className="text-muted text-sm">Pay the one-time fee to generate your personalized appeal strategy document.</p>
               </div>
             </div>

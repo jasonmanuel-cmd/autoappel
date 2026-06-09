@@ -449,7 +449,7 @@ export default function AdminCitationDetailPage() {
 
             {/* Service Fee Management */}
             <div className="card">
-              <h2 className="text-lg font-bold mb-3">Manage Service Fee ($149)</h2>
+              <h2 className="text-lg font-bold mb-3">Manage Service Fee ($79.99)</h2>
               <div className="space-y-2">
                 {(['unpaid', 'paid', 'waived'] as const).map((ps) => (
                   <button

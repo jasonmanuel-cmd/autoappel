@@ -11,7 +11,7 @@ export default function HoustonLanding() {
           </div>
 
           <div className="inline-block bg-primary text-white text-xs font-black px-4 py-2 rounded-full mb-6 uppercase tracking-widest">
-            ✓ Traffic Citation Assistance — Flat $149
+            ✓ Traffic Citation Assistance — $79.99
           </div>
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-black mb-4 leading-tight">
@@ -19,7 +19,7 @@ export default function HoustonLanding() {
           </h1>
 
           <p className="text-xl text-muted-fg mb-4 max-w-2xl mx-auto leading-relaxed">
-            <strong className="text-white">From Ticket to Strategy in Minutes.</strong> AppealMyTicket<span className="text-primary">S</span>.com generates a professional, court-specific appeal strategy document to guide you through submitting your own citation appeal — all for a flat <strong className="text-white">$149</strong> per ticket.
+            <strong className="text-white">From Ticket to Strategy in Minutes.</strong> AppealMyTicket<span className="text-primary">S</span>.com generates a professional, court-specific appeal strategy document to guide you through submitting your own citation appeal — all for a flat <strong className="text-white">$79.99</strong> per ticket.
           </p>
 
           <p className="text-muted mb-10 text-lg">
@@ -27,11 +27,11 @@ export default function HoustonLanding() {
           </p>
 
           <Link href="/intake" className="btn-primary text-lg px-8 py-4 inline-block hover:scale-105 transition-transform">
-            Get Your Strategy — $149 →
+            Get Your Strategy — $79.99 →
           </Link>
 
           <p className="text-subtle text-sm">
-            Takes less than 5 minutes. $149 flat fee per citation. No hidden charges. PDF delivered by email.
+            Takes less than 5 minutes. $79.99 flat fee per citation. No hidden charges. PDF delivered by email.
           </p>
         </div>
       </section>
@@ -42,11 +42,15 @@ export default function HoustonLanding() {
           <h2 className="text-3xl font-black text-center mb-4">Simple, Transparent Pricing</h2>
           <p className="text-muted text-center mb-12 max-w-2xl mx-auto">One flat rate. No tiers. No upsells. No surprises.</p>
 
-          <div className="max-w-md mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            {/* Strategy Document */}
             <div className="card text-center border-primary/30 bg-primary/5">
-              <p className="text-subtle text-sm font-semibold uppercase tracking-widest mb-2">Per Citation</p>
-              <p className="text-6xl font-black text-primary mb-2">$149</p>
-              <p className="text-muted mb-6">One-time fee — includes your strategy document</p>
+              <p className="text-subtle text-sm font-semibold uppercase tracking-widest mb-2">Strategy Document</p>
+              <div className="flex items-baseline justify-center gap-2 mb-2">
+                <p className="text-5xl font-black text-primary">$79.99</p>
+                <p className="text-base text-muted line-through">$149</p>
+              </div>
+              <p className="text-muted mb-6 text-sm">One-time fee — includes your strategy document</p>
               <ul className="text-left text-sm text-muted space-y-3 mb-8">
                 <li className="flex items-start gap-3">✓ Personalized appeal strategy document (PDF)</li>
                 <li className="flex items-start gap-3">✓ Step-by-step DIY appeal instructions</li>
@@ -55,9 +59,30 @@ export default function HoustonLanding() {
                 <li className="flex items-start gap-3">✓ Real-time dashboard access</li>
                 <li className="flex items-start gap-3">✓ Email and SMS deadline reminders</li>
               </ul>
-              <Link href="/intake" className="btn-primary w-full inline-block">
-                Get Your Strategy — $149
+              <Link href="/intake" className="btn-primary w-full inline-block text-sm">
+                Get Your Strategy — $79.99
               </Link>
+            </div>
+
+            {/* Full-Service (Coming Soon) */}
+            <div className="card text-center border-border/50 opacity-80">
+              <div className="inline-block bg-primary text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest mb-2">Coming Soon</div>
+              <p className="text-subtle text-sm font-semibold uppercase tracking-widest mb-2">Full-Service Appeal</p>
+              <div className="flex items-baseline justify-center gap-2 mb-2">
+                <p className="text-5xl font-black text-muted-fg">$149.99</p>
+              </div>
+              <p className="text-muted mb-6 text-sm">We handle the entire appeal process for you</p>
+              <ul className="text-left text-sm text-muted space-y-3 mb-8">
+                <li className="flex items-start gap-3">✓ Complete appeal paperwork preparation</li>
+                <li className="flex items-start gap-3">✓ Direct submission to court on your behalf</li>
+                <li className="flex items-start gap-3">✓ Court-specific filing guidance</li>
+                <li className="flex items-start gap-3">✓ Deadline tracking and monitoring</li>
+                <li className="flex items-start gap-3">✓ Real-time dashboard access</li>
+                <li className="flex items-start gap-3">✓ Email and SMS status updates</li>
+              </ul>
+              <div className="w-full py-3 px-4 rounded-lg bg-bg-elevated text-muted text-sm font-semibold cursor-default">
+                Available in 3 Months
+              </div>
             </div>
           </div>
         </div>
@@ -71,7 +96,7 @@ export default function HoustonLanding() {
           </div>
           <p className="text-lg font-bold text-white mb-1">Limited Founding Participant Availability</p>
           <p className="text-sm text-muted-fg">
-            Houston-area drivers may qualify for <strong className="text-white">early-access pricing</strong> during our founding launch window. Flat $149 per citation — lock in your rate today.
+            Houston-area drivers may qualify for <strong className="text-white">early-access pricing</strong> during our founding launch window. Flat $79.99 per citation — lock in your rate today.
           </p>
         </div>
       </section>
@@ -92,7 +117,7 @@ export default function HoustonLanding() {
             </div>
             <div>
               <p className="text-2xl mb-1">💰</p>
-              <p className="font-semibold text-sm">Flat $149 Pricing</p>
+              <p className="font-semibold text-sm">Flat $79.99 Pricing</p>
               <p className="text-subtle text-xs">No hidden fees, no surprises, no tiers</p>
             </div>
           </div>
@@ -108,7 +133,7 @@ export default function HoustonLanding() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
             {[
               { step: '1', title: 'Submit Your Citation', desc: 'Tell us about your ticket — takes 5 minutes', icon: '📋' },
-              { step: '2', title: 'Pay $149', desc: 'One flat fee covers everything', icon: '💳' },
+              { step: '2', title: 'Pay $79.99', desc: 'One flat fee covers everything', icon: '💳' },
               { step: '3', title: 'Get Your Strategy Document', desc: 'We generate a professional appeal strategy PDF tailored to your citation and court', icon: '📄' },
               { step: '4', title: 'Submit Your Appeal', desc: 'Follow the step-by-step guide to file your own appeal with the court', icon: '✓' },
             ].map((item, i) => (
@@ -131,7 +156,7 @@ export default function HoustonLanding() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
               { icon: '⚡', title: 'Fast Delivery', desc: 'Most strategy documents delivered within minutes of payment' },
-              { icon: '💰', title: 'Flat $149 Fee', desc: 'One price, no hidden costs, no tiered plans' },
+              { icon: '💰', title: 'Flat $79.99 Fee', desc: 'One price, no hidden costs, no tiered plans' },
               { icon: '🔒', title: 'Secure & Private', desc: 'Your data is encrypted and never shared without consent' },
               { icon: '📱', title: '24/7 Dashboard', desc: 'Access your strategy document and citation status anytime' },
               { icon: '📄', title: 'Professional PDF', desc: 'Court-specific strategy document with step-by-step instructions' },
@@ -159,7 +184,7 @@ export default function HoustonLanding() {
               <p className="text-muted">Strategy Document Delivery</p>
             </div>
             <div className="card">
-              <p className="text-4xl font-black text-primary mb-2">$149</p>
+              <p className="text-4xl font-black text-primary mb-2">$79.99</p>
               <p className="text-muted">Flat Fee Per Citation</p>
             </div>
             <div className="card">
@@ -199,7 +224,7 @@ export default function HoustonLanding() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {[
-              { q: 'What do I get for $149?', a: 'You receive a professionally formatted appeal strategy document (PDF) with step-by-step instructions tailored to your citation and court.' },
+              { q: 'What do I get for $79.99?', a: 'You receive a professionally formatted appeal strategy document (PDF) with step-by-step instructions tailored to your citation and court.' },
               { q: 'Do you file the appeal for me?', a: 'No. We provide a strategy document that guides you through filing your own appeal. We are not a law firm and do not provide legal representation.' },
               { q: 'How is the strategy document delivered?', a: 'Immediately after payment, we email the PDF directly to your inbox with detailed instructions.' },
               { q: 'What if I miss my deadline?', a: 'Contact us immediately. There may still be options available, but they become more limited.' },
@@ -226,7 +251,7 @@ export default function HoustonLanding() {
               We use bank-level encryption to secure all your personal and citation information. Read our <Link href="/privacy" className="text-primary hover:underline inline-block py-2">Privacy Policy</Link> for details.
             </p>
             <p className="text-sm text-subtle">
-              Your information is never sold. We only use your citation data to generate your personalized strategy document. Flat $149 fee, no surprises.
+              Your information is never sold. We only use your citation data to generate your personalized strategy document. Flat $79.99 fee, no surprises.
             </p>
           </div>
         </div>
@@ -237,13 +262,13 @@ export default function HoustonLanding() {
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-4xl font-black mb-4">Ready to Get Your Strategy?</h2>
           <p className="text-muted-fg text-lg mb-8">
-            Get a professional appeal strategy document tailored to your citation. Just $149 per citation, one-time fee.
+            Get a professional appeal strategy document tailored to your citation. Just $79.99 per citation, one-time fee.
           </p>
           <Link href="/intake" className="btn-primary text-lg px-8 py-4 inline-block hover:scale-105 transition-transform">
-            Get Your Strategy — $149
+            Get Your Strategy — $79.99
           </Link>
           <p className="text-subtle text-sm mt-4">
-            Takes 5 minutes. Flat $149. PDF delivered by email.
+            Takes 5 minutes. Flat $79.99. PDF delivered by email.
           </p>
         </div>
       </section>
@@ -256,7 +281,7 @@ export default function HoustonLanding() {
               <div className="flex items-center gap-2 mb-4">
                 <img src="/appealmytickets-logo.png" alt="AppealMyTickets.com" className="h-8 w-auto" />
               </div>
-              <p className="text-muted text-sm">Traffic citation appeal strategy platform for Houston drivers. Flat $149 per citation. <a href="https://AppealMyTickets.com" className="text-primary hover:underline">AppealMyTicket<span className="text-primary">S</span>.com</a></p>
+              <p className="text-muted text-sm">Traffic citation appeal strategy platform for Houston drivers. Flat $79.99 per citation. <a href="https://AppealMyTickets.com" className="text-primary hover:underline">AppealMyTicket<span className="text-primary">S</span>.com</a></p>
             </div>
             <div>
               <p className="font-semibold text-text mb-3">Company</p>
