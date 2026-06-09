@@ -330,8 +330,8 @@ export default function IntakePage() {
               <div className="bg-orange/10 border border-orange/30 rounded-lg p-4 space-y-3">
                 <h3 className="font-bold text-orange text-sm">📋 Important Notice</h3>
                 <div className="text-xs text-muted space-y-2">
-                  <p><strong>AppealMyTickets.com is not a law firm.</strong> We do not provide legal advice or legal representation. We are an appeal assistance platform that helps you organize citation information, prepare documentation, and navigate the appeal process.</p>
-                  <p>No attorney-client relationship is created by submitting this form. AppealMyTickets.com provides document preparation and filing guidance only.</p>
+                  <p><strong>AppealMyTicket<span className="text-primary">S</span>.com is not a law firm.</strong> We do not provide legal advice or legal representation. We are an appeal assistance platform that helps you organize citation information, prepare documentation, and navigate the appeal process.</p>
+                  <p>No attorney-client relationship is created by submitting this form. AppealMyTicket<span className="text-primary">S</span>.com provides document preparation and filing guidance only.</p>
                   <p>Court deadlines vary. Our countdown tools provide estimates only — always verify deadlines with the issuing court.</p>
                   <p>Results are not guaranteed. Outcomes depend on individual case facts, court rulings, and other factors beyond our control.</p>
                 </div>
@@ -342,7 +342,7 @@ export default function IntakePage() {
                     onChange={e => setDisclaimerAck(e.target.checked)}
                     className="mt-0.5"
                   />
-                  <span className="text-sm text-text">I understand and acknowledge the above. I am submitting my citation information for document preparation assistance. I understand AppealMyTickets.com is not a law firm and does not provide legal representation.</span>
+                  <span className="text-sm text-text">I understand and acknowledge the above. I am submitting my citation information for document preparation assistance. I understand AppealMyTicket<span className="text-primary">S</span>.com is not a law firm and does not provide legal representation.</span>
                 </label>
                 {errors.disclaimerAcknowledged && <p className="text-danger text-xs">{errors.disclaimerAcknowledged}</p>}
               </div>

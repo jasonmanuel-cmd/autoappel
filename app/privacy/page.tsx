@@ -9,7 +9,7 @@ export default function PrivacyPage() {
           {/* Section 1 */}
           <div className="card">
             <h2 className="text-2xl font-bold text-primary mb-4">1. Introduction</h2>
-            <p className="text-muted">AppealMyTickets.com is committed to protecting your privacy and ensuring you have a positive experience on our website and when using our services. This Privacy Policy outlines what information we collect, how we use it, and how we protect it.</p>
+            <p className="text-muted">AppealMyTicket<span className="text-primary">S</span>.com is committed to protecting your privacy and ensuring you have a positive experience on our website and when using our services. This Privacy Policy outlines what information we collect, how we use it, and how we protect it.</p>
           </div>
 
           {/* Section 2 */}

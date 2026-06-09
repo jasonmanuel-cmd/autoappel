@@ -60,7 +60,7 @@ export default function TreasuryPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">
       <h1 className="text-3xl font-black mb-2">Treasury & Banking</h1>
-      <p className="text-muted mb-8">AppealMyTickets.com · Compensation Verification</p>
+      <p className="text-muted mb-8">AppealMyTicket<span className="text-primary">S</span>.com · Compensation Verification</p>
 
       <div className="card mb-4 text-sm text-muted border-primary">
         <p className="font-semibold text-muted-fg mb-1">Compensation Release Requirements</p>

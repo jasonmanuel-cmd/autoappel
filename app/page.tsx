@@ -19,7 +19,7 @@ export default function HoustonLanding() {
           </h1>
 
           <p className="text-xl text-muted-fg mb-4 max-w-2xl mx-auto leading-relaxed">
-            <strong className="text-white">From Ticket to Strategy in Minutes.</strong> AppealMyTickets.com generates a professional, court-specific appeal strategy document to guide you through submitting your own citation appeal — all for a flat <strong className="text-white">$149</strong> per ticket.
+            <strong className="text-white">From Ticket to Strategy in Minutes.</strong> AppealMyTicket<span className="text-primary">S</span>.com generates a professional, court-specific appeal strategy document to guide you through submitting your own citation appeal — all for a flat <strong className="text-white">$149</strong> per ticket.
           </p>
 
           <p className="text-muted mb-10 text-lg">
@@ -126,7 +126,7 @@ export default function HoustonLanding() {
       {/* Why Choose Us */}
       <section className="py-16 px-4 bg-bg-elevated/50">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-black text-center mb-12">Why Choose AppealMyTickets.com?</h2>
+          <h2 className="text-3xl font-black text-center mb-12">Why Choose AppealMyTicket<span className="text-primary">S</span>.com?</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
@@ -256,7 +256,7 @@ export default function HoustonLanding() {
               <div className="flex items-center gap-2 mb-4">
                 <img src="/appealmytickets-logo.png" alt="AppealMyTickets.com" className="h-8 w-auto" />
               </div>
-              <p className="text-muted text-sm">Traffic citation appeal strategy platform for Houston drivers. Flat $149 per citation. <a href="https://AppealMyTickets.com" className="text-primary hover:underline">AppealMyTickets.com</a></p>
+              <p className="text-muted text-sm">Traffic citation appeal strategy platform for Houston drivers. Flat $149 per citation. <a href="https://AppealMyTickets.com" className="text-primary hover:underline">AppealMyTicket<span className="text-primary">S</span>.com</a></p>
             </div>
             <div>
               <p className="font-semibold text-text mb-3">Company</p>
@@ -283,8 +283,8 @@ export default function HoustonLanding() {
           </div>
 
           <div className="border-t border-border pt-8 text-center text-subtle text-sm">
-            <p>© 2026 AppealMyTickets.com. All rights reserved. | Houston Metro Area</p>
-            <p className="mt-2">AppealMyTickets.com generates appeal strategy documents to guide users through self-representation. We are not a law firm and do not provide legal representation or legal advice.</p>
+            <p>© 2026 AppealMyTicket<span className="text-primary">S</span>.com. All rights reserved. | Houston Metro Area</p>
+            <p className="mt-2">AppealMyTicket<span className="text-primary">S</span>.com generates appeal strategy documents to guide users through self-representation. We are not a law firm and do not provide legal representation or legal advice.</p>
           </div>
         </div>
       </footer>

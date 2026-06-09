@@ -204,7 +204,7 @@ function TrackingContent() {
         <h3 className="font-bold text-danger mb-2">⚠ Important Legal Notice</h3>
         <ul className="text-sm text-muted space-y-2">
           <li><strong>Deadline estimates are for reference only.</strong> Actual court deadlines may differ. Always verify your response deadline directly with the issuing court.</li>
-          <li><strong>This is not legal advice.</strong> AppealMyTickets.com provides administrative assistance with citation paperwork. We are not a law firm and do not provide legal representation unless expressly stated in a separate agreement.</li>
+          <li><strong>This is not legal advice.</strong> AppealMyTicket<span className="text-primary">S</span>.com provides administrative assistance with citation paperwork. We are not a law firm and do not provide legal representation unless expressly stated in a separate agreement.</li>
           <li><strong>No guarantee of outcome.</strong> Court decisions are unpredictable. Past results do not guarantee future outcomes.</li>
           <li><strong>Texas citation deadlines</strong> vary by county and violation type. Consult with a licensed Texas attorney for advice specific to your situation.</li>
         </ul>

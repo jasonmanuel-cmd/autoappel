@@ -32,25 +32,25 @@ export async function sendEmail(to: string, subject: string, html: string) {
 export async function sendConfirmationEmail(to: string, citationNumber: string) {
   const html = `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
-      <h1 style="color:#E50000">AppealMyTickets.com™ — Citation Received</h1>
+      <h1 style="color:#E50000">AppealMyTicket<span style="color:#E50000">S</span>.com — Citation Received</h1>
       <p>Your citation <strong>${citationNumber}</strong> has been submitted successfully.</p>
       <p>Track your appeal status anytime at <a href="https://autoappeal.lagnafnetwork.com/track">autoappeal.lagnafnetwork.com/track</a></p>
       <hr style="border:none;border-top:1px solid #e2e8f0"/>
       <p style="color:#64748b;font-size:12px">LAGNAF™ network LLC — Houston Deployment</p>
     </div>`
-  return sendEmail(to, `AppealMyTickets.com™ — Citation ${citationNumber} Received`, html)
+  return sendEmail(to, `AppealMyTickets.com — Citation ${citationNumber} Received`, html)
 }
 
 export async function sendDeadlineReminder(to: string, citationNumber: string, daysLeft: number, riskLevel: string) {
   const html = `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
-      <h1 style="color:#E50000">AppealMyTickets.com™ — Deadline Reminder</h1>
+      <h1 style="color:#E50000">AppealMyTicket<span style="color:#E50000">S</span>.com — Deadline Reminder</h1>
       <p>Citation <strong>${citationNumber}</strong> has <strong>${daysLeft} day${daysLeft !== 1 ? 's' : ''}</strong> remaining.</p>
       <p>Risk level: <strong style="color:${riskLevel === 'red' ? '#dc2626' : riskLevel === 'orange' ? '#ea580c' : '#ca8a04'}">${riskLevel.toUpperCase()}</strong></p>
       <hr style="border:none;border-top:1px solid #e2e8f0"/>
       <p style="color:#64748b;font-size:12px">LAGNAF™ network LLC — Houston Deployment</p>
     </div>`
-  return sendEmail(to, `AppealMyTickets.com™ — Deadline Alert: ${citationNumber}`, html)
+  return sendEmail(to, `AppealMyTickets.com — Deadline Alert: ${citationNumber}`, html)
 }
 
 export async function sendCitationVerificationEmail(data: { email: string; citationNumber: string; county: string; firstName: string; expectedFormat: string }) {

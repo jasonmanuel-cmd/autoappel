@@ -107,7 +107,7 @@ function ServicePaymentContent() {
           <h2 className="font-bold text-lg mb-4">Service Fee</h2>
           <div className="flex items-center justify-between mb-4">
             <div>
-              <p className="text-sm text-muted">AppealMyTickets.com — Citation Strategy Service</p>
+              <p className="text-sm text-muted">AppealMyTicket<span className="text-primary">S</span>.com — Citation Strategy Service</p>
               <p className="text-xs text-subtle">One-time fee — includes personalized strategy document, deadline tracking, and dashboard access</p>
             </div>
             <p className="text-3xl font-black text-primary">${SERVICE_FEE}</p>

@@ -64,7 +64,7 @@ export function welcomeEmail(data: EmailTemplateData): string {
         </style>
       </head>
       <body>
-        <h1>Welcome to AppealMyTickets.com, ${data.fullName}!</h1>
+        <h1>Welcome to AppealMyTicket<span style="color:#E50000">S</span>.com, ${data.fullName}!</h1>
         
         <p>Thank you for signing up. We're here to help you manage your traffic citations efficiently and get the best possible outcomes.</p>
         
@@ -82,8 +82,8 @@ export function welcomeEmail(data: EmailTemplateData): string {
         <p>Visit our <a href="${data.faqUrl}">FAQ page</a> or <a href="${data.contactUrl}">contact us</a>.</p>
         
         <div class="footer">
-          <p>Best regards,<br/>The AppealMyTickets.com Team</p>
-          <p>© ${new Date().getFullYear()} AppealMyTickets.com. All rights reserved.</p>
+          <p>Best regards,<br/>The AppealMyTicket<span style="color:#E50000">S</span>.com Team</p>
+          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#E50000">S</span>.com. All rights reserved.</p>
         </div>
       </body>
     </html>
@@ -132,8 +132,8 @@ export function deadlineAlertEmail(data: EmailTemplateData): string {
         <p>Questions? <a href="mailto:info@lagnafnetwork.com">Contact us</a></p>
         
         <div class="footer">
-          <p>Best regards,<br/>The AppealMyTickets.com Team</p>
-          <p>© ${new Date().getFullYear()} AppealMyTickets.com. All rights reserved.</p>
+          <p>Best regards,<br/>The AppealMyTicket<span style="color:#E50000">S</span>.com Team</p>
+          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#E50000">S</span>.com. All rights reserved.</p>
         </div>
       </body>
     </html>
@@ -180,8 +180,8 @@ export function submissionReceivedEmail(data: EmailTemplateData): string {
         <p>We'll also notify you by email as soon as there's an update.</p>
         
         <div class="footer">
-          <p>Best regards,<br/>The AppealMyTickets.com Team</p>
-          <p>© ${new Date().getFullYear()} AppealMyTickets.com. All rights reserved.</p>
+          <p>Best regards,<br/>The AppealMyTicket<span style="color:#E50000">S</span>.com Team</p>
+          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#E50000">S</span>.com. All rights reserved.</p>
         </div>
       </body>
     </html>
@@ -231,8 +231,8 @@ export function submissionApprovedEmail(data: EmailTemplateData): string {
         <p>Questions? <a href="${data.contactUrl}">Contact us</a></p>
         
         <div class="footer">
-          <p>Best regards,<br/>The AppealMyTickets.com Team</p>
-          <p>© ${new Date().getFullYear()} AppealMyTickets.com. All rights reserved.</p>
+          <p>Best regards,<br/>The AppealMyTicket<span style="color:#E50000">S</span>.com Team</p>
+          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#E50000">S</span>.com. All rights reserved.</p>
         </div>
       </body>
     </html>
@@ -290,8 +290,8 @@ export function submissionRejectedEmail(data: EmailTemplateData): string {
         <p>We're here to help. <a href="${data.contactUrl}">Contact us</a> if you have questions about this decision.</p>
         
         <div class="footer">
-          <p>Best regards,<br/>The AppealMyTickets.com Team</p>
-          <p>© ${new Date().getFullYear()} AppealMyTickets.com. All rights reserved.</p>
+          <p>Best regards,<br/>The AppealMyTicket<span style="color:#E50000">S</span>.com Team</p>
+          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#E50000">S</span>.com. All rights reserved.</p>
         </div>
       </body>
     </html>
@@ -339,11 +339,11 @@ export function paymentConfirmationEmail(data: EmailTemplateData): string {
         
         <a href="${data.dashboardUrl}" style="${successButtonStyle}">View Receipt</a>
         
-        <p>Thank you for using AppealMyTickets.com!</p>
+        <p>Thank you for using AppealMyTicket<span style="color:#E50000">S</span>.com!</p>
         
         <div class="footer">
-          <p>Best regards,<br/>The AppealMyTickets.com Team</p>
-          <p>© ${new Date().getFullYear()} AppealMyTickets.com. All rights reserved.</p>
+          <p>Best regards,<br/>The AppealMyTicket<span style="color:#E50000">S</span>.com Team</p>
+          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#E50000">S</span>.com. All rights reserved.</p>
         </div>
       </body>
     </html>
@@ -392,7 +392,7 @@ export function adminNewSubmissionEmail(data: EmailTemplateData): string {
         <p><strong>Action required within 48 hours.</strong></p>
         
         <div class="footer">
-          <p>© ${new Date().getFullYear()} AppealMyTickets.com. All rights reserved.</p>
+          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#E50000">S</span>.com. All rights reserved.</p>
         </div>
       </body>
     </html>
@@ -444,8 +444,8 @@ export function citationVerificationEmail(data: EmailTemplateData): string {
         <p>Reply to this email or <a href="mailto:info@lagnafnetwork.com">contact us</a> with any questions.</p>
 
         <div class="footer">
-          <p>Best regards,<br/>The AppealMyTickets.com Team</p>
-          <p>© ${new Date().getFullYear()} AppealMyTickets.com. All rights reserved.</p>
+          <p>Best regards,<br/>The AppealMyTicket<span style="color:#E50000">S</span>.com Team</p>
+          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#E50000">S</span>.com. All rights reserved.</p>
         </div>
       </body>
     </html>
