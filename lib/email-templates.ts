@@ -16,7 +16,7 @@ const baseStyles = `
 const buttonStyle = `
   display: inline-block;
   padding: 12px 24px;
-  background-color: #E50000;
+  background-color: #ff2400;
   color: white;
   text-decoration: none;
   border-radius: 5px;
@@ -55,16 +55,16 @@ export function welcomeEmail(data: EmailTemplateData): string {
         <meta charset="UTF-8">
         <style>
           body { ${baseStyles} }
-          h1 { color: #E50000; margin-top: 24px; }
+          h1 { color: #ff2400; margin-top: 24px; }
           h2 { color: #333; margin-top: 20px; font-size: 18px; }
           ol, ul { margin: 12px 0; padding-left: 20px; }
           li { margin: 8px 0; }
-          a { color: #E50000; }
+          a { color: #ff2400; }
           .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
         </style>
       </head>
       <body>
-        <h1>Welcome to AppealMyTicket<span style="color:#E50000">S</span>.com, ${data.fullName}!</h1>
+        <h1>Welcome to AppealMyTicket<span style="color:#ff2400">S</span>.com, ${data.fullName}!</h1>
         
         <p>Thank you for signing up. We're here to help you manage your traffic citations efficiently and get the best possible outcomes.</p>
         
@@ -82,8 +82,8 @@ export function welcomeEmail(data: EmailTemplateData): string {
         <p>Visit our <a href="${data.faqUrl}">FAQ page</a> or <a href="${data.contactUrl}">contact us</a>.</p>
         
         <div class="footer">
-          <p>Best regards,<br/>The AppealMyTicket<span style="color:#E50000">S</span>.com Team</p>
-          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#E50000">S</span>.com. All rights reserved.</p>
+          <p>Best regards,<br/>The AppealMyTicket<span style="color:#ff2400">S</span>.com Team</p>
+          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#ff2400">S</span>.com. All rights reserved.</p>
         </div>
       </body>
     </html>
@@ -106,7 +106,7 @@ export function deadlineAlertEmail(data: EmailTemplateData): string {
           .alert-box { background-color: #fff3cd; border-left: 4px solid #ff6b6b; padding: 16px; margin: 16px 0; }
           .details { background-color: #f8f9fa; padding: 16px; border-radius: 5px; margin: 16px 0; }
           .details p { margin: 8px 0; }
-          a { color: #E50000; }
+          a { color: #ff2400; }
           .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
         </style>
       </head>
@@ -132,8 +132,8 @@ export function deadlineAlertEmail(data: EmailTemplateData): string {
         <p>Questions? <a href="mailto:info@lagnafnetwork.com">Contact us</a></p>
         
         <div class="footer">
-          <p>Best regards,<br/>The AppealMyTicket<span style="color:#E50000">S</span>.com Team</p>
-          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#E50000">S</span>.com. All rights reserved.</p>
+          <p>Best regards,<br/>The AppealMyTicket<span style="color:#ff2400">S</span>.com Team</p>
+          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#ff2400">S</span>.com. All rights reserved.</p>
         </div>
       </body>
     </html>
@@ -149,11 +149,11 @@ export function submissionReceivedEmail(data: EmailTemplateData): string {
         <meta charset="UTF-8">
         <style>
           body { ${baseStyles} }
-          h1 { color: #E50000; margin-top: 24px; }
+          h1 { color: #ff2400; margin-top: 24px; }
           h2 { color: #333; margin-top: 20px; font-size: 18px; }
           .details { background-color: #f8f9fa; padding: 16px; border-radius: 5px; margin: 16px 0; }
           .details p { margin: 8px 0; }
-          a { color: #E50000; }
+          a { color: #ff2400; }
           .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
         </style>
       </head>
@@ -180,8 +180,8 @@ export function submissionReceivedEmail(data: EmailTemplateData): string {
         <p>We'll also notify you by email as soon as there's an update.</p>
         
         <div class="footer">
-          <p>Best regards,<br/>The AppealMyTicket<span style="color:#E50000">S</span>.com Team</p>
-          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#E50000">S</span>.com. All rights reserved.</p>
+          <p>Best regards,<br/>The AppealMyTicket<span style="color:#ff2400">S</span>.com Team</p>
+          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#ff2400">S</span>.com. All rights reserved.</p>
         </div>
       </body>
     </html>
@@ -202,7 +202,7 @@ export function submissionApprovedEmail(data: EmailTemplateData): string {
           .alert-box { background-color: #d4edda; border-left: 4px solid #28a745; padding: 16px; margin: 16px 0; }
           .details { background-color: #f8f9fa; padding: 16px; border-radius: 5px; margin: 16px 0; }
           .details p { margin: 8px 0; }
-          a { color: #E50000; }
+          a { color: #ff2400; }
           .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
         </style>
       </head>
@@ -231,8 +231,8 @@ export function submissionApprovedEmail(data: EmailTemplateData): string {
         <p>Questions? <a href="${data.contactUrl}">Contact us</a></p>
         
         <div class="footer">
-          <p>Best regards,<br/>The AppealMyTicket<span style="color:#E50000">S</span>.com Team</p>
-          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#E50000">S</span>.com. All rights reserved.</p>
+          <p>Best regards,<br/>The AppealMyTicket<span style="color:#ff2400">S</span>.com Team</p>
+          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#ff2400">S</span>.com. All rights reserved.</p>
         </div>
       </body>
     </html>
@@ -255,7 +255,7 @@ export function submissionRejectedEmail(data: EmailTemplateData): string {
           .details p { margin: 8px 0; }
           ul { margin: 12px 0; padding-left: 20px; }
           li { margin: 8px 0; }
-          a { color: #E50000; }
+          a { color: #ff2400; }
           .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
         </style>
       </head>
@@ -290,8 +290,8 @@ export function submissionRejectedEmail(data: EmailTemplateData): string {
         <p>We're here to help. <a href="${data.contactUrl}">Contact us</a> if you have questions about this decision.</p>
         
         <div class="footer">
-          <p>Best regards,<br/>The AppealMyTicket<span style="color:#E50000">S</span>.com Team</p>
-          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#E50000">S</span>.com. All rights reserved.</p>
+          <p>Best regards,<br/>The AppealMyTicket<span style="color:#ff2400">S</span>.com Team</p>
+          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#ff2400">S</span>.com. All rights reserved.</p>
         </div>
       </body>
     </html>
@@ -312,7 +312,7 @@ export function paymentConfirmationEmail(data: EmailTemplateData): string {
           .alert-box { background-color: #d4edda; border-left: 4px solid #28a745; padding: 16px; margin: 16px 0; }
           .receipt { background-color: #f8f9fa; padding: 16px; border-radius: 5px; margin: 16px 0; font-family: monospace; }
           .receipt p { margin: 8px 0; }
-          a { color: #E50000; }
+          a { color: #ff2400; }
           .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
         </style>
       </head>
@@ -339,11 +339,11 @@ export function paymentConfirmationEmail(data: EmailTemplateData): string {
         
         <a href="${data.dashboardUrl}" style="${successButtonStyle}">View Receipt</a>
         
-        <p>Thank you for using AppealMyTicket<span style="color:#E50000">S</span>.com!</p>
+        <p>Thank you for using AppealMyTicket<span style="color:#ff2400">S</span>.com!</p>
         
         <div class="footer">
-          <p>Best regards,<br/>The AppealMyTicket<span style="color:#E50000">S</span>.com Team</p>
-          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#E50000">S</span>.com. All rights reserved.</p>
+          <p>Best regards,<br/>The AppealMyTicket<span style="color:#ff2400">S</span>.com Team</p>
+          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#ff2400">S</span>.com. All rights reserved.</p>
         </div>
       </body>
     </html>
@@ -364,7 +364,7 @@ export function adminNewSubmissionEmail(data: EmailTemplateData): string {
           .alert-box { background-color: #fff3cd; border-left: 4px solid #ff6b6b; padding: 16px; margin: 16px 0; }
           .details { background-color: #f8f9fa; padding: 16px; border-radius: 5px; margin: 16px 0; }
           .details p { margin: 8px 0; }
-          a { color: #E50000; }
+          a { color: #ff2400; }
           .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
         </style>
       </head>
@@ -392,7 +392,7 @@ export function adminNewSubmissionEmail(data: EmailTemplateData): string {
         <p><strong>Action required within 48 hours.</strong></p>
         
         <div class="footer">
-          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#E50000">S</span>.com. All rights reserved.</p>
+          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#ff2400">S</span>.com. All rights reserved.</p>
         </div>
       </body>
     </html>
@@ -409,12 +409,12 @@ export function citationVerificationEmail(data: EmailTemplateData): string {
         <meta charset="UTF-8">
         <style>
           body { ${baseStyles} }
-          h1 { color: #E50000; margin-top: 24px; }
+          h1 { color: #ff2400; margin-top: 24px; }
           h2 { color: #333; margin-top: 20px; font-size: 18px; }
-          .alert-box { background-color: #fff3cd; border-left: 4px solid #E50000; padding: 16px; margin: 16px 0; }
+          .alert-box { background-color: #fff3cd; border-left: 4px solid #ff2400; padding: 16px; margin: 16px 0; }
           .details { background-color: #f8f9fa; padding: 16px; border-radius: 5px; margin: 16px 0; }
           .details p { margin: 8px 0; }
-          a { color: #E50000; }
+          a { color: #ff2400; }
           .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
         </style>
       </head>
@@ -444,8 +444,8 @@ export function citationVerificationEmail(data: EmailTemplateData): string {
         <p>Reply to this email or <a href="mailto:info@lagnafnetwork.com">contact us</a> with any questions.</p>
 
         <div class="footer">
-          <p>Best regards,<br/>The AppealMyTicket<span style="color:#E50000">S</span>.com Team</p>
-          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#E50000">S</span>.com. All rights reserved.</p>
+          <p>Best regards,<br/>The AppealMyTicket<span style="color:#ff2400">S</span>.com Team</p>
+          <p>© ${new Date().getFullYear()} AppealMyTicket<span style="color:#ff2400">S</span>.com. All rights reserved.</p>
         </div>
       </body>
     </html>

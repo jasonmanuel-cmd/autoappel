@@ -7,10 +7,10 @@
 /* ── Primitive Layer ──────────────────────── */
 :root {
   /* Brand Primaries */
-  --red-brand:       #E50000;
-  --red-dark:        #990000;
-  --red-bright:      #FF2E2E;
-  --red-muted:       #B80000;
+  --red-brand:       #ff2400;
+  --red-dark:        #b81a00;
+  --red-bright:      #ff4422;
+  --red-muted:       #cc1f00;
 
   /* Metallic Silver */
   --silver-light:    #FFFFFF;
@@ -94,7 +94,7 @@
 
   /* Gradients */
   --gradient-bg:          linear-gradient(to bottom, #000000, #0B0C10);
-  --gradient-primary:     linear-gradient(180deg, #FF2E2E 0%, #E50000 50%, #990000 100%);
+  --gradient-primary:     linear-gradient(180deg, #ff4422 0%, #ff2400 50%, #b81a00 100%);
   --gradient-silver:      linear-gradient(135deg, #FFFFFF 0%, #D1D5DB 50%, #6B7280 100%);
 }
 
@@ -174,29 +174,31 @@
   overflow: hidden;
   pointer-events: none;
   z-index: 0;
-  background: radial-gradient(ellipse 140% 60% at 50% 100%, rgba(30, 10, 10, 0.5) 0%, transparent 70%),
-              linear-gradient(180deg, var(--black-true) 0%, #080505 50%, #0a0505 100%);
+  background: radial-gradient(ellipse 140% 60% at 50% 100%, rgba(255, 36, 0, 0.12) 0%, transparent 70%),
+              radial-gradient(ellipse 100% 40% at 50% 80%, rgba(255, 36, 0, 0.06) 0%, transparent 60%),
+              linear-gradient(180deg, var(--black-true) 0%, #0d0505 40%, #120808 100%);
 }
 
 .road-dash {
   position: absolute;
-  height: 1px;
-  background: linear-gradient(90deg, transparent 0%, var(--red-brand) 20%, var(--silver) 50%, var(--red-brand) 80%, transparent 100%);
-  border-radius: 1px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--red-brand) 25%, #ff6644 50%, var(--red-brand) 75%, transparent 100%);
+  border-radius: 2px;
+  opacity: 0.25 !important;
 }
 
 .tail-light {
   position: absolute;
   border-radius: 50%;
-  background: var(--red-brand);
-  box-shadow: 0 0 6px 2px rgba(229, 0, 0, 0.3);
+  background: #ff4422;
+  box-shadow: 0 0 10px 4px rgba(255, 36, 0, 0.5);
 }
 
 .street-lamp {
   position: absolute;
   width: 3px;
-  height: 40px;
-  background: linear-gradient(to top, transparent 0%, var(--silver-dark) 50%, transparent 100%);
+  height: 50px;
+  background: linear-gradient(to top, transparent 0%, var(--silver) 50%, transparent 100%);
   border-radius: 1px;
 }
 
@@ -206,10 +208,10 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 12px;
-  height: 6px;
-  background: var(--red-brand);
+  width: 20px;
+  height: 8px;
+  background: #ff4422;
   border-radius: 50%;
-  filter: blur(6px);
-  opacity: 0.5;
+  filter: blur(8px);
+  opacity: 0.8;
 }

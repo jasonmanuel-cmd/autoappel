@@ -10,7 +10,7 @@ const config: Config = {
     extend: {
       colors: {
         vault: {
-          red: '#E50000',
+          red: '#ff2400',
           dark: '#000000',
           card: '#111318',
           border: '#1F2128',

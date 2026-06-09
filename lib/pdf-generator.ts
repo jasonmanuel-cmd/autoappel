@@ -217,7 +217,7 @@ export async function generateStrategyPDFAndSend(data: StrategyData): Promise<{ 
 
     const html = `
       <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
-        <h1 style="color:#E50000">Your Appeal Strategy Document is Ready</h1>
+        <h1 style="color:#ff2400">Your Appeal Strategy Document is Ready</h1>
         <p>Hi ${data.firstName},</p>
         <p>Your appeal strategy document for citation <strong>${data.citationNumber}</strong> is attached to this email.</p>
         <h2>What's Inside</h2>

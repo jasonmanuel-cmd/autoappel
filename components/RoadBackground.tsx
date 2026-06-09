@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 
-const TRAFFIC_COUNT = 20
+const TRAFFIC_COUNT = 35
 
 function seededRandom(seed: number) {
   let s = seed
@@ -23,14 +23,13 @@ export default function RoadBackground() {
     const frag = document.createDocumentFragment()
 
     /* ── Road dashes ─────────────────────── */
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 60; i++) {
       const dash = document.createElement('div')
       dash.className = 'road-dash'
       dash.style.left = `${rand() * 100}%`
       dash.style.top = `${rand() * 100}%`
-      dash.style.width = `${60 + rand() * 80}px`
-      dash.style.animation = `road-drift ${12 + rand() * 18}s linear ${rand() * -20}s infinite`
-      dash.style.opacity = `${0.06 + rand() * 0.08}`
+      dash.style.width = `${80 + rand() * 120}px`
+      dash.style.animation = `road-drift ${8 + rand() * 12}s linear ${rand() * -15}s infinite`
       frag.appendChild(dash)
     }
 
@@ -39,22 +38,24 @@ export default function RoadBackground() {
       const dot = document.createElement('div')
       dot.className = 'tail-light'
       dot.style.left = `${rand() * 100}%`
-      dot.style.top = `${10 + rand() * 80}%`
-      dot.style.width = `${2 + rand() * 2}px`
+      dot.style.top = `${5 + rand() * 85}%`
+      const size = 3 + rand() * 3
+      dot.style.width = `${size}px`
       dot.style.height = dot.style.width
-      const dur = 6 + rand() * 14
-      dot.style.animation = `tail-drift ${dur}s linear ${rand() * -20}s infinite`
-      dot.style.opacity = `${0.15 + rand() * 0.25}`
+      const dur = 5 + rand() * 10
+      dot.style.animation = `tail-drift ${dur}s linear ${rand() * -15}s infinite`
       frag.appendChild(dot)
     }
 
     /* ── Street lamp glows ───────────────── */
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 10; i++) {
       const lamp = document.createElement('div')
       lamp.className = 'street-lamp'
-      lamp.style.left = `${5 + i * 18 + rand() * 5}%`
-      lamp.style.top = `${60 + rand() * 30}%`
-      lamp.style.animation = `lamp-flicker ${3 + rand() * 4}s ease-in-out ${rand() * 3}s infinite`
+      lamp.style.left = `${2 + i * 10 + rand() * 3}%`
+      lamp.style.top = `${55 + rand() * 35}%`
+      const height = 40 + rand() * 30
+      lamp.style.height = `${height}px`
+      lamp.style.animation = `lamp-flicker ${2 + rand() * 3}s ease-in-out ${rand() * 2}s infinite`
       frag.appendChild(lamp)
     }
 
