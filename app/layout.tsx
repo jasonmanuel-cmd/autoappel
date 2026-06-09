@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Nav from '@/components/Nav'
 import DemoBanner from '@/components/DemoBanner'
-import StarsBackground from '@/components/StarsBackground'
+import RoadBackground from '@/components/RoadBackground'
 import { Analytics } from '@vercel/analytics/next'
 import TrackingScripts from '@/components/Analytics'
 
@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="min-h-screen bg-bg text-text relative">
-        <StarsBackground />
+        <RoadBackground />
         <div className="relative z-10">
           <DemoBanner />
           <Nav />
