@@ -37,11 +37,11 @@ export async function pushLeadToHubSpot(data: Record<string, unknown>) {
     phone: val(data, 'phone'),
     city: val(data, 'county', 'city'),
     state: 'TX',
-    autoappeal_citation_number: val(data, 'citationNumber', 'citation_number'),
-    autoappeal_violation_date: val(data, 'citationDate', 'citation_date'),
-    autoappeal_agency: val(data, 'court'),
-    autoappeal_deadline: val(data, 'responseDeadline', 'response_deadline'),
-    autoappeal_case_status: val(data, 'status'),
+    appealmytickets_citation_number: val(data, 'citationNumber', 'citation_number'),
+    appealmytickets_violation_date: val(data, 'citationDate', 'citation_date'),
+    appealmytickets_agency: val(data, 'court'),
+    appealmytickets_deadline: val(data, 'responseDeadline', 'response_deadline'),
+    appealmytickets_case_status: val(data, 'status'),
   }
 
   const ref = val(data, 'referralSource', 'referral_source')
@@ -59,7 +59,7 @@ export async function pushLeadToHubSpot(data: Record<string, unknown>) {
     const deal = await client.crm.deals.basicApi.create({
       body: {
         properties: {
-          dealname: `AutoAppeal - ${contactBody.firstname} ${contactBody.lastname}`,
+          dealname: `AppealMyTickets.com - ${contactBody.firstname} ${contactBody.lastname}`,
           pipeline: pipelineId,
           dealstage: dealStageId,
           amount: '0',

@@ -19,7 +19,7 @@ function getSquareHeaders() {
 
 /**
  * POST /api/payment/checkout
- * Creates a Square checkout session for AutoAppel services
+ * Creates a Square checkout session for AppealMyTickets.com services
  * Body: { plan: string, amount: number }
  */
 export async function POST(req: NextRequest) {
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         idempotency_key: `autoappel-${plan}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
         quick_pay: {
-          name: `AutoAppel — ${plan}`,
+          name: `AppealMyTickets.com — ${plan}`,
           price_money: {
             amount: amountCents,
             currency: 'USD',
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
           enable_coupon: false,
           enable_loyalty: false,
         },
-        payment_note: `AutoAppel ${plan} service`,
+        payment_note: `AppealMyTickets.com ${plan} service`,
       }),
     });
 

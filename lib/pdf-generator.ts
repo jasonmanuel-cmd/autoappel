@@ -32,14 +32,14 @@ function formatDate(d: string): string {
 
 function drawHeader(page: any, fontBold: any, font: any, width: number, title: string) {
   page.drawRectangle({ x: 0, y: 750, width, height: 42, color: RED })
-  page.drawText('AUTOPPEAL™', { x: 40, y: 760, size: 14, font: fontBold, color: WHITE })
+  page.drawText('AppealMyTickets.com', { x: 40, y: 760, size: 14, font: fontBold, color: WHITE })
   page.drawText(title, { x: width - 40, y: 760, size: 10, font: font, color: WHITE, xAlignment: 1 })
 }
 
 function drawFooter(page: any, font: any, width: number, pageNum: number, totalPages: number) {
   page.drawLine({ start: { x: 40, y: 40 }, end: { x: width - 40, y: 40 }, thickness: 0.5, color: rgb(0.8, 0.8, 0.8) })
   page.drawText(`Page ${pageNum} of ${totalPages}`, { x: width - 40, y: 28, size: 8, font, color: MEDIUM, xAlignment: 1 })
-  page.drawText('AutoAppeal™ — Appeal Strategy Document', { x: 40, y: 28, size: 8, font, color: MEDIUM })
+  page.drawText('AppealMyTickets.com — Appeal Strategy Document', { x: 40, y: 28, size: 8, font, color: MEDIUM })
 }
 
 export async function generateAppealStrategyPDF(data: StrategyData): Promise<Buffer> {
@@ -187,7 +187,7 @@ export async function generateAppealStrategyPDF(data: StrategyData): Promise<Buf
       page.drawRectangle({ x: 40, y, width: width - 80, height: 90, color: LIGHT_BG })
       page.drawRectangle({ x: 40, y: y + 68, width: width - 80, height: 22, color: RED })
       page.drawText('IMPORTANT NOTICE', { x: 50, y: y + 73, size: 10, font: fontBold, color: WHITE })
-      body('AutoAppeal is an appeal assistance platform. We are not a law firm, and we do not provide legal representation or legal advice. This document is a guide to help you prepare your own appeal submission. If you need legal advice, please consult a licensed attorney.', 50, 8)
+      body('AppealMyTickets.com is an appeal assistance platform. We are not a law firm, and we do not provide legal representation or legal advice. This document is a guide to help you prepare your own appeal submission. If you need legal advice, please consult a licensed attorney.', 50, 8)
       body('The information provided in this document is based on the citation data you submitted and general court procedures. Court rules and procedures vary by jurisdiction. Always verify specific requirements with your court.', 50, 8)
 
       drawFooter(page, font, width, pg + 1, totalPages)
@@ -231,7 +231,7 @@ export async function generateStrategyPDFAndSend(data: StrategyData): Promise<{ 
         <p>Your deadline is <strong>${formatDate(data.responseDeadline)}</strong>. Please submit your appeal before this date.</p>
         <p>Track your appeal status: <a href="https://autoappel1.vercel.app/dashboard">Visit Dashboard</a></p>
         <hr style="border:none;border-top:1px solid #e2e8f0"/>
-        <p style="color:#64748b;font-size:12px">AutoAppeal is an appeal assistance platform. We are not a law firm and do not provide legal representation or legal advice.</p>
+        <p style="color:#64748b;font-size:12px">AppealMyTickets.com is an appeal assistance platform. We are not a law firm and do not provide legal representation or legal advice.</p>
       </div>`
 
     const result = await resend.emails.send({
@@ -241,7 +241,7 @@ export async function generateStrategyPDFAndSend(data: StrategyData): Promise<{ 
       html,
       attachments: [
         {
-          filename: `AutoAppeal_Strategy_${data.citationNumber.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`,
+          filename: `AppealMyTickets_Strategy_${data.citationNumber.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`,
           content: pdfBuffer,
         },
       ],

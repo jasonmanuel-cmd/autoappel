@@ -31,7 +31,7 @@ export async function sendEmail(type: EmailType, data: EmailData): Promise<boole
     const html = template.generate(data)
 
     const result = await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || 'noreply@autoappel.com',
+      from: process.env.RESEND_FROM_EMAIL || 'noreply@appealmytickets.com',
       to: data.to,
       subject: template.subject,
       html,

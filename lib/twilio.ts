@@ -32,6 +32,6 @@ export async function sendSms(to: string, body: string) {
 }
 
 export async function sendDeadlineAlert(to: string, citationNumber: string, daysLeft: number) {
-  const body = `AutoAppeal™ Alert: Citation ${citationNumber} has ${daysLeft} day${daysLeft !== 1 ? 's' : ''} remaining. Act now. -LAGNAF™`
+  const body = `AppealMyTickets.com Alert: Citation ${citationNumber} has ${daysLeft} day${daysLeft !== 1 ? 's' : ''} remaining. Act now. -LAGNAF™`
   return sendSms(to, body)
 }

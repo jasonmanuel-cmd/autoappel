@@ -154,7 +154,7 @@ function ConfirmationContent() {
         <div className="card border-orange/20 mb-8">
           <h2 className="text-lg font-bold text-orange mb-4">⚠️ Important</h2>
           <ul className="text-muted text-sm space-y-2 list-disc list-inside">
-            <li>AutoAppeal is not a law firm and does not provide legal representation or legal advice</li>
+            <li>AppealMyTickets.com is not a law firm and does not provide legal representation or legal advice</li>
             <li>The strategy document is a guide — you are responsible for submitting your own appeal</li>
             <li>Do not ignore any official court communications</li>
             <li>Make sure your contact information stays up to date</li>

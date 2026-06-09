@@ -64,7 +64,7 @@ export default function AmbassadorsPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">
       <h1 className="text-3xl font-black mb-2">Brand Ambassador System</h1>
-      <p className="text-muted mb-8">Houston AutoAppeal™ · Referral & Compensation Management</p>
+      <p className="text-muted mb-8">AppealMyTickets.com · Referral & Compensation Management</p>
 
       <div className="card mb-4 text-sm text-muted border-primary">
         <p className="font-semibold text-muted-fg">Founder Control Notice</p>

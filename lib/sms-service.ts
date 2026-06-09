@@ -17,13 +17,13 @@ interface SMSData {
 function generateSMSContent(type: SMSType, data: SMSData): string {
   switch (type) {
     case 'deadline_alert_48h':
-      return `AutoAppel: URGENT - Only 48 hours left to respond to citation ${data.citationNumber}. Deadline: ${data.deadline}. Visit your dashboard to take action.`
+      return `AppealMyTickets.com: URGENT - Only 48 hours left to respond to citation ${data.citationNumber}. Deadline: ${data.deadline}. Visit your dashboard to take action.`
 
     case 'payment_received':
-      return `AutoAppel: Payment received for citation ${data.citationNumber}. Amount: $${data.amount}. Your citation is now resolved. Thank you!`
+      return `AppealMyTickets.com: Payment received for citation ${data.citationNumber}. Amount: $${data.amount}. Your citation is now resolved. Thank you!`
 
     case 'submission_decision':
-      return `AutoAppel: Your ${data.submissionType} for citation ${data.citationNumber} has been ${data.decision}. Check your email for details.`
+      return `AppealMyTickets.com: Your ${data.submissionType} for citation ${data.citationNumber} has been ${data.decision}. Check your email for details.`
 
     default:
       return ''

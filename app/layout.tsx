@@ -9,8 +9,8 @@ import TrackingScripts from '@/components/Analytics'
 const gscId = process.env.NEXT_PUBLIC_GSC_VERIFICATION
 
 export const metadata: Metadata = {
-  title: 'AutoAppeal™ — Traffic Ticket Paperwork Assistance for Houston',
-  description: 'From Ticket to Appeal in Minutes. AutoAppeal™ helps Houston drivers prepare citation paperwork, track deadlines, and navigate the appeal process — flat $149 per ticket.',
+  title: 'AppealMyTickets.com — Traffic Ticket Paperwork Assistance for Houston',
+  description: 'From Ticket to Appeal in Minutes. AppealMyTickets.com helps Houston drivers prepare citation paperwork, track deadlines, and navigate the appeal process — flat $149 per ticket.',
   ...(gscId ? { verification: { google: gscId } } : {}),
 }
 

@@ -40,7 +40,7 @@ export default function QAPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
       <h1 className="text-3xl font-black mb-2">QA Scorecard</h1>
-      <p className="text-muted mb-8">Apollo QA 90-Point Launch Law · Houston AutoAppeal™</p>
+      <p className="text-muted mb-8">Apollo QA 90-Point Launch Law · AppealMyTickets.com</p>
 
       {/* Score header */}
       <div className="card mb-6 text-center">
