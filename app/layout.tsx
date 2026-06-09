@@ -23,6 +23,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <DemoBanner />
           <Nav />
           <main>{children}</main>
+          <div className="text-center py-4 border-t border-border/30 mt-8">
+            <p className="text-xs text-subtle">
+              Powered by <a href="https://coaibakersfield.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">coaibakersfield.com</a>
+            </p>
+          </div>
           <Analytics />
           <TrackingScripts />
         </div>
