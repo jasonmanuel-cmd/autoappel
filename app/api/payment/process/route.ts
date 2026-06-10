@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabase } from '@/lib/supabase'
 
+// ⚠️ PCI COMPLIANCE WARNING: This endpoint accepts raw card data (cardNumber, expiryDate, cvc).
+// This is NOT PCI-compliant for production use. Use Square Payment Form tokenization instead.
+// This endpoint should only be used with test/demo data until Square Elements integration is complete.
+
 // This is a simplified example. In production, you would:
 // 1. Use Stripe's server-side libraries
 // 2. Validate card details securely

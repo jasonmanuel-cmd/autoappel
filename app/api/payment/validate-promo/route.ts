@@ -9,12 +9,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ valid: false, error: 'No promo code provided' })
     }
 
+    const supabase = createServerSupabase()
+    if (supabase) {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      }
+    }
+
     const promo = getPromo(code)
     if (!promo) {
       return NextResponse.json({ valid: false, error: 'Invalid promo code' })
     }
 
-    const supabase = createServerSupabase()
     let usageCount = 0
 
     if (supabase) {

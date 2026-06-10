@@ -2,6 +2,9 @@
 const nextConfig = {
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
   output: 'standalone',
+  images: {
+    formats: ['image/avif', 'image/webp'],
+  },
   headers: async () => {
     return [
       {

@@ -15,5 +15,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/terms`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
     { url: `${base}/privacy`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
     { url: `${base}/login`, lastModified: now, changeFrequency: 'monthly', priority: 0.1 },
+    { url: `${base}/payment/service`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${base}/forgot-password`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
+    { url: `${base}/reset-password`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
+    { url: `${base}/verify-email`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
   ]
 }

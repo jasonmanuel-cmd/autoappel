@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { serverStore } from '@/lib/server-store'
 
 export async function POST(request: Request) {
+  // Note: No auth here — contact form must be public.
+  // Add rate limiting in production (e.g., Upstash Ratelimit, Vercel KV, or similar).
   try {
     const body = await request.json()
     const { name, email, subject, message } = body

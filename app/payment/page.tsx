@@ -1,7 +1,13 @@
 import { Suspense } from 'react'
 import PaymentForm from './form'
+import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: 'Pay Citation Fine | AppealMyTickets.com',
+  robots: { index: false, follow: false },
+}
 
 export default function PaymentPage() {
   return (

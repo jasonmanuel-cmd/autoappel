@@ -1,4 +1,12 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
+import JsonLd from '@/components/JsonLd'
+
+export const metadata: Metadata = {
+  title: 'FAQ | AppealMyTickets.com — Traffic Ticket Appeal Help',
+  description: 'Frequently asked questions about AppealMyTickets.com — pricing, process, turnaround time, and how our appeal strategy documents work for Houston traffic citations.',
+  alternates: { canonical: 'https://autoappel1.vercel.app/faq' },
+}
 
 export default function FAQPage() {
   const faqs = [
@@ -46,6 +54,11 @@ export default function FAQPage() {
 
   return (
     <div className="min-h-screen py-12" style={{ background: 'var(--gradient-bg)' }}>
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": []
+      }} />
       <div className="max-w-4xl mx-auto px-4">
         <div className="mb-12">
           <h1 className="text-4xl font-black mb-3">Frequently Asked Questions</h1>

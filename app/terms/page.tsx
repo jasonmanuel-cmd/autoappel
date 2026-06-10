@@ -1,3 +1,12 @@
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Terms of Service | AppealMyTickets.com',
+  description: 'Terms of Service for AppealMyTickets.com — guidelines for using our traffic citation appeal strategy document service.',
+  alternates: { canonical: 'https://autoappel1.vercel.app/terms' },
+  robots: { index: true, follow: true },
+}
+
 export default function TermsPage() {
   return (
     <div className="min-h-screen py-12" style={{ background: 'var(--gradient-bg)' }}>

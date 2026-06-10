@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 
 export default function HoustonLanding() {
@@ -7,7 +8,7 @@ export default function HoustonLanding() {
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex justify-center mb-6">
-            <img src="/appealmytickets-logo.png" alt="AppealMyTickets.com" className="h-28 sm:h-36 w-auto" />
+            <Image src="/appealmytickets-logo.png" alt="AppealMyTickets.com — Traffic Ticket Appeal Strategy" width={224} height={56} className="h-28 sm:h-36 w-auto" priority />
           </div>
 
           <div className="inline-block bg-primary text-white text-xs font-black px-4 py-2 rounded-full mb-6 uppercase tracking-widest">
@@ -279,7 +280,7 @@ export default function HoustonLanding() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <img src="/appealmytickets-logo.png" alt="AppealMyTickets.com" className="h-10 w-auto" />
+                <Image src="/appealmytickets-logo.png" alt="AppealMyTickets.com" width={160} height={40} className="h-10 w-auto" />
               </div>
               <p className="text-muted text-sm">Traffic citation appeal strategy platform for Houston drivers. Flat $79.99 per citation. <a href="https://AppealMyTickets.com" className="text-primary hover:underline">AppealMyTicket<span className="text-primary">S</span>.com</a></p>
             </div>

@@ -1,7 +1,13 @@
 import { Suspense } from 'react'
 import SuccessContent from './content'
+import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: 'Payment Successful | AppealMyTickets.com',
+  robots: { index: false, follow: false },
+}
 
 export default function PaymentSuccessPage() {
   return (

@@ -1,11 +1,16 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabase } from '@/lib/supabase'
 import { sendDeadlineAlertEmail } from '@/lib/email-service'
 import { sendDeadlineAlert48hSMS } from '@/lib/sms-service'
 
 export const maxDuration = 60
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const authHeader = request.headers.get('authorization')
+  const cronSecret = process.env.CRON_SECRET
+  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   const results: string[] = []
   const errors: string[] = []
 
