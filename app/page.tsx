@@ -7,14 +7,14 @@ export default function HoustonLanding() {
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex justify-center mb-6">
-            <img src="/appealmytickets-logo.png" alt="AppealMyTickets.com" className="h-24 sm:h-28 w-auto" />
+            <img src="/appealmytickets-logo.png" alt="AppealMyTickets.com" className="h-28 sm:h-36 w-auto" />
           </div>
 
           <div className="inline-block bg-primary text-white text-xs font-black px-4 py-2 rounded-full mb-6 uppercase tracking-widest">
             ✓ Traffic Citation Assistance — $79.99
           </div>
 
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black mb-4 leading-tight">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-black mb-6 leading-tight">
             Received a Citation? <span className="text-primary">Get Your Appeal Strategy.</span>
           </h1>
 

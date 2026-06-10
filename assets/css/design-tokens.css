@@ -93,7 +93,7 @@
   --color-orange:         var(--orange-400);
 
   /* Gradients */
-  --gradient-bg:          linear-gradient(to bottom, #000000, #0B0C10);
+  --gradient-bg:          linear-gradient(to bottom, #030001, #080005, #0a0000);
   --gradient-primary:     linear-gradient(180deg, #ff4422 0%, #ff2400 50%, #b81a00 100%);
   --gradient-silver:      linear-gradient(135deg, #FFFFFF 0%, #D1D5DB 50%, #6B7280 100%);
 }
@@ -104,7 +104,7 @@
   --btn-bg:         var(--color-primary);
   --btn-bg-hover:   var(--color-primary-hover);
   --btn-text:       var(--white);
-  --btn-shadow:     0 2px 4px rgba(229,0,0,0.3);
+  --btn-shadow:     0 2px 4px rgba(255,36,0,0.3);
   --btn-radius:     var(--radius-md);
 
   /* Button Secondary */
@@ -150,68 +150,52 @@
   --icon-accent:    var(--red-brand);
 }
 
-/* ── Road & Traffic Background ────────────── */
-@keyframes road-drift {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(120vw); }
+/* ── Galaxy Background ─────────────────────── */
+@keyframes star-twinkle {
+  0%   { opacity: 0.15; transform: scale(0.8); }
+  100% { opacity: 0.9;  transform: scale(1.2); }
 }
 
-@keyframes tail-drift {
+@keyframes nebula-pulse {
+  0%   { opacity: 0.4; transform: scale(1); }
+  100% { opacity: 0.8; transform: scale(1.15); }
+}
+
+@keyframes dust-drift {
   0%   { transform: translateX(0) translateY(0); opacity: 0; }
-  5%   { opacity: 0.3; }
-  80%  { opacity: 0.3; }
-  100% { transform: translateX(120vw) translateY(-20px); opacity: 0; }
+  10%  { opacity: 0.3; }
+  90%  { opacity: 0.3; }
+  100% { transform: translateX(80vw) translateY(-40px); opacity: 0; }
 }
 
-@keyframes lamp-flicker {
-  0%, 100% { opacity: 0.08; }
-  50%      { opacity: 0.25; }
-}
-
-.road-container {
+.galaxy-container {
   position: fixed;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
   z-index: 0;
-  background: radial-gradient(ellipse 140% 60% at 50% 100%, rgba(255, 36, 0, 0.12) 0%, transparent 70%),
-              radial-gradient(ellipse 100% 40% at 50% 80%, rgba(255, 36, 0, 0.06) 0%, transparent 60%),
-              linear-gradient(180deg, var(--black-true) 0%, #0d0505 40%, #120808 100%);
+  background: radial-gradient(ellipse 120% 70% at 20% 30%, rgba(255, 36, 0, 0.08) 0%, transparent 60%),
+              radial-gradient(ellipse 100% 60% at 80% 70%, rgba(180, 20, 60, 0.06) 0%, transparent 55%),
+              radial-gradient(ellipse 80% 50% at 50% 20%, rgba(200, 30, 50, 0.04) 0%, transparent 50%),
+              radial-gradient(ellipse 130% 80% at 30% 80%, rgba(255, 40, 20, 0.05) 0%, transparent 60%),
+              linear-gradient(180deg, #030001 0%, #080005 30%, #0a0000 60%, #050003 100%);
 }
 
-.road-dash {
-  position: absolute;
-  height: 2px;
-  background: linear-gradient(90deg, transparent 0%, var(--red-brand) 25%, #ff6644 50%, var(--red-brand) 75%, transparent 100%);
-  border-radius: 2px;
-  opacity: 0.25 !important;
-}
-
-.tail-light {
+.galaxy-nebula {
   position: absolute;
   border-radius: 50%;
-  background: #ff4422;
-  box-shadow: 0 0 10px 4px rgba(255, 36, 0, 0.5);
+  pointer-events: none;
+  filter: blur(60px);
 }
 
-.street-lamp {
+.galaxy-star {
   position: absolute;
-  width: 3px;
-  height: 50px;
-  background: linear-gradient(to top, transparent 0%, var(--silver) 50%, transparent 100%);
-  border-radius: 1px;
-}
-
-.street-lamp::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 8px;
-  background: #ff4422;
   border-radius: 50%;
-  filter: blur(8px);
-  opacity: 0.8;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.galaxy-dust {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 200, 180, 0.15);
 }
