@@ -31,7 +31,7 @@ export default function Nav() {
     <nav className="border-b border-border bg-bg-elevated sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between py-2.5">
         <Link href="/" className="flex items-center gap-2 whitespace-nowrap py-1 min-h-[44px]">
-          <img src="/appealmytickets-logo.png" alt="AppealMyTickets.com" className="h-8 w-auto" />
+          <img src="/appealmytickets-logo.png" alt="AppealMyTickets.com" className="h-10 w-auto" />
         </Link>
 
         {/* Desktop Nav */}
