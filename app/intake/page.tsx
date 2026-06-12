@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Turnstile } from '@marsidev/react-turnstile'
@@ -46,7 +46,21 @@ export default function IntakePage() {
   })
   const [disclaimerAck, setDisclaimerAck] = useState(false)
   const [citationValidation, setCitationValidation] = useState<{ valid: boolean; confidence: string; message: string } | null>(null)
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const turnstileTokenRef = useRef<string | null>(null)
+  const [turnstileSolved, setTurnstileSolved] = useState(false)
+
+  const onTurnstileSuccess = useCallback((token: string) => {
+    turnstileTokenRef.current = token
+    setTurnstileSolved(true)
+  }, [])
+  const onTurnstileError = useCallback(() => {
+    turnstileTokenRef.current = null
+    setTurnstileSolved(false)
+  }, [])
+  const onTurnstileExpire = useCallback(() => {
+    turnstileTokenRef.current = null
+    setTurnstileSolved(false)
+  }, [])
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }))
 
@@ -76,7 +90,7 @@ export default function IntakePage() {
     }
     if (step === 2) {
       if (!disclaimerAck) e.disclaimerAcknowledged = 'You must acknowledge the disclaimer to proceed'
-      if (!turnstileToken) e.turnstile = 'Please complete the security check'
+      if (!turnstileTokenRef.current) e.turnstile = 'Please complete the security check'
     }
     setErrors(e)
     return Object.keys(e).length === 0
@@ -106,7 +120,7 @@ export default function IntakePage() {
         await fetch('/api/citations', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...citation, turnstileToken }),
+          body: JSON.stringify({ ...citation, turnstileToken: turnstileTokenRef.current }),
         })
       } catch (err) {
         console.error('Failed to submit citation to server:', err)
@@ -352,9 +366,9 @@ export default function IntakePage() {
 
               <Turnstile
                 siteKey="0x4AAAAAADi_eC_XdAiWpakE"
-                onSuccess={setTurnstileToken}
-                onError={() => setTurnstileToken(null)}
-                onExpire={() => setTurnstileToken(null)}
+                onSuccess={onTurnstileSuccess}
+                onError={onTurnstileError}
+                onExpire={onTurnstileExpire}
               />
               {errors.turnstile && <p className="text-danger text-xs">{errors.turnstile}</p>}
             </>

@@ -1,18 +1,22 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { Turnstile } from '@marsidev/react-turnstile'
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const turnstileTokenRef = useRef<string | null>(null)
   const [turnstileError, setTurnstileError] = useState(false)
+
+  const onTurnstileSuccess = useCallback((token: string) => { turnstileTokenRef.current = token }, [])
+  const onTurnstileError = useCallback(() => { turnstileTokenRef.current = null }, [])
+  const onTurnstileExpire = useCallback(() => { turnstileTokenRef.current = null }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!turnstileToken) { setTurnstileError(true); return }
+    if (!turnstileTokenRef.current) { setTurnstileError(true); return }
     setTurnstileError(false)
     setLoading(true)
 
@@ -20,7 +24,7 @@ export default function ContactPage() {
       await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, turnstileToken }),
+        body: JSON.stringify({ ...form, turnstileToken: turnstileTokenRef.current }),
       })
       setSubmitted(true)
       setForm({ name: '', email: '', subject: '', message: '' })
@@ -140,9 +144,9 @@ export default function ContactPage() {
 
               <Turnstile
                 siteKey="0x4AAAAAADi_eC_XdAiWpakE"
-                onSuccess={setTurnstileToken}
-                onError={() => setTurnstileToken(null)}
-                onExpire={() => setTurnstileToken(null)}
+                onSuccess={onTurnstileSuccess}
+                onError={onTurnstileError}
+                onExpire={onTurnstileExpire}
               />
               {turnstileError && <p className="text-danger text-xs">Please complete the security check</p>}
 
