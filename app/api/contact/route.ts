@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { serverStore } from '@/lib/server-store'
+import { verifyTurnstile } from '@/lib/turnstile'
 
 export async function POST(request: Request) {
   // Note: No auth here — contact form must be public.
@@ -7,6 +8,15 @@ export async function POST(request: Request) {
   try {
     const body = await request.json()
     const { name, email, subject, message } = body
+
+    const token = body.turnstileToken
+    if (!token) {
+      return NextResponse.json({ success: false, error: 'Security check required' }, { status: 400 })
+    }
+    const valid = await verifyTurnstile(token)
+    if (!valid) {
+      return NextResponse.json({ success: false, error: 'Security check failed' }, { status: 400 })
+    }
 
     if (!name || !email || !subject || !message) {
       return NextResponse.json({ success: false, error: 'All fields are required' }, { status: 400 })

@@ -4,6 +4,7 @@ import { serverStore } from '@/lib/server-store'
 import { sendConfirmationEmail, sendCitationVerificationEmail } from '@/lib/resend'
 import { pushLeadToHubSpot } from '@/lib/hubspot'
 import { validateCitationFormat, getCountyHint } from '@/lib/citation-validator'
+import { verifyTurnstile } from '@/lib/turnstile'
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,6 +19,16 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
+
+    const token = body.turnstileToken
+    if (!token) {
+      return NextResponse.json({ success: false, error: 'Security check required' }, { status: 400 })
+    }
+    const valid = await verifyTurnstile(token)
+    if (!valid) {
+      return NextResponse.json({ success: false, error: 'Security check failed' }, { status: 400 })
+    }
+    delete body.turnstileToken
 
     const required = ['firstName', 'lastName', 'email', 'citationNumber', 'county', 'violationType']
     const missing = required.filter(f => !body[f] || !String(body[f]).trim())

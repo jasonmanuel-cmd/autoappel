@@ -1,21 +1,26 @@
 'use client'
 
 import { useState } from 'react'
+import { Turnstile } from '@marsidev/react-turnstile'
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const [turnstileError, setTurnstileError] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!turnstileToken) { setTurnstileError(true); return }
+    setTurnstileError(false)
     setLoading(true)
 
     try {
       await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, turnstileToken }),
       })
       setSubmitted(true)
       setForm({ name: '', email: '', subject: '', message: '' })
@@ -132,6 +137,14 @@ export default function ContactPage() {
                   disabled={loading}
                 />
               </div>
+
+              <Turnstile
+                siteKey="0x4AAAAAADi_eC_XdAiWpakE"
+                onSuccess={setTurnstileToken}
+                onError={() => setTurnstileToken(null)}
+                onExpire={() => setTurnstileToken(null)}
+              />
+              {turnstileError && <p className="text-danger text-xs">Please complete the security check</p>}
 
               <button type="submit" className="btn-primary w-full" disabled={loading}>
                 {loading ? 'Sending...' : 'Send Message'}

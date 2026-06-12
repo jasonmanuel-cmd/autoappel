@@ -21,6 +21,11 @@ output/
 
 supabase/.temp/
 
+# test artifacts
+test-results/
+playwright-report/
+
+
 # backup / docs with secrets
 HOW_TO_RUN_SQL.txt
 README_SUPABASE.txt

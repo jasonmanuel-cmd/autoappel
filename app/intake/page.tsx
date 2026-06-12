@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { Turnstile } from '@marsidev/react-turnstile'
 import { store } from '@/lib/store'
 import type { Citation } from '@/lib/types'
 import { validateCitationFormat, getCountyHint } from '@/lib/citation-validator'
@@ -45,6 +46,7 @@ export default function IntakePage() {
   })
   const [disclaimerAck, setDisclaimerAck] = useState(false)
   const [citationValidation, setCitationValidation] = useState<{ valid: boolean; confidence: string; message: string } | null>(null)
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }))
 
@@ -74,6 +76,7 @@ export default function IntakePage() {
     }
     if (step === 2) {
       if (!disclaimerAck) e.disclaimerAcknowledged = 'You must acknowledge the disclaimer to proceed'
+      if (!turnstileToken) e.turnstile = 'Please complete the security check'
     }
     setErrors(e)
     return Object.keys(e).length === 0
@@ -103,7 +106,7 @@ export default function IntakePage() {
         await fetch('/api/citations', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(citation),
+          body: JSON.stringify({ ...citation, turnstileToken }),
         })
       } catch (err) {
         console.error('Failed to submit citation to server:', err)
@@ -346,6 +349,14 @@ export default function IntakePage() {
                 </label>
                 {errors.disclaimerAcknowledged && <p className="text-danger text-xs">{errors.disclaimerAcknowledged}</p>}
               </div>
+
+              <Turnstile
+                siteKey="0x4AAAAAADi_eC_XdAiWpakE"
+                onSuccess={setTurnstileToken}
+                onError={() => setTurnstileToken(null)}
+                onExpire={() => setTurnstileToken(null)}
+              />
+              {errors.turnstile && <p className="text-danger text-xs">{errors.turnstile}</p>}
             </>
           )}
 
