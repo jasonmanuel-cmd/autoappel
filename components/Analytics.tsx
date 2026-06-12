@@ -4,7 +4,7 @@ import Script from 'next/script'
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
 
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID
+const GA_ID = 'G-ETQQYD2NQQ'
 const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID
 const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID
 const TIKTOK_PIXEL_ID = process.env.NEXT_PUBLIC_TIKTOK_PIXEL_ID

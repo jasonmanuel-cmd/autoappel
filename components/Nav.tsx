@@ -30,7 +30,7 @@ export default function Nav() {
     <nav className="border-b border-border bg-bg-elevated sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between py-2.5">
         <Link href="/" className="flex items-center gap-2 whitespace-nowrap py-1 min-h-[44px]">
-          <Image src="/appealmytickets-logo.png" alt="AppealMyTickets.com" width={160} height={40} className="h-10 w-auto" priority />
+          <Image src="/appealmytickets-logo.png" alt="AppealMyTickets.com" width={480} height={120} className="h-30 w-auto" priority />
         </Link>
 
         {/* Desktop Nav */}

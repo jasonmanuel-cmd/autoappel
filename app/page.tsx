@@ -8,7 +8,7 @@ export default function HoustonLanding() {
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex justify-center mb-6">
-            <Image src="/appealmytickets-logo.png" alt="AppealMyTickets.com — Traffic Ticket Appeal Strategy" width={224} height={56} className="h-28 sm:h-36 w-auto" priority />
+            <Image src="/appealmytickets-logo.png" alt="AppealMyTickets.com — Traffic Ticket Appeal Strategy" width={1344} height={336} className="h-[336px] sm:h-[432px] w-auto" priority />
           </div>
 
           <div className="inline-block bg-primary text-white text-xs font-black px-4 py-2 rounded-full mb-6 uppercase tracking-widest">
