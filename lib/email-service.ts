@@ -51,7 +51,7 @@ export async function sendEmail(type: EmailType, data: EmailData): Promise<boole
 }
 
 export async function sendWelcomeEmail(email: string, firstName: string): Promise<boolean> {
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://autoappel1.vercel.app'
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://AppealMyTickets.com'
   return sendEmail('welcome', {
     to: email,
     firstName,

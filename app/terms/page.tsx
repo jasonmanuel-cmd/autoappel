@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Terms of Service | AppealMyTickets.com',
   description: 'Terms of Service for AppealMyTickets.com — guidelines for using our traffic citation appeal strategy document service.',
-  alternates: { canonical: 'https://autoappel1.vercel.app/terms' },
+  alternates: { canonical: 'https://AppealMyTickets.com/terms' },
   robots: { index: true, follow: true },
 }
 

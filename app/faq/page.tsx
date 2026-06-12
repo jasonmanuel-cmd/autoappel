@@ -5,7 +5,7 @@ import JsonLd from '@/components/JsonLd'
 export const metadata: Metadata = {
   title: 'FAQ | AppealMyTickets.com — Traffic Ticket Appeal Help',
   description: 'Frequently asked questions about AppealMyTickets.com — pricing, process, turnaround time, and how our appeal strategy documents work for Houston traffic citations.',
-  alternates: { canonical: 'https://autoappel1.vercel.app/faq' },
+  alternates: { canonical: 'https://AppealMyTickets.com/faq' },
 }
 
 export default function FAQPage() {

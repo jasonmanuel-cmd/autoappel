@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'AppealMyTickets.com — Traffic Ticket Paperwork Assistance',
     description: 'From Ticket to Strategy in Minutes. Get a professional, court-specific appeal strategy document for a flat $79.99.',
-    url: 'https://autoappel1.vercel.app',
+    url: 'https://AppealMyTickets.com',
     siteName: 'AppealMyTickets.com',
     type: 'website',
   },
@@ -40,7 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             "@context": "https://schema.org",
             "@type": "WebSite",
             "name": "AppealMyTickets.com",
-            "url": "https://autoappel1.vercel.app",
+            "url": "https://AppealMyTickets.com",
             "description": "Houston traffic ticket appeal strategy document service"
           }} />
           <JsonLd data={{

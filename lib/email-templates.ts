@@ -128,7 +128,7 @@ export function deadlineAlertEmail(data: EmailTemplateData): string {
         
         <p><strong>Don't wait – act now to avoid late fees and additional penalties!</strong></p>
         
-        <p>Track your appeal: <a href="${data.citationUrl || 'https://autoappel1.vercel.app/dashboard'}">Visit Dashboard</a></p>
+        <p>Track your appeal: <a href="${data.citationUrl || 'https://AppealMyTickets.com/dashboard'}">Visit Dashboard</a></p>
         <p>Questions? <a href="mailto:info@lagnafnetwork.com">Contact us</a></p>
         
         <div class="footer">

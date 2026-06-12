@@ -59,7 +59,7 @@ export async function sendCitationVerificationEmail(data: { email: string; citat
     county: data.county,
     firstName: data.firstName,
     expectedFormat: data.expectedFormat,
-    dashboardUrl: 'https://autoappel1.vercel.app/dashboard',
+    dashboardUrl: 'https://AppealMyTickets.com/dashboard',
   })
   return sendEmail(data.email, 'Please Verify Your Citation Number', html)
 }

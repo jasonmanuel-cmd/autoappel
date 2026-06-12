@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-const BASE = 'https://autoappel1.vercel.app'
+const BASE = 'https://AppealMyTickets.com'
 
 test.use({ viewport: { width: 390, height: 844 } })
 

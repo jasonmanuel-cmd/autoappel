@@ -12,7 +12,7 @@
 5. You'll be taken to the control panel with full admin access
 
 ### Production (Vercel)
-1. Go to: **https://autoappel1.vercel.app/login**
+1. Go to: **https://AppealMyTickets.com/login**
 2. Select **"Admin Login"** tab
 3. Enter credentials:
    - Email: `marc@lagnafnetwork.com`
@@ -67,7 +67,7 @@ If you want to test with sample data instead:
 
 ## Links
 - **Local Admin**: http://localhost:3000/login
-- **Production Admin**: https://autoappel1.vercel.app/login
+- **Production Admin**: https://AppealMyTickets.com/login
 - **After Auth - Local**: http://localhost:3000/control-panel
-- **After Auth - Production**: https://autoappel1.vercel.app/control-panel
+- **After Auth - Production**: https://AppealMyTickets.com/control-panel
 

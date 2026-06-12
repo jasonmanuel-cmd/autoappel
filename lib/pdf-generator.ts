@@ -178,8 +178,8 @@ export async function generateAppealStrategyPDF(data: StrategyData): Promise<Buf
 
       section('ADDITIONAL RESOURCES')
       body('For additional help:', 50, 9)
-      bullet('Visit our FAQ: https://autoappel1.vercel.app/faq')
-      bullet('Contact support: https://autoappel1.vercel.app/contact')
+      bullet('Visit our FAQ: https://AppealMyTickets.com/faq')
+      bullet('Contact support: https://AppealMyTickets.com/contact')
       bullet('Email us: info@lagnafnetwork.com')
       bullet('Call us: (949) 350-8804')
 
@@ -229,7 +229,7 @@ export async function generateStrategyPDFAndSend(data: StrategyData): Promise<{ 
         </ul>
         <h2>Important Reminder</h2>
         <p>Your deadline is <strong>${formatDate(data.responseDeadline)}</strong>. Please submit your appeal before this date.</p>
-        <p>Track your appeal status: <a href="https://autoappel1.vercel.app/dashboard">Visit Dashboard</a></p>
+        <p>Track your appeal status: <a href="https://AppealMyTickets.com/dashboard">Visit Dashboard</a></p>
         <hr style="border:none;border-top:1px solid #e2e8f0"/>
         <p style="color:#64748b;font-size:12px">AppealMyTickets.com is an appeal assistance platform. We are not a law firm and do not provide legal representation or legal advice.</p>
       </div>`
