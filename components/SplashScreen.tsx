@@ -57,7 +57,7 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
             poster="/appealmytickets-logo.png"
             onClick={() => {}}
           >
-            <source src="/lagnafopeningvideo.mp4" type="video/mp4" />
+            <source src="/Splashpage/lagnafopeningvideo.mp4" type="video/mp4" />
           </video>
           <button
             onClick={() => {
