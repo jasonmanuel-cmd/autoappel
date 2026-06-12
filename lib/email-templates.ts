@@ -129,7 +129,7 @@ export function deadlineAlertEmail(data: EmailTemplateData): string {
         <p><strong>Don't wait – act now to avoid late fees and additional penalties!</strong></p>
         
         <p>Track your appeal: <a href="${data.citationUrl || 'https://AppealMyTickets.com/dashboard'}">Visit Dashboard</a></p>
-        <p>Questions? <a href="mailto:info@lagnafnetwork.com">Contact us</a></p>
+        <p>Questions? <a href="mailto:info@appealmytickets.com">Contact us</a></p>
         
         <div class="footer">
           <p>Best regards,<br/>The AppealMyTicket<span style="color:#ff2400">S</span>.com Team</p>
@@ -441,7 +441,7 @@ export function citationVerificationEmail(data: EmailTemplateData): string {
         <p>If you entered it correctly, you don't need to do anything — we'll double-check it on our end.</p>
 
         <h2>Still Need Help?</h2>
-        <p>Reply to this email or <a href="mailto:info@lagnafnetwork.com">contact us</a> with any questions.</p>
+        <p>Reply to this email or <a href="mailto:info@appealmytickets.com">contact us</a> with any questions.</p>
 
         <div class="footer">
           <p>Best regards,<br/>The AppealMyTicket<span style="color:#ff2400">S</span>.com Team</p>

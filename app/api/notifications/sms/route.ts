@@ -1,48 +1,65 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSupabase } from '@/lib/supabase'
+import { createServerClient } from '@supabase/ssr'
 import {
   sendDeadlineAlert48hSMS,
   sendPaymentReceivedSMS,
   sendSubmissionDecisionSMS,
 } from '@/lib/sms-service'
+import { notificationSMSSchema } from '@/lib/validation'
+import { apiLimiter } from '@/lib/rate-limiter'
+
+function getClientIp(request: NextRequest): string {
+  return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || '127.0.0.1'
+}
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const { type, phoneNumber, ...rest } = body
+    const ip = getClientIp(request)
+    const check = apiLimiter.check(ip)
+    if (!check.allowed) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
+    }
 
-    if (!type || !phoneNumber) {
+    const supabase = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
+      cookies: {
+        getAll() { return request.cookies.getAll() },
+      },
+    })
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const body = await request.json()
+
+    const parsed = notificationSMSSchema.safeParse(body)
+    if (!parsed.success) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       )
     }
 
+    const { type, phoneNumber, citationNumber, deadline, amount, submissionType, decision } = parsed.data
     let success = false
 
     switch (type) {
       case 'deadline_alert_48h':
-        success = await sendDeadlineAlert48hSMS(phoneNumber, rest.citationNumber, rest.deadline)
+        success = await sendDeadlineAlert48hSMS(phoneNumber, citationNumber!, deadline!)
         break
 
       case 'payment_received':
-        success = await sendPaymentReceivedSMS(phoneNumber, rest.citationNumber, rest.amount)
+        success = await sendPaymentReceivedSMS(phoneNumber, citationNumber!, amount ?? 0)
         break
 
       case 'submission_decision':
         success = await sendSubmissionDecisionSMS(
           phoneNumber,
-          rest.citationNumber,
-          rest.submissionType,
-          rest.decision
+          citationNumber!,
+          submissionType!,
+          decision!
         )
         break
-
-      default:
-        return NextResponse.json(
-          { error: 'Unknown notification type' },
-          { status: 400 }
-        )
     }
 
     return NextResponse.json(

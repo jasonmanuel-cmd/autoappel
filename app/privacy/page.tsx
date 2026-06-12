@@ -43,7 +43,7 @@ export default function PrivacyPage() {
             { title: '7c. Right to Deletion', content: 'You may request deletion of personal data we have collected about you, subject to certain exceptions (e.g., legal compliance, fraud prevention).' },
             { title: '7d. Right to Data Portability', content: 'You have the right to obtain a copy of your personal data in a portable, readily usable format.' },
             { title: '7e. Right to Opt Out', content: 'You have the right to opt out of the processing of your personal data for targeted advertising and the sale of personal data. We do not sell your personal data or engage in targeted advertising at this time.' },
-            { title: '7f. How to Exercise Your Rights', content: 'To exercise any of the above rights, submit a request via email to info@lagnafnetwork.com or through our contact page. We will respond within 45 days. If we deny your request, you may appeal by contacting us with the reason for the denial.' },
+            { title: '7f. How to Exercise Your Rights', content: 'To exercise any of the above rights, submit a request via email to info@appealmytickets.com or through our contact page. We will respond within 45 days. If we deny your request, you may appeal by contacting us with the reason for the denial.' },
             { title: '7g. Non-Discrimination', content: 'We will not discriminate against you for exercising any of your TDPSA rights, including by denying services, charging different prices, or providing a different level of service.' },
             { title: '8. Changes to This Policy', content: 'We may update this Privacy Policy from time to time. We will notify you of any significant changes by email or by posting the new policy on our website with an updated "Last Updated" date.' },
           ].map((s, i) => (
@@ -62,7 +62,7 @@ export default function PrivacyPage() {
           <div className="card bg-primary/10 border-primary/30">
             <h2 className="text-2xl font-bold text-primary mb-4">9. Contact Us</h2>
             <p className="text-muted">If you have questions about this Privacy Policy or our privacy practices, please contact us at{' '}
-              <a href="mailto:info@lagnafnetwork.com" className="text-primary hover:underline">info@lagnafnetwork.com</a>
+              <a href="mailto:info@appealmytickets.com" className="text-primary hover:underline">info@appealmytickets.com</a>
             </p>
           </div>
         </div>

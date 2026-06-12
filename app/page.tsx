@@ -1,15 +1,17 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { SplashScreen } from '@/components/SplashScreen'
 
 export default function HoustonLanding() {
   return (
-    <div className="min-h-screen" style={{ background: 'var(--gradient-bg)' }}>
-      {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="flex justify-center mb-6">
-            <Image src="/appealmytickets-logo.png" alt="AppealMyTickets.com — Traffic Ticket Appeal Strategy" width={672} height={168} className="h-[168px] sm:h-[216px] w-auto" priority />
-          </div>
+    <SplashScreen>
+      <div className="min-h-screen" style={{ background: 'var(--gradient-bg)' }}>
+        {/* Hero Section */}
+        <section className="py-20 px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="flex justify-center mb-6">
+              <Image src="/appealmytickets-logo.png" alt="AppealMyTickets.com — Traffic Ticket Appeal Strategy" width={672} height={168} className="h-[168px] sm:h-[216px] w-auto" priority />
+            </div>
 
           <div className="inline-block bg-primary text-white text-xs font-black px-4 py-2 rounded-full mb-6 uppercase tracking-widest">
             ✓ Traffic Citation Assistance — $79.99
@@ -303,7 +305,7 @@ export default function HoustonLanding() {
               <p className="font-semibold text-text mb-3">Contact</p>
               <ul className="text-muted text-sm">
                 <li><a href="tel:+19493508804" className="block hover:text-white py-3">(949) 350-8804</a></li>
-                <li><a href="mailto:info@lagnafnetwork.com" className="block hover:text-white py-3">info@lagnafnetwork.com</a></li>
+                <li><a href="mailto:info@appealmytickets.com" className="block hover:text-white py-3">info@appealmytickets.com</a></li>
               </ul>
             </div>
           </div>
@@ -315,5 +317,6 @@ export default function HoustonLanding() {
         </div>
       </footer>
     </div>
-  )
+  </SplashScreen>
+)
 }

@@ -180,7 +180,7 @@ export async function generateAppealStrategyPDF(data: StrategyData): Promise<Buf
       body('For additional help:', 50, 9)
       bullet('Visit our FAQ: https://AppealMyTickets.com/faq')
       bullet('Contact support: https://AppealMyTickets.com/contact')
-      bullet('Email us: info@lagnafnetwork.com')
+      bullet('Email us: info@appealmytickets.com')
       bullet('Call us: (949) 350-8804')
 
       y = 110
@@ -213,7 +213,7 @@ export async function generateStrategyPDFAndSend(data: StrategyData): Promise<{ 
     }
 
     const resend = new resendModule.Resend(resendKey)
-    const emailFrom = process.env.EMAIL_FROM || 'info@lagnafnetwork.com'
+    const emailFrom = process.env.EMAIL_FROM || 'info@appealmytickets.com'
 
     const html = `
       <div style="font-family:sans-serif;max-width:600px;margin:0 auto">

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPromo, getDiscountedAmount, isFree } from '@/lib/promo';
 import { createServerSupabase } from '@/lib/supabase';
+import { checkoutSchema } from '@/lib/validation';
+import { apiLimiter } from '@/lib/rate-limiter';
 
 const SQUARE_ENV = process.env.SQUARE_ENV === 'production' ? 'production' : 'sandbox';
 const SQUARE_API = SQUARE_ENV === 'production'
@@ -24,6 +26,12 @@ function getSquareHeaders() {
  * Body: { plan: string, amount: number, citation_id?: string, promoCode?: string }
  */
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || '127.0.0.1'
+  const check = apiLimiter.check(ip)
+  if (!check.allowed) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
+  }
+
   const origin = req.headers.get('origin') || '';
   if (origin && !origin.includes('autoappel') && !origin.includes('localhost')) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
@@ -38,11 +46,14 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { plan, amount, citation_id, promoCode } = await req.json();
+    const body = await req.json();
 
-    if (!plan || !amount || amount < 1) {
-      return NextResponse.json({ error: 'Plan and amount required' }, { status: 400 });
+    const parsed = checkoutSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Plan and amount required' }, { status: 400 })
     }
+
+    const { plan, amount, citation_id, promoCode } = parsed.data
 
     /* ── Handle promo code ───────────────────────── */
     if (promoCode) {

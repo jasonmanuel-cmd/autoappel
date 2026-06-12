@@ -1,14 +1,40 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
 import { serverStore } from '@/lib/server-store'
 import { generateStrategyPDFAndSend } from '@/lib/pdf-generator'
+import { generateStrategySchema } from '@/lib/validation'
+import { apiLimiter } from '@/lib/rate-limiter'
+
+function getClientIp(request: NextRequest): string {
+  return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || '127.0.0.1'
+}
 
 export async function POST(request: NextRequest) {
   try {
-    const { citationId } = await request.json()
+    const ip = getClientIp(request)
+    const check = apiLimiter.check(ip)
+    if (!check.allowed) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
+    }
 
-    if (!citationId) {
+    const supabase = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
+      cookies: {
+        getAll() { return request.cookies.getAll() },
+      },
+    })
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const body = await request.json()
+
+    const parsed = generateStrategySchema.safeParse(body)
+    if (!parsed.success) {
       return NextResponse.json({ error: 'citationId required' }, { status: 400 })
     }
+
+    const { citationId } = parsed.data
 
     const citation = await serverStore.getCitation(citationId)
     if (!citation) {

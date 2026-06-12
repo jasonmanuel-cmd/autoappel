@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabase } from '@/lib/supabase'
+import { paymentProcessSchema } from '@/lib/validation'
+import { apiLimiter } from '@/lib/rate-limiter'
 
 // ⚠️ PCI COMPLIANCE WARNING: This endpoint accepts raw card data (cardNumber, expiryDate, cvc).
 // This is NOT PCI-compliant for production use. Use Square Payment Form tokenization instead.
@@ -15,17 +17,22 @@ const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY
 const RESEND_API_KEY = process.env.RESEND_API_KEY
 
 export async function POST(request: NextRequest) {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || '127.0.0.1'
+  const check = apiLimiter.check(ip)
+  if (!check.allowed) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
+  }
+
   try {
     const body = await request.json()
-    const { citationId, amount, cardNumber, expiryDate, cvc, billingZip } = body
-
-    // Validate input
-    if (!citationId || !amount || !cardNumber || !expiryDate || !cvc || !billingZip) {
+    const parsed = paymentProcessSchema.safeParse(body)
+    if (!parsed.success) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       )
     }
+    const { citationId, amount, cardNumber, expiryDate, cvc, billingZip } = parsed.data
 
     // Get the user from the request (in production, use proper auth)
     const supabase = createServerSupabase()

@@ -26,6 +26,27 @@ test-results/
 playwright-report/
 
 
+# credential and secret files
+credentials.json
+*-credentials.json
+secrets.json
+service-account*.json
+
+# build artifacts
+dist/
+build/
+
+# logs
+*.log
+logs/
+
+# IDE
+.idea/
+.vscode/settings.json
+
+# project-specific
+Jason_Phase_2_Completion_Package_IQ400/
+
 # backup / docs with secrets
 HOW_TO_RUN_SQL.txt
 README_SUPABASE.txt

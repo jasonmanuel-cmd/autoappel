@@ -1,29 +1,38 @@
 import { NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { serverStore } from '@/lib/server-store'
 import { verifyTurnstile } from '@/lib/turnstile'
+import { contactSchema } from '@/lib/validation'
+import { contactLimiter } from '@/lib/rate-limiter'
 
-export async function POST(request: Request) {
-  // Note: No auth here — contact form must be public.
-  // Add rate limiting in production (e.g., Upstash Ratelimit, Vercel KV, or similar).
+function getClientIp(request: NextRequest): string {
+  return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || '127.0.0.1'
+}
+
+export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const { name, email, subject, message } = body
+    const ip = getClientIp(request)
+    const check = contactLimiter.check(ip)
+    if (!check.allowed) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
+    }
 
-    const token = body.turnstileToken
+    const body = await request.json()
+
+    const parsed = contactSchema.safeParse(body)
+    if (!parsed.success) {
+      const errors = parsed.error.issues.map(i => i.message).join(', ')
+      return NextResponse.json({ success: false, error: errors }, { status: 400 })
+    }
+
+    const { name, email, subject, message, turnstileToken: token } = parsed.data
+
     if (!token) {
       return NextResponse.json({ success: false, error: 'Security check required' }, { status: 400 })
     }
     const valid = await verifyTurnstile(token)
     if (!valid) {
       return NextResponse.json({ success: false, error: 'Security check failed' }, { status: 400 })
-    }
-
-    if (!name || !email || !subject || !message) {
-      return NextResponse.json({ success: false, error: 'All fields are required' }, { status: 400 })
-    }
-
-    if (!email.includes('@')) {
-      return NextResponse.json({ success: false, error: 'Invalid email address' }, { status: 400 })
     }
 
     const entry = await serverStore.addContact({ name, email, subject, message })

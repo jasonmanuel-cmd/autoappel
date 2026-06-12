@@ -19,7 +19,7 @@ export async function sendEmail(to: string, subject: string, html: string) {
   }
 
   const result = await resend.emails.send({
-    from: process.env.EMAIL_FROM || 'info@lagnafnetwork.com',
+    from: process.env.EMAIL_FROM || 'info@appealmytickets.com',
     to,
     subject,
     html,
@@ -34,7 +34,7 @@ export async function sendConfirmationEmail(to: string, citationNumber: string) 
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
       <h1 style="color:#ff2400">AppealMyTicket<span style="color:#ff2400">S</span>.com — Citation Received</h1>
       <p>Your citation <strong>${citationNumber}</strong> has been submitted successfully.</p>
-      <p>Track your appeal status anytime at <a href="https://autoappeal.lagnafnetwork.com/track">autoappeal.lagnafnetwork.com/track</a></p>
+      <p>Track your appeal status anytime at <a href="https://AppealMyTickets.com/track">AppealMyTickets.com/track</a></p>
       <hr style="border:none;border-top:1px solid #e2e8f0"/>
       <p style="color:#64748b;font-size:12px">LAGNAF™ network LLC — Houston Deployment</p>
     </div>`

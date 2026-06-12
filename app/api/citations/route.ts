@@ -5,9 +5,21 @@ import { sendConfirmationEmail, sendCitationVerificationEmail } from '@/lib/rese
 import { pushLeadToHubSpot } from '@/lib/hubspot'
 import { validateCitationFormat, getCountyHint } from '@/lib/citation-validator'
 import { verifyTurnstile } from '@/lib/turnstile'
+import { citationSchema } from '@/lib/validation'
+import { apiLimiter } from '@/lib/rate-limiter'
+
+function getClientIp(request: NextRequest): string {
+  return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || '127.0.0.1'
+}
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = getClientIp(request)
+    const check = apiLimiter.check(ip)
+    if (!check.allowed) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
+    }
+
     const supabase = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
       cookies: {
         getAll() { return request.cookies.getAll() },
@@ -20,7 +32,13 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json()
 
-    const token = body.turnstileToken
+    const parsed = citationSchema.safeParse(body)
+    if (!parsed.success) {
+      const errors = parsed.error.issues.map(i => i.message).join(', ')
+      return NextResponse.json({ success: false, error: errors }, { status: 400 })
+    }
+
+    const token = parsed.data.turnstileToken
     if (!token) {
       return NextResponse.json({ success: false, error: 'Security check required' }, { status: 400 })
     }
@@ -28,31 +46,24 @@ export async function POST(request: NextRequest) {
     if (!valid) {
       return NextResponse.json({ success: false, error: 'Security check failed' }, { status: 400 })
     }
-    delete body.turnstileToken
 
-    const required = ['firstName', 'lastName', 'email', 'citationNumber', 'county', 'violationType']
-    const missing = required.filter(f => !body[f] || !String(body[f]).trim())
-    if (missing.length > 0) {
-      return NextResponse.json({ success: false, error: `Missing required fields: ${missing.join(', ')}` }, { status: 400 })
-    }
+    const result = await serverStore.addCitation(parsed.data)
 
-    const result = await serverStore.addCitation(body)
+    sendConfirmationEmail(parsed.data.email, parsed.data.citationNumber).catch(() => {})
 
-    sendConfirmationEmail(body.email, body.citationNumber).catch(() => {})
-
-    const validation = validateCitationFormat(body.citationNumber, body.county)
+    const validation = validateCitationFormat(parsed.data.citationNumber, parsed.data.county)
     if (!validation.valid || validation.confidence === 'low') {
-      const expectedHint = getCountyHint(body.county)
+      const expectedHint = getCountyHint(parsed.data.county)
       sendCitationVerificationEmail({
-        email: body.email,
-        citationNumber: body.citationNumber,
-        county: body.county,
-        firstName: body.firstName,
+        email: parsed.data.email,
+        citationNumber: parsed.data.citationNumber,
+        county: parsed.data.county,
+        firstName: parsed.data.firstName,
         expectedFormat: expectedHint || 'TX-XX-YYYY-NNNNN',
       }).catch(() => {})
     }
 
-    pushLeadToHubSpot(body as Record<string, unknown>).catch(() => {})
+    pushLeadToHubSpot(parsed.data as Record<string, unknown>).catch(() => {})
 
     return NextResponse.json({ success: true, data: result, validation: { valid: validation.valid, confidence: validation.confidence, message: validation.message } })
   } catch (err) {

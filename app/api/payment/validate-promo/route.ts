@@ -1,13 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPromo, isFree } from '@/lib/promo'
 import { createServerSupabase } from '@/lib/supabase'
+import { validatePromoSchema } from '@/lib/validation'
+import { apiLimiter } from '@/lib/rate-limiter'
 
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || '127.0.0.1'
+  const check = apiLimiter.check(ip)
+  if (!check.allowed) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
+  }
+
   try {
-    const { code, citationId } = await req.json()
-    if (!code) {
+    const body = await req.json()
+    const parsed = validatePromoSchema.safeParse(body)
+    if (!parsed.success) {
       return NextResponse.json({ valid: false, error: 'No promo code provided' })
     }
+    const { code, citationId } = parsed.data
 
     const supabase = createServerSupabase()
     if (supabase) {

@@ -80,7 +80,7 @@ export default function SuccessContent() {
                     <Link href="/dashboard" className="btn-primary">
                       Go to Dashboard
                     </Link>
-                    <a href={`mailto:info@lagnafnetwork.com?subject=Strategy%20Document%20-%20${citationId}`} className="btn-secondary">
+                    <a href={`mailto:info@appealmytickets.com?subject=Strategy%20Document%20-%20${citationId}`} className="btn-secondary">
                       Resend Email
                     </a>
                   </div>

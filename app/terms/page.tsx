@@ -43,7 +43,7 @@ export default function TermsPage() {
           <div className="card bg-primary/10 border-primary/30">
             <h2 className="text-2xl font-bold text-primary mb-4">12. Contact Us</h2>
             <p className="text-muted">If you have any questions about these Terms of Service, please contact us at{' '}
-              <a href="mailto:info@lagnafnetwork.com" className="text-primary hover:underline inline-block py-2">info@lagnafnetwork.com</a>
+              <a href="mailto:info@appealmytickets.com" className="text-primary hover:underline inline-block py-2">info@appealmytickets.com</a>
             </p>
           </div>
         </div>

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import JsonLd from '@/components/JsonLd'
 export const metadata: Metadata = {
   title: 'Contact Us | AppealMyTickets.com',
-  description: 'Get in touch with the AppealMyTickets.com team. Email us at info@lagnafnetwork.com or call (949) 350-8804.',
+  description: 'Get in touch with the AppealMyTickets.com team. Email us at info@appealmytickets.com or call (949) 350-8804.',
   alternates: { canonical: 'https://AppealMyTickets.com/contact' },
 }
 export default function ContactLayout({ children }: { children: React.ReactNode }) {
