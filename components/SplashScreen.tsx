@@ -53,7 +53,7 @@ export function SplashScreen({ children }: { children: React.ReactNode }) {
             autoPlay
             muted
             playsInline
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
             poster="/appealmytickets-logo.png"
             onClick={() => {}}
           >
