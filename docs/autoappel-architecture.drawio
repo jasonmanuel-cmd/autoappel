@@ -1,0 +1,62 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="AutoAppel architecture" id="aa1">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1140" pageHeight="520" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+<mxCell id="title" value="AutoAppel — Next.js + Supabase traffic-citation appeal platform" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ffffff;fontStyle=1;fontSize=15" vertex="1" parent="1"><mxGeometry x="280" y="10" width="560" height="40" as="geometry"/></mxCell>
+
+<mxCell id="lyFE" value="Frontend  (app/ — Next.js App Router)" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=13" vertex="1" parent="1"><mxGeometry x="20" y="70" width="250" height="28" as="geometry"/></mxCell>
+<mxCell id="fe_public" value="Public: intake, contact, faq, qa, track, terms, privacy" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12" vertex="1" parent="1"><mxGeometry x="20" y="104" width="250" height="44" as="geometry"/></mxCell>
+<mxCell id="fe_auth" value="Auth: login, signup, forgot/reset-password, verify-email" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12" vertex="1" parent="1"><mxGeometry x="20" y="156" width="250" height="44" as="geometry"/></mxCell>
+<mxCell id="fe_dash" value="Dashboard (+ citations), confirmation" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12" vertex="1" parent="1"><mxGeometry x="20" y="208" width="250" height="34" as="geometry"/></mxCell>
+<mxCell id="fe_admin" value="Admin: dashboard, citations, login, control-panel" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12" vertex="1" parent="1"><mxGeometry x="20" y="250" width="250" height="44" as="geometry"/></mxCell>
+<mxCell id="fe_special" value="treasury, red-vault, ambassadors, countdown, payment" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12" vertex="1" parent="1"><mxGeometry x="20" y="302" width="250" height="44" as="geometry"/></mxCell>
+<mxCell id="fe_comp" value="components/ (Nav, Splash, Analytics, backgrounds)" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12" vertex="1" parent="1"><mxGeometry x="20" y="354" width="250" height="34" as="geometry"/></mxCell>
+<mxCell id="mw" value="middleware.ts  (auth / route protection)" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=12" vertex="1" parent="1"><mxGeometry x="20" y="410" width="250" height="34" as="geometry"/></mxCell>
+
+<mxCell id="lyAPI" value="API Routes  (app/api/)" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=13" vertex="1" parent="1"><mxGeometry x="310" y="70" width="260" height="28" as="geometry"/></mxCell>
+<mxCell id="ap_auth" value="/api/auth/signup" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12" vertex="1" parent="1"><mxGeometry x="310" y="104" width="260" height="30" as="geometry"/></mxCell>
+<mxCell id="ap_cit" value="/api/citations  (+ [id], generate-strategy)" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12" vertex="1" parent="1"><mxGeometry x="310" y="140" width="260" height="32" as="geometry"/></mxCell>
+<mxCell id="ap_pay" value="/api/payment  (checkout, process, validate-promo)" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12" vertex="1" parent="1"><mxGeometry x="310" y="178" width="260" height="32" as="geometry"/></mxCell>
+<mxCell id="ap_notif" value="/api/notifications  (email, sms)" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12" vertex="1" parent="1"><mxGeometry x="310" y="216" width="260" height="30" as="geometry"/></mxCell>
+<mxCell id="ap_contact" value="/api/contact" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12" vertex="1" parent="1"><mxGeometry x="310" y="252" width="260" height="30" as="geometry"/></mxCell>
+<mxCell id="ap_hub" value="/api/hubspot" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12" vertex="1" parent="1"><mxGeometry x="310" y="288" width="260" height="30" as="geometry"/></mxCell>
+<mxCell id="ap_cron" value="/api/cron/reminders" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12" vertex="1" parent="1"><mxGeometry x="310" y="324" width="260" height="30" as="geometry"/></mxCell>
+<mxCell id="ap_health" value="/api/health" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12" vertex="1" parent="1"><mxGeometry x="310" y="360" width="260" height="30" as="geometry"/></mxCell>
+
+<mxCell id="lySVC" value="Lib Services  (lib/)" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=13" vertex="1" parent="1"><mxGeometry x="610" y="70" width="270" height="28" as="geometry"/></mxCell>
+<mxCell id="sv_supa" value="supabase.ts  (DB + auth client)" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12" vertex="1" parent="1"><mxGeometry x="610" y="104" width="270" height="30" as="geometry"/></mxCell>
+<mxCell id="sv_cit" value="citation-validator.ts • promo.ts" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12" vertex="1" parent="1"><mxGeometry x="610" y="140" width="270" height="30" as="geometry"/></mxCell>
+<mxCell id="sv_email" value="email-service • email-templates • resend.ts" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12" vertex="1" parent="1"><mxGeometry x="610" y="176" width="270" height="30" as="geometry"/></mxCell>
+<mxCell id="sv_sms" value="sms-service.ts • twilio.ts" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12" vertex="1" parent="1"><mxGeometry x="610" y="212" width="270" height="30" as="geometry"/></mxCell>
+<mxCell id="sv_hub" value="hubspot.ts  (CRM)" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12" vertex="1" parent="1"><mxGeometry x="610" y="248" width="270" height="30" as="geometry"/></mxCell>
+<mxCell id="sv_pdf" value="pdf-generator.ts  (pdf-lib)" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12" vertex="1" parent="1"><mxGeometry x="610" y="284" width="270" height="30" as="geometry"/></mxCell>
+<mxCell id="sv_sec" value="security: csrf • turnstile • rate-limiter • validation" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12" vertex="1" parent="1"><mxGeometry x="610" y="320" width="270" height="32" as="geometry"/></mxCell>
+<mxCell id="sv_util" value="state/utils: store • server-store • api • use-auth • types" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12" vertex="1" parent="1"><mxGeometry x="610" y="358" width="270" height="32" as="geometry"/></mxCell>
+
+<mxCell id="lyEXT" value="External Services" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=13" vertex="1" parent="1"><mxGeometry x="920" y="70" width="200" height="28" as="geometry"/></mxCell>
+<mxCell id="ext_supa" value="Supabase  (Postgres + Auth)" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12" vertex="1" parent="1"><mxGeometry x="920" y="104" width="200" height="34" as="geometry"/></mxCell>
+<mxCell id="ext_sq" value="Square  (payments)" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12" vertex="1" parent="1"><mxGeometry x="920" y="146" width="200" height="34" as="geometry"/></mxCell>
+<mxCell id="ext_hub" value="HubSpot  (CRM)" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12" vertex="1" parent="1"><mxGeometry x="920" y="188" width="200" height="34" as="geometry"/></mxCell>
+<mxCell id="ext_resend" value="Resend  (transactional email)" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12" vertex="1" parent="1"><mxGeometry x="920" y="230" width="200" height="34" as="geometry"/></mxCell>
+<mxCell id="ext_twilio" value="Twilio  (SMS)" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12" vertex="1" parent="1"><mxGeometry x="920" y="272" width="200" height="34" as="geometry"/></mxCell>
+<mxCell id="ext_turn" value="Cloudflare Turnstile  (captcha)" style="rounded=8;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12" vertex="1" parent="1"><mxGeometry x="920" y="314" width="200" height="34" as="geometry"/></mxCell>
+
+<mxCell id="e1" value="guards" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=10" edge="1" parent="1" source="mw" target="lyFE"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e2" value="requests" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=10" edge="1" parent="1" source="fe_public" target="ap_cit"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e3" value="Square API" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=10" edge="1" parent="1" source="ap_pay" target="ext_sq"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e4" value="validate" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=10" edge="1" parent="1" source="ap_cit" target="sv_cit"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e5" value="generate PDF" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=10" edge="1" parent="1" source="ap_cit" target="sv_pdf"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e6" value="email" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=10" edge="1" parent="1" source="ap_notif" target="sv_email"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e7" value="sms" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=10" edge="1" parent="1" source="ap_notif" target="sv_sms"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=10" edge="1" parent="1" source="sv_email" target="ext_resend"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=10" edge="1" parent="1" source="sv_sms" target="ext_twilio"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e10" value="sync" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=10" edge="1" parent="1" source="sv_hub" target="ext_hub"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e11" value="DB / auth" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=10" edge="1" parent="1" source="sv_supa" target="ext_supa"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e12" value="captcha" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=10" edge="1" parent="1" source="sv_sec" target="ext_turn"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e13" value="CRM" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=10" edge="1" parent="1" source="ap_hub" target="sv_hub"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
