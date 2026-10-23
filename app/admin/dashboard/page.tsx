@@ -1,5 +1,7 @@
 'use client'
 
+import { computeRisk } from '@/lib/deadlines'
+
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -128,7 +130,7 @@ export default function AdminDashboard() {
           court: row.court,
           jurisdiction: row.jurisdiction,
           violationType: row.violation_type,
-          riskLevel: row.risk_level,
+          riskLevel: computeRisk(row.response_deadline),
           status: row.status,
           paymentStatus: row.payment_status,
           serviceFeeStatus: row.service_fee_status,
@@ -321,7 +323,7 @@ export default function AdminDashboard() {
                     {/* Risk Badge */}
                     <div>
                       <span className={`text-xs font-semibold px-2 py-1 rounded border ${getRiskColor(citation.riskLevel)}`}>
-                        {citation.riskLevel.toUpperCase()}
+                        {citation.responseDeadline ? citation.riskLevel.toUpperCase() : 'DEADLINE NEEDED'}
                       </span>
                     </div>
 

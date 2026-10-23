@@ -53,7 +53,7 @@ test.describe('AutoAppel E2E Tests', () => {
 
     // Should redirect to dashboard
     await expect(page).toHaveURL(/\/dashboard/)
-    await expect(page).toContainText('My Citations')
+    await expect(page.locator('body')).toContainText('My Citations')
   })
 
   // Test 4: View Citations
@@ -62,7 +62,7 @@ test.describe('AutoAppel E2E Tests', () => {
     await page.goto(`${BASE_URL}/dashboard`)
 
     // Check for citations list
-    await expect(page).toContainText('Citations')
+    await expect(page.locator('body')).toContainText('Citations')
   })
 
   // Test 5: View Citation Detail
@@ -74,8 +74,8 @@ test.describe('AutoAppel E2E Tests', () => {
     await firstCitation.click()
 
     // Should display citation details
-    await expect(page).toContainText('Citation Details')
-    await expect(page).toContainText('Response Deadline')
+    await expect(page.locator('body')).toContainText('Citation Details')
+    await expect(page.locator('body')).toContainText('Response Deadline')
   })
 
   // Test 6: Submit Appeal
@@ -99,7 +99,7 @@ test.describe('AutoAppel E2E Tests', () => {
     await page.click('button:has-text("Submit Appeal")')
 
     // Should show success message
-    await expect(page).toContainText('Appeal Submitted!')
+    await expect(page.locator('body')).toContainText('Appeal Submitted!')
   })
 
   // Test 7: Request Payment Plan
@@ -123,7 +123,7 @@ test.describe('AutoAppel E2E Tests', () => {
     await page.click('button:has-text("Request Payment Plan")')
 
     // Should show success message
-    await expect(page).toContainText('Payment Plan Requested!')
+    await expect(page.locator('body')).toContainText('Payment Plan Requested!')
   })
 
   // Test 8: Request Dismissal
@@ -147,7 +147,7 @@ test.describe('AutoAppel E2E Tests', () => {
     await page.click('button:has-text("Submit Dismissal Request")')
 
     // Should show success message
-    await expect(page).toContainText('Dismissal Request Submitted!')
+    await expect(page.locator('body')).toContainText('Dismissal Request Submitted!')
   })
 
   // Test 9: Payment Flow
@@ -171,7 +171,7 @@ test.describe('AutoAppel E2E Tests', () => {
 
     // Should redirect to success page
     await expect(page).toHaveURL(/\/payment\/success/)
-    await expect(page).toContainText('Payment Successful!')
+    await expect(page.locator('body')).toContainText('Payment Successful!')
   })
 
   // Test 10: Admin Login
@@ -195,9 +195,9 @@ test.describe('AutoAppel E2E Tests', () => {
     await page.goto(`${BASE_URL}/admin/dashboard`)
 
     // Check for admin elements
-    await expect(page).toContainText('All Citations')
-    await expect(page).toContainText('Status')
-    await expect(page).toContainText('Risk Level')
+    await expect(page.locator('body')).toContainText('All Citations')
+    await expect(page.locator('body')).toContainText('Status')
+    await expect(page.locator('body')).toContainText('Risk Level')
   })
 
   // Test 12: Admin Citation Detail
@@ -209,14 +209,14 @@ test.describe('AutoAppel E2E Tests', () => {
     await firstCitation.click()
 
     // Should display citation details
-    await expect(page).toContainText('Citation Details')
-    await expect(page).toContainText('Manage Status')
+    await expect(page.locator('body')).toContainText('Citation Details')
+    await expect(page.locator('body')).toContainText('Manage Status')
 
     // Change status
     await page.click('button:has-text("IN_REVIEW")')
 
     // Should update
-    await expect(page).toContainText('IN_REVIEW')
+    await expect(page.locator('body')).toContainText('IN_REVIEW')
   })
 
   // Test 13: Admin Manage Payment
@@ -231,7 +231,7 @@ test.describe('AutoAppel E2E Tests', () => {
     await page.click('button:has-text("PAID")')
 
     // Should update
-    await expect(page).toContainText('PAID')
+    await expect(page.locator('body')).toContainText('PAID')
   })
 
   // Test 14: Password Reset Flow
@@ -251,7 +251,7 @@ test.describe('AutoAppel E2E Tests', () => {
     await page.click('button:has-text("Send Reset Email")')
 
     // Should show success message
-    await expect(page).toContainText('Check your email')
+    await expect(page.locator('body')).toContainText('Check your email')
   })
 
   // Test 15: Rate Limiting

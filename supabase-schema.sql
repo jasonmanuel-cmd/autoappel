@@ -152,47 +152,11 @@ alter table alerts enable row level security;
 alter table deployment_settings enable row level security;
 alter table qa_items enable row level security;
 
--- RLS policies (authenticated users only for admin, insert from public for forms)
-create policy "Public can insert citations"
-  on citations for insert
-  with check (true);
-
-create policy "Authenticated users can read citations"
-  on citations for select
-  using (auth.role() = 'authenticated');
-
-create policy "Authenticated users can update citations"
-  on citations for update
-  using (auth.role() = 'authenticated');
-
-create policy "Public can insert contacts"
-  on contacts for insert
-  with check (true);
-
-create policy "Authenticated users can read contacts"
-  on contacts for select
-  using (auth.role() = 'authenticated');
-
-create policy "Authenticated users full access to ambassadors"
-  on ambassadors for all
-  using (auth.role() = 'authenticated');
-
-create policy "Authenticated users full access to treasury_profiles"
-  on treasury_profiles for all
-  using (auth.role() = 'authenticated');
-
-create policy "Authenticated users full access to audit_logs"
-  on audit_logs for all
-  using (auth.role() = 'authenticated');
-
-create policy "Authenticated users full access to alerts"
-  on alerts for all
-  using (auth.role() = 'authenticated');
-
-create policy "Authenticated users full access to deployment_settings"
-  on deployment_settings for all
-  using (auth.role() = 'authenticated');
-
-create policy "Authenticated users full access to qa_items"
-  on qa_items for all
-  using (auth.role() = 'authenticated');
+-- Safe baseline: customer access is enabled by the versioned security migration.
+-- Never grant every signed-in customer administrative access.
+do $$ declare t text; begin
+  foreach t in array array['citations','contacts','ambassadors','treasury_profiles','audit_logs','alerts','deployment_settings','qa_items'] loop
+    execute format('create policy admin_baseline on public.%I for all to authenticated using ((auth.jwt()->''app_metadata''->>''role'') = ''admin'') with check ((auth.jwt()->''app_metadata''->>''role'') = ''admin'')',t);
+  end loop;
+end $$;
+-- REQUIRED: apply supabase/migrations/*.sql in chronological order after this file.

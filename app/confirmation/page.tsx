@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { store } from '@/lib/store'
+import { citationFromRow } from '@/lib/citation-client'
 import type { Citation } from '@/lib/types'
 import Link from 'next/link'
 import { Suspense } from 'react'
@@ -14,11 +14,15 @@ function ConfirmationContent() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (id) {
-      const c = store.getCitationById(id)
-      setCitation(c || null)
-    }
-    setLoading(false)
+    let active = true
+    if (!id) { setLoading(false); return }
+    fetch(`/api/citations/${encodeURIComponent(id)}`).then(async r => {
+      const result = await r.json()
+      if (!r.ok) throw new Error(result.error)
+      if (active) setCitation(citationFromRow(result.data))
+    }).catch(() => { if (active) setCitation(null) }).finally(() => { if (active) setLoading(false) })
+    return () => { active = false }
+
   }, [id])
 
   if (loading) {

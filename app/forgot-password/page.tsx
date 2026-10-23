@@ -28,7 +28,7 @@ export default function ForgotPasswordPage() {
     }
 
     const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
+      redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
     })
 
     setLoading(false)
@@ -77,8 +77,8 @@ export default function ForgotPasswordPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="label">Email Address</label>
-              <input
+              <label className="label" htmlFor="field-1">Email Address</label>
+              <input id="field-1"
                 type="email"
                 className="input"
                 value={email}

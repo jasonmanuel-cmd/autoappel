@@ -14,27 +14,32 @@ export default function ContactPage() {
   const onTurnstileError = useCallback(() => { turnstileTokenRef.current = null }, [])
   const onTurnstileExpire = useCallback(() => { turnstileTokenRef.current = null }, [])
 
+  const [error, setError] = useState('')
+  const [challengeVersion, setChallengeVersion] = useState(0)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!turnstileTokenRef.current) { setTurnstileError(true); return }
     setTurnstileError(false)
     setLoading(true)
+    setError('')
 
     try {
-      await fetch('/api/contact', {
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, turnstileToken: turnstileTokenRef.current }),
       })
+      const result = await response.json()
+      if (!response.ok || !result.success) throw new Error(result.error || 'Message could not be sent')
       setSubmitted(true)
       setForm({ name: '', email: '', subject: '', message: '' })
       setTimeout(() => setSubmitted(false), 5000)
-    } catch {
-      setSubmitted(true)
-      setForm({ name: '', email: '', subject: '', message: '' })
-      setTimeout(() => setSubmitted(false), 5000)
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Message could not be sent. Please retry.')
     } finally {
       setLoading(false)
+      turnstileTokenRef.current = null
+      setChallengeVersion(v => v + 1)
     }
   }
 
@@ -93,8 +98,8 @@ export default function ContactPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="label">Your Name</label>
-                  <input
+                  <label className="label" htmlFor="field-1">Your Name</label>
+                  <input id="field-1"
                     type="text"
                     className="input"
                     value={form.name}
@@ -104,8 +109,8 @@ export default function ContactPage() {
                   />
                 </div>
                 <div>
-                  <label className="label">Email Address</label>
-                  <input
+                  <label className="label" htmlFor="field-2">Email Address</label>
+                  <input id="field-2"
                     type="email"
                     className="input"
                     value={form.email}
@@ -117,8 +122,8 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <label className="label">Subject</label>
-                <input
+                <label className="label" htmlFor="field-3">Subject</label>
+                <input id="field-3"
                   type="text"
                   className="input"
                   placeholder="e.g., Question about my appeal status"
@@ -130,8 +135,8 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <label className="label">Message</label>
-                <textarea
+                <label className="label" htmlFor="field-4">Message</label>
+                <textarea id="field-4"
                   className="input resize-none"
                   rows={6}
                   placeholder="Tell us how we can help..."
@@ -142,12 +147,13 @@ export default function ContactPage() {
                 />
               </div>
 
-              <Turnstile
-                siteKey="0x4AAAAAADi_eC_XdAiWpakE"
+              <Turnstile key={challengeVersion}
+                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''}
                 onSuccess={onTurnstileSuccess}
                 onError={onTurnstileError}
                 onExpire={onTurnstileExpire}
               />
+              {error && <p role="alert" className="text-danger">{error}</p>}
               {turnstileError && <p className="text-danger text-xs">Please complete the security check</p>}
 
               <button type="submit" className="btn-primary w-full" disabled={loading}>

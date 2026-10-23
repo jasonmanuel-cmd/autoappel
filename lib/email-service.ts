@@ -1,7 +1,6 @@
 import { Resend } from 'resend'
 import { getEmailTemplate } from './email-templates'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
 
 export type EmailType =
   | 'welcome'
@@ -21,6 +20,9 @@ interface EmailData {
 
 export async function sendEmail(type: EmailType, data: EmailData): Promise<boolean> {
   try {
+    const key = process.env.RESEND_API_KEY
+    if (!key || key.startsWith('PASTE_')) return false
+    const resend = new Resend(key)
     const template = getEmailTemplate(type)
     if (!template) {
       console.error(`Email template not found for type: ${type}`)
@@ -28,10 +30,13 @@ export async function sendEmail(type: EmailType, data: EmailData): Promise<boole
     }
 
     // Generate HTML content from template
-    const html = template.generate(data)
+    const safeData = Object.fromEntries(Object.entries(data).map(([key, value]) => [key,
+      typeof value === 'string' ? value.replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]!)) : value,
+    ]))
+    const html = template.generate(safeData)
 
     const result = await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || 'noreply@appealmytickets.com',
+      from: process.env.EMAIL_FROM || process.env.RESEND_FROM_EMAIL || 'noreply@appealmytickets.com',
       to: data.to,
       subject: template.subject,
       html,
@@ -51,7 +56,7 @@ export async function sendEmail(type: EmailType, data: EmailData): Promise<boole
 }
 
 export async function sendWelcomeEmail(email: string, firstName: string): Promise<boolean> {
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://AppealMyTickets.com'
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.appealmytickets.com'
   return sendEmail('welcome', {
     to: email,
     firstName,

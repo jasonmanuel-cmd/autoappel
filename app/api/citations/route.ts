@@ -1,91 +1,35 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { createServerClient } from '@supabase/ssr'
-import { serverStore } from '@/lib/server-store'
-import { sendConfirmationEmail, sendCitationVerificationEmail } from '@/lib/resend'
-import { pushLeadToHubSpot } from '@/lib/hubspot'
-import { validateCitationFormat, getCountyHint } from '@/lib/citation-validator'
-import { verifyTurnstile } from '@/lib/turnstile'
+import { NextResponse } from 'next/server'
+import { api, authenticated, database, isAdmin, ApiError, checkDatabase } from '@/lib/auth-server'
 import { citationSchema } from '@/lib/validation'
-import { apiLimiter } from '@/lib/rate-limiter'
+import { verifyTurnstile } from '@/lib/turnstile'
+import { sendConfirmationEmail } from '@/lib/resend'
 
-function getClientIp(request: NextRequest): string {
-  return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || '127.0.0.1'
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    const ip = getClientIp(request)
-    const check = apiLimiter.check(ip)
-    if (!check.allowed) {
-      return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
-    }
-
-    const supabase = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
-      cookies: {
-        getAll() { return request.cookies.getAll() },
-      },
-    })
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
-    const body = await request.json()
-
-    const parsed = citationSchema.safeParse(body)
-    if (!parsed.success) {
-      const errors = parsed.error.issues.map(i => i.message).join(', ')
-      return NextResponse.json({ success: false, error: errors }, { status: 400 })
-    }
-
-    const token = parsed.data.turnstileToken
-    if (!token) {
-      return NextResponse.json({ success: false, error: 'Security check required' }, { status: 400 })
-    }
-    const valid = await verifyTurnstile(token)
-    if (!valid) {
-      return NextResponse.json({ success: false, error: 'Security check failed' }, { status: 400 })
-    }
-
-    const result = await serverStore.addCitation(parsed.data)
-
-    sendConfirmationEmail(parsed.data.email, parsed.data.citationNumber).catch(() => {})
-
-    const validation = validateCitationFormat(parsed.data.citationNumber, parsed.data.county)
-    if (!validation.valid || validation.confidence === 'low') {
-      const expectedHint = getCountyHint(parsed.data.county)
-      sendCitationVerificationEmail({
-        email: parsed.data.email,
-        citationNumber: parsed.data.citationNumber,
-        county: parsed.data.county,
-        firstName: parsed.data.firstName,
-        expectedFormat: expectedHint || 'TX-XX-YYYY-NNNNN',
-      }).catch(() => {})
-    }
-
-    pushLeadToHubSpot(parsed.data as Record<string, unknown>).catch(() => {})
-
-    return NextResponse.json({ success: true, data: result, validation: { valid: validation.valid, confidence: validation.confidence, message: validation.message } })
-  } catch (err) {
-    return NextResponse.json({ success: false, error: err instanceof Error ? err.message : 'Invalid request body' }, { status: 400 })
-  }
-}
-
-export async function GET(request: NextRequest) {
-  const supabase = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
-    cookies: {
-      getAll() { return request.cookies.getAll() },
-    },
-  })
-  const { data: { user } } = await supabase.auth.getUser()
-  const isDemo = request.cookies.get('demo_mode')?.value === 'true'
-  if (!user && !isDemo) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
-  const [stats, citations] = await Promise.all([
-    serverStore.getCitationStats(),
-    serverStore.getCitations(),
-  ])
-  return NextResponse.json({ success: true, data: { stats, citations } })
-}
+export const POST = api(async request => {
+  const user = await authenticated(request)
+  const parsed = citationSchema.safeParse(await request.json())
+  if (!parsed.success) throw new ApiError(400, parsed.error.issues.map(i => i.message).join(', '))
+  const c = parsed.data
+  if (!c.turnstileToken || !await verifyTurnstile(c.turnstileToken)) throw new ApiError(400, 'Security check failed. Please complete it again.')
+  if (c.email.toLowerCase() !== user.email?.toLowerCase()) throw new ApiError(400, 'Use the email address associated with your account')
+  const { data, error } = await database().from('citations').insert({
+    user_id: user.id, email: user.email, first_name: c.firstName, last_name: c.lastName,
+    phone: c.phone, preferred_contact: c.preferredContact, citation_number: c.citationNumber,
+    citation_date: c.citationDate || null, response_deadline: c.responseDeadline || null,
+    county: c.county, court: c.court, jurisdiction: c.jurisdiction, violation_type: c.violationType,
+    status: 'pending', payment_status: 'unpaid', service_fee_status: 'unpaid',
+  }).select('id, status').single()
+  checkDatabase(error)
+  // Wait for the attempt; delivery failure must not discard an already persisted citation.
+  await sendConfirmationEmail(user.email!, c.citationNumber).catch(() => {})
+  return NextResponse.json({ success: true, data }, { status: 201 })
+})
+export const GET = api(async request => {
+  const user = await authenticated(request)
+  let query = database().from('citations').select('*').order('created_at', { ascending: false })
+  if (!isAdmin(user)) query = query.eq('user_id', user.id)
+  const { data, error } = await query
+  checkDatabase(error)
+  const citations = data || []
+  const count = (status: string) => citations.filter(c => c.status === status).length
+  return NextResponse.json({ success: true, data: { citations, stats: { total: citations.length, new: count('pending'), inReview: count('in_review'), accepted: count('accepted'), rejected: count('rejected'), flagged: count('flagged') } } })
+})

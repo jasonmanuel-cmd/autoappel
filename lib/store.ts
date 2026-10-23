@@ -1,5 +1,6 @@
 'use client'
 
+import { computeRisk } from './deadlines'
 import type { Citation, Ambassador, AuditLog, RedVaultAlert, TreasuryProfile, DeploymentStatus, QAItem, RiskLevel } from './types'
 
 const DEMO_PASSWORD = 'demo-2026'
@@ -93,7 +94,7 @@ export const store = {
       const { createClientSupabase } = await import('./supabase')
       const supabase = createClientSupabase()
       if (!supabase) return { success: false, error: 'Authentication service is not configured. Please contact support.' }
-      const { error } = await supabase.auth.signUp({ email, password })
+      const { error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}/auth/callback` } })
       if (error) return { success: false, error: error.message }
       return { success: true }
     } catch {
@@ -110,7 +111,7 @@ export const store = {
   },
 
   /* ── Demo Mode ─────────────────────────────── */
-  getDemoMode: (): boolean => getLS<boolean>(DEMO_KEY, false),
+  getDemoMode: (): boolean => process.env.NODE_ENV !== 'production' && getLS<boolean>(DEMO_KEY, false),
   setDemoMode: (on: boolean) => {
     setLS(DEMO_KEY, on)
     if (typeof window !== 'undefined') {
@@ -297,17 +298,5 @@ export const store = {
     return store.getCitations().find(c => c.id === id)
   },
 
-  computeRisk: (deadlineStr: string): RiskLevel => {
-    if (!deadlineStr) return 'green'
-    const now = Date.now()
-    const diff = new Date(deadlineStr).getTime() - now
-    const rawDays = diff / 86400000
-    const BUFFER_DAYS = 3
-    const adjustedDays = rawDays - BUFFER_DAYS
-    if (adjustedDays <= 0) return 'expired'
-    if (adjustedDays <= 3) return 'red'
-    if (adjustedDays <= 7) return 'orange'
-    if (adjustedDays <= 14) return 'yellow'
-    return 'green'
-  },
+  computeRisk,
 }

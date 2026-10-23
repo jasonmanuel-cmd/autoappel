@@ -42,44 +42,12 @@ export default function PaymentPlanPage() {
         return
       }
 
-      // Insert submission
-      const { error: insertError } = await supabase.from('submissions').insert({
-        citation_id: citationId,
-        customer_email: user.email,
-        submission_type: 'payment_plan',
-        details: `Requested ${installments} installments. Reason: ${reason}`,
-        status: 'pending',
-        created_at: new Date().toISOString(),
+      const response = await fetch('/api/submissions', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ citationId, type: 'payment_plan', reason, details: `Requested ${installments} installments. Reason: ${reason}` }),
       })
-
-      if (insertError) {
-        setError(insertError.message)
-        setLoading(false)
-        return
-      }
-
-      // Update citation status
-      await supabase
-        .from('citations')
-        .update({ status: 'in_review', updated_at: new Date().toISOString() })
-        .eq('id', citationId)
-
-      // Send confirmation email notification
-      try {
-        await fetch('/api/notifications/email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            type: 'submission_received',
-            email: user.email,
-            firstName: user.email.split('@')[0], // Fallback
-            citationNumber: citationId,
-            submissionType: 'payment plan',
-          }),
-        })
-      } catch (err) {
-        console.error('Error sending notification:', err)
-      }
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.error || 'Request could not be saved')
 
       setSuccess(true)
       setTimeout(() => {
@@ -87,7 +55,7 @@ export default function PaymentPlanPage() {
       }, 2000)
     } catch (err) {
       console.error('Error:', err)
-      setError('An error occurred while submitting your payment plan request')
+      setError(err instanceof Error ? err.message : 'Request failed')
       setLoading(false)
     }
   }
@@ -122,10 +90,11 @@ export default function PaymentPlanPage() {
             Spread your payment across multiple installments. An admin will review your request and contact you.
           </p>
 
+          <p className="text-muted mb-4">This is an internal support request, not a filing with your court. You remain responsible for court deadlines and submissions.</p>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="label">Number of Installments *</label>
-              <select
+              <label className="label" htmlFor="field-1">Number of Installments *</label>
+              <select id="field-1"
                 value={installments}
                 onChange={e => { setInstallments(e.target.value); setError('') }}
                 className="input"
@@ -140,8 +109,8 @@ export default function PaymentPlanPage() {
             </div>
 
             <div>
-              <label className="label">Reason for Payment Plan Request *</label>
-              <textarea
+              <label className="label" htmlFor="field-2">Reason for Payment Plan Request *</label>
+              <textarea id="field-2"
                 value={reason}
                 onChange={e => { setReason(e.target.value); setError('') }}
                 placeholder="Tell us why you need a payment plan..."

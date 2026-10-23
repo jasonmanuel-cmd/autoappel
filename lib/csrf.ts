@@ -31,6 +31,7 @@ export function validateCSRFToken(sessionId: string, token: string): boolean {
   }
 
   // Compare tokens (timing-safe comparison)
+  if (Buffer.byteLength(entry.token) !== Buffer.byteLength(token)) return false
   return crypto.timingSafeEqual(
     Buffer.from(entry.token),
     Buffer.from(token)
@@ -51,4 +52,4 @@ setInterval(() => {
     }
   })
   entriesToDelete.forEach(key => csrfTokenStore.delete(key))
-}, 60 * 60 * 1000) // Cleanup every hour
+}, 60 * 60 * 1000).unref() // Cleanup every hour

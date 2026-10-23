@@ -170,8 +170,8 @@ export default function DemoPaymentPage() {
 
             <div className="space-y-4">
               <div>
-                <label className="label">Card Number</label>
-                <input
+                <label className="label" htmlFor="field-1">Card Number</label>
+                <input id="field-1"
                   className="input"
                   placeholder="4242 4242 4242 4242"
                   value={cardNumber}
@@ -180,12 +180,12 @@ export default function DemoPaymentPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="label">Expiry Date</label>
-                  <input className="input" placeholder="12/28" value={cardExp} onChange={e => setCardExp(e.target.value.replace(/\D/g, '').slice(0, 4).replace(/^(\d{2})/, '$1/').replace(/\/$/, ''))} />
+                  <label className="label" htmlFor="field-2">Expiry Date</label>
+                  <input id="field-2" className="input" placeholder="12/28" value={cardExp} onChange={e => setCardExp(e.target.value.replace(/\D/g, '').slice(0, 4).replace(/^(\d{2})/, '$1/').replace(/\/$/, ''))} />
                 </div>
                 <div>
-                  <label className="label">CVC</label>
-                  <input className="input" placeholder="123" value={cardCvc} onChange={e => setCardCvc(e.target.value.replace(/\D/g, '').slice(0, 3))} />
+                  <label className="label" htmlFor="field-3">CVC</label>
+                  <input id="field-3" className="input" placeholder="123" value={cardCvc} onChange={e => setCardCvc(e.target.value.replace(/\D/g, '').slice(0, 3))} />
                 </div>
               </div>
             </div>

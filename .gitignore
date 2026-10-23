@@ -56,3 +56,10 @@ SUPABASE_SQL_*.sql
 lib/store.ts.backup
 lib/store.ts.old
 lib/store.ts.original
+
+# TypeScript incremental cache
+*.tsbuildinfo
+
+# Protect provider secrets in all environment-specific files
+.env.*
+!.env.example

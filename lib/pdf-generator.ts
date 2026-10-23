@@ -72,7 +72,7 @@ export async function generateAppealStrategyPDF(data: StrategyData): Promise<Buf
       const f = bold ? fontBold : font
       const words = text.split(' ')
       let lineText = ''
-      let lineWidth = 0
+      const lineWidth = 0
       for (const w of words) {
         const ww = f.widthOfTextAtSize((lineText ? lineText + ' ' : '') + w, size)
         if (ww > width - indent - 40) {
@@ -94,7 +94,7 @@ export async function generateAppealStrategyPDF(data: StrategyData): Promise<Buf
       page.drawText('•', { x: bullX, y, size: 9, font: fontBold, color: RED })
       const words = text.split(' ')
       let lineText = ''
-      let lineWidth = 0
+      const lineWidth = 0
       const maxW = width - indent - 20
       for (const w of words) {
         const ww = font.widthOfTextAtSize((lineText ? lineText + ' ' : '') + w, 9)
@@ -178,8 +178,8 @@ export async function generateAppealStrategyPDF(data: StrategyData): Promise<Buf
 
       section('ADDITIONAL RESOURCES')
       body('For additional help:', 50, 9)
-      bullet('Visit our FAQ: https://AppealMyTickets.com/faq')
-      bullet('Contact support: https://AppealMyTickets.com/contact')
+      bullet('Visit our FAQ: https://www.appealmytickets.com/faq')
+      bullet('Contact support: https://www.appealmytickets.com/contact')
       bullet('Email us: info@appealmytickets.com')
       bullet('Call us: (949) 350-8804')
 
@@ -201,25 +201,25 @@ export async function generateAppealStrategyPDF(data: StrategyData): Promise<Buf
   return Buffer.from(pdfBytes)
 }
 
-export async function generateStrategyPDFAndSend(data: StrategyData): Promise<{ success: boolean; error?: string }> {
+export async function generateStrategyPDFAndSend(data: StrategyData, paymentId: string): Promise<{ success: boolean; error?: string }> {
   try {
     const pdfBuffer = await generateAppealStrategyPDF(data)
 
     const resendModule = await import('resend')
     const resendKey = process.env.RESEND_API_KEY
     if (!resendKey || resendKey.startsWith('PASTE_')) {
-      console.log(`[MOCK EMAIL + PDF] Strategy document for ${data.firstName} ${data.lastName} (${data.citationNumber})`)
-      return { success: true }
+      return { success: false, error: 'Email delivery is not configured' }
     }
 
     const resend = new resendModule.Resend(resendKey)
     const emailFrom = process.env.EMAIL_FROM || 'info@appealmytickets.com'
 
+    const escape = (value: string) => value.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!))
     const html = `
       <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
         <h1 style="color:#ff2400">Your Appeal Strategy Document is Ready</h1>
-        <p>Hi ${data.firstName},</p>
-        <p>Your appeal strategy document for citation <strong>${data.citationNumber}</strong> is attached to this email.</p>
+        <p>Hi ${escape(data.firstName)},</p>
+        <p>Your appeal strategy document for citation <strong>${escape(data.citationNumber)}</strong> is attached to this email.</p>
         <h2>What's Inside</h2>
         <ul>
           <li>Step-by-step instructions for filing your appeal</li>
@@ -229,7 +229,7 @@ export async function generateStrategyPDFAndSend(data: StrategyData): Promise<{ 
         </ul>
         <h2>Important Reminder</h2>
         <p>Your deadline is <strong>${formatDate(data.responseDeadline)}</strong>. Please submit your appeal before this date.</p>
-        <p>Track your appeal status: <a href="https://AppealMyTickets.com/dashboard">Visit Dashboard</a></p>
+        <p>Track your appeal status: <a href="https://www.appealmytickets.com/dashboard">Visit Dashboard</a></p>
         <hr style="border:none;border-top:1px solid #e2e8f0"/>
         <p style="color:#64748b;font-size:12px">AppealMyTickets.com is an appeal assistance platform. We are not a law firm and do not provide legal representation or legal advice.</p>
       </div>`
@@ -242,10 +242,10 @@ export async function generateStrategyPDFAndSend(data: StrategyData): Promise<{ 
       attachments: [
         {
           filename: `AppealMyTickets_Strategy_${data.citationNumber.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`,
-          content: pdfBuffer,
+          content: pdfBuffer.toString('base64'),
         },
       ],
-    })
+    }, { idempotencyKey: `strategy-${paymentId}` })
 
     if (result.error) {
       console.error('Strategy email error:', result.error)

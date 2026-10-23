@@ -42,45 +42,12 @@ export default function DismissalPage() {
         return
       }
 
-      // Insert submission
-      const { error: insertError } = await supabase.from('submissions').insert({
-        citation_id: citationId,
-        customer_email: user.email,
-        submission_type: 'dismissal',
-        reason,
-        details,
-        status: 'pending',
-        created_at: new Date().toISOString(),
+      const response = await fetch('/api/submissions', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ citationId, type: 'dismissal', reason, details: details }),
       })
-
-      if (insertError) {
-        setError(insertError.message)
-        setLoading(false)
-        return
-      }
-
-      // Update citation status
-      await supabase
-        .from('citations')
-        .update({ status: 'in_review', updated_at: new Date().toISOString() })
-        .eq('id', citationId)
-
-      // Send confirmation email notification
-      try {
-        await fetch('/api/notifications/email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            type: 'submission_received',
-            email: user.email,
-            firstName: user.email.split('@')[0], // Fallback
-            citationNumber: citationId,
-            submissionType: 'dismissal request',
-          }),
-        })
-      } catch (err) {
-        console.error('Error sending notification:', err)
-      }
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.error || 'Request could not be saved')
 
       setSuccess(true)
       setTimeout(() => {
@@ -88,7 +55,7 @@ export default function DismissalPage() {
       }, 2000)
     } catch (err) {
       console.error('Error:', err)
-      setError('An error occurred while submitting your dismissal request')
+      setError(err instanceof Error ? err.message : 'Request failed')
       setLoading(false)
     }
   }
@@ -123,10 +90,11 @@ export default function DismissalPage() {
             Request that this citation be dismissed. Provide a detailed explanation of why the citation should be dismissed.
           </p>
 
+          <p className="text-muted mb-4">This is an internal support request, not a filing with your court. You remain responsible for court deadlines and submissions.</p>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="label">Reason for Dismissal *</label>
-              <select
+              <label className="label" htmlFor="field-1">Reason for Dismissal *</label>
+              <select id="field-1"
                 value={reason}
                 onChange={e => { setReason(e.target.value); setError('') }}
                 className="input"
@@ -142,8 +110,8 @@ export default function DismissalPage() {
             </div>
 
             <div>
-              <label className="label">Detailed Explanation *</label>
-              <textarea
+              <label className="label" htmlFor="field-2">Detailed Explanation *</label>
+              <textarea id="field-2"
                 value={details}
                 onChange={e => { setDetails(e.target.value); setError('') }}
                 placeholder="Provide detailed explanation of why this citation should be dismissed..."
