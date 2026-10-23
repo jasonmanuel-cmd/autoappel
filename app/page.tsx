@@ -68,7 +68,7 @@ export default function HoustonLanding() {
             </div>
 
             {/* Full-Service (Coming Soon) */}
-            <div className="card text-center border-border/50 opacity-80">
+            <div className="card text-center border-border/50">
               <div className="inline-block bg-primary text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest mb-2">Coming Soon</div>
               <p className="text-subtle text-sm font-semibold uppercase tracking-widest mb-2">Full-Service Appeal</p>
               <div className="flex items-baseline justify-center gap-2 mb-2">
@@ -284,7 +284,7 @@ export default function HoustonLanding() {
               <div className="flex items-center gap-2 mb-4">
                 <Image src="/appealmytickets-logo.png" alt="AppealMyTickets.com" width={160} height={40} className="h-10 w-auto" />
               </div>
-              <p className="text-muted text-sm">Traffic citation appeal strategy platform for Houston drivers. Flat $79.99 per citation. <a href="https://AppealMyTickets.com" className="text-primary hover:underline">AppealMyTicket<span className="text-primary">S</span>.com</a></p>
+              <p className="text-muted text-sm">Traffic citation appeal strategy platform for Houston drivers. Flat $79.99 per citation. <a href="https://www.appealmytickets.com" className="text-primary hover:underline">AppealMyTicket<span className="text-primary">S</span>.com</a></p>
             </div>
             <div>
               <p className="font-semibold text-text mb-3">Company</p>

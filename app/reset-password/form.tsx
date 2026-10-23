@@ -17,16 +17,20 @@ export default function ResetPasswordForm() {
   const [checking, setChecking] = useState(true)
 
   useEffect(() => {
-    // Verify that we have a valid reset token from the URL
-    const token = searchParams.get('token')
-    const type = searchParams.get('type')
-
-    if (token && type === 'recovery') {
-      setValidToken(true)
-    } else {
-      setError('Invalid or missing reset link. Please request a new one.')
+    let active = true
+    async function check() {
+      try {
+        const supabase = createClientSupabase()
+        if (!supabase) throw new Error('Authentication is unavailable')
+        const { data: { user }, error } = await supabase.auth.getUser()
+        if (error || !user) throw new Error('Invalid or expired reset link. Please request a new one.')
+        if (active) setValidToken(true)
+      } catch (e) { if (active) setError(e instanceof Error ? e.message : 'Invalid reset link') }
+      finally { if (active) setChecking(false) }
     }
-    setChecking(false)
+    void check()
+    return () => { active = false }
+
   }, [searchParams])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -149,8 +153,8 @@ export default function ResetPasswordForm() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="label">New Password</label>
-              <input
+              <label className="label" htmlFor="field-1">New Password</label>
+              <input id="field-1"
                 type="password"
                 className="input"
                 value={password}
@@ -165,8 +169,8 @@ export default function ResetPasswordForm() {
             </div>
 
             <div>
-              <label className="label">Confirm Password</label>
-              <input
+              <label className="label" htmlFor="field-2">Confirm Password</label>
+              <input id="field-2"
                 type="password"
                 className="input"
                 value={confirmPassword}

@@ -81,7 +81,7 @@
   /* Text hierarchy on dark backgrounds */
   --color-text:           var(--silver-light);
   --color-text-muted:     var(--silver);
-  --color-text-subtle:    var(--gray-700);
+  --color-text-subtle:    var(--gray-300);
   --color-muted-fg:       var(--gray-300);
 
   /* Status */
@@ -101,8 +101,8 @@
 /* ── Component Layer ──────────────────────── */
 :root {
   /* Button Primary — sharp, beveled feel */
-  --btn-bg:         var(--color-primary);
-  --btn-bg-hover:   var(--color-primary-hover);
+  --btn-bg:         var(--red-dark);
+  --btn-bg-hover:   #a01700;
   --btn-text:       var(--white);
   --btn-shadow:     0 2px 4px rgba(255,36,0,0.3);
   --btn-radius:     var(--radius-md);

@@ -38,8 +38,8 @@ export default function AdminLoginPage() {
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="label">Admin Email</label>
-              <input
+              <label className="label" htmlFor="field-1">Admin Email</label>
+              <input id="field-1"
                 type="email"
                 className="input"
                 value={email}
@@ -50,8 +50,8 @@ export default function AdminLoginPage() {
               />
             </div>
             <div>
-              <label className="label">Password</label>
-              <input
+              <label className="label" htmlFor="field-2">Password</label>
+              <input id="field-2"
                 type="password"
                 className="input"
                 value={password}

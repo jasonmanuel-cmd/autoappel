@@ -44,7 +44,7 @@ function genId(prefix: string): string {
   return `${prefix}_${crypto.randomUUID().slice(0, 8)}`
 }
 
-let sessions: CheckoutSession[] = []
+const sessions: CheckoutSession[] = []
 
 function getDemoMode(): boolean {
   try { return store.getDemoMode() } catch { return false }

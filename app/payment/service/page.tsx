@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { store } from '@/lib/store'
+import { citationFromRow } from '@/lib/citation-client'
 import type { Citation } from '@/lib/types'
 
 const SERVICE_FEE = 79.99
@@ -24,14 +24,17 @@ function ServicePaymentContent() {
   const [promoError, setPromoError] = useState('')
 
   useEffect(() => {
-    if (citationId) {
-      const c = store.getCitationById(citationId)
-      if (c) {
-        setCitation(c)
-        setFound(true)
-      }
-    }
-    setLoading(false)
+    let active = true
+    if (!citationId) { setLoading(false); return }
+    fetch(`/api/citations/${encodeURIComponent(citationId)}`)
+      .then(async response => {
+        const data = await response.json()
+        if (!response.ok) throw new Error(data.error || 'Unable to load citation')
+        if (active) { setCitation(citationFromRow(data.data)); setFound(true) }
+      }).catch(e => { if (active) setError(e.message) })
+      .finally(() => { if (active) setLoading(false) })
+    return () => { active = false }
+
   }, [citationId])
 
   const checkPromo = async () => {
@@ -97,7 +100,7 @@ function ServicePaymentContent() {
     return (
       <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'var(--gradient-bg)' }}>
         <div className="card text-center max-w-md">
-          <h1 className="text-2xl font-black mb-3">Citation Not Found</h1>
+          <h1 className="text-2xl font-black mb-3">Citation unavailable</h1><p role="alert">{error}</p>
           <p className="text-muted mb-6">We couldn't find your citation. Please start a new appeal.</p>
           <Link href="/intake" className="btn-primary">Start New Appeal</Link>
         </div>
@@ -146,7 +149,7 @@ function ServicePaymentContent() {
               <p className={`text-3xl font-black ${promoStatus === 'valid' ? 'text-muted line-through' : 'text-primary'}`}>${SERVICE_FEE}</p>
               {promoStatus === 'valid' && promoInfo && (
                 <p className={`text-xl font-black ${promoInfo.isFree ? 'text-success' : 'text-primary'}`}>
-                  {promoInfo.isFree ? 'FREE' : `$${(SERVICE_FEE * (100 - 100) / 100).toFixed(2)}`}
+                  {promoInfo.isFree ? 'FREE' : 'Discount applied at checkout'}
                 </p>
               )}
             </div>

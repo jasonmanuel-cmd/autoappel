@@ -1,67 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerClient } from '@supabase/ssr'
-import { serverStore } from '@/lib/server-store'
+import { api, authenticated, database, assertOwner, ApiError, checkDatabase } from '@/lib/auth-server'
 import { citationStatusSchema } from '@/lib/validation'
-import { apiLimiter } from '@/lib/rate-limiter'
 
-function getClientIp(request: NextRequest): string {
-  return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || '127.0.0.1'
+type Context = { params: Promise<{ id: string }> }
+export async function GET(request: NextRequest, context: Context) {
+  return api(async req => {
+    const user = await authenticated(req)
+    const { id } = await context.params
+    const { data, error } = await database().from('citations').select('*').eq('id', id).maybeSingle()
+    checkDatabase(error)
+    assertOwner(user, data)
+    return NextResponse.json({ success: true, data })
+  })(request)
 }
-
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
-  const supabase = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
-    cookies: {
-      getAll() { return request.cookies.getAll() },
-    },
-  })
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
-  const citation = await serverStore.getCitation(params.id)
-  if (!citation) {
-    return NextResponse.json({ success: false, error: 'Citation not found' }, { status: 404 })
-  }
-  return NextResponse.json({ success: true, data: citation })
-}
-
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
-  try {
-    const ip = getClientIp(request)
-    const check = apiLimiter.check(ip)
-    if (!check.allowed) {
-      return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
-    }
-
-    const supabase = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
-      cookies: {
-        getAll() { return request.cookies.getAll() },
-      },
-    })
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
-    const body = await request.json()
-
-    const parsed = citationStatusSchema.safeParse(body)
-    if (!parsed.success) {
-      const errors = parsed.error.issues.map(i => i.message).join(', ')
-      return NextResponse.json({ success: false, error: errors }, { status: 400 })
-    }
-
-    const { status, notes } = parsed.data
-
-    const updated = await serverStore.updateCitationStatus(params.id, status, notes)
-    if (!updated) {
-      return NextResponse.json({ success: false, error: 'Citation not found' }, { status: 404 })
-    }
-
-    const citation = await serverStore.getCitation(params.id)
-    return NextResponse.json({ success: true, data: citation })
-  } catch {
-    return NextResponse.json({ success: false, error: 'Invalid request body' }, { status: 400 })
-  }
+export async function PATCH(request: NextRequest, context: Context) {
+  return api(async req => {
+    await authenticated(req, true)
+    const { id } = await context.params
+    const parsed = citationStatusSchema.safeParse(await req.json())
+    if (!parsed.success) throw new ApiError(400, 'Invalid status')
+    const { data, error } = await database().from('citations').update({ ...parsed.data, updated_at: new Date().toISOString() }).eq('id', id).select('*').maybeSingle()
+    checkDatabase(error)
+    if (!data) throw new ApiError(404, 'Citation not found')
+    return NextResponse.json({ success: true, data })
+  })(request)
 }

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { store } from '@/lib/store'
+import { citationFromRow } from '@/lib/citation-client'
 import type { Citation, RiskLevel } from '@/lib/types'
 import Link from 'next/link'
 import { Suspense } from 'react'
@@ -32,22 +33,28 @@ function daysUntil(dateStr: string) {
 function TrackingContent() {
   const params = useSearchParams()
   const id = params.get('id')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(true)
   const [citations, setCitations] = useState<Citation[]>([])
   const [activeTab, setActiveTab] = useState<'current' | 'history'>('current')
 
   useEffect(() => {
-    const all = store.getCitations()
-    if (id) {
-      const found = all.find(c => c.id === id)
-      setCitations(found ? [found] : all)
-    } else {
-      setCitations(all)
-    }
+    let active = true
+    fetch('/api/citations').then(async response => {
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.error || 'Unable to load citations')
+      const rows = result.data.citations.map(citationFromRow) as Citation[]
+      if (active) setCitations(id ? rows.filter(c => c.id === id) : rows)
+    }).catch(e => { if (active) setError(e.message) }).finally(() => { if (active) setLoading(false) })
+    return () => { active = false }
+
   }, [id])
 
   const pending = citations.filter(c => ['pending', 'in_review', 'appealing'].includes(c.status))
   const resolved = citations.filter(c => ['resolved', 'expired'].includes(c.status))
 
+  if (loading) return <p role="status" className="p-8">Loading citations…</p>
+  if (error) return <div className="p-8"><p role="alert">{error}</p><Link href="/login">Sign in</Link></div>
   if (citations.length === 0) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-16 text-center">

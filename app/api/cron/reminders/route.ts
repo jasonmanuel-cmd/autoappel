@@ -1,71 +1,39 @@
+import { timingSafeEqual } from 'node:crypto'
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabase } from '@/lib/supabase'
 import { sendDeadlineAlertEmail } from '@/lib/email-service'
 import { sendDeadlineAlert48hSMS } from '@/lib/sms-service'
-
 export const maxDuration = 60
-
 export async function GET(request: NextRequest) {
-  const authHeader = request.headers.get('authorization')
-  const cronSecret = process.env.CRON_SECRET
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-    return Response.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-  const results: string[] = []
-  const errors: string[] = []
-
+  const secret = process.env.CRON_SECRET
+  if (!secret) return NextResponse.json({ error: 'Reminder service is not configured' }, { status: 503 })
+  const actual = Buffer.from(request.headers.get('authorization') || '')
+  const expected = Buffer.from(`Bearer ${secret}`)
+  if (actual.length !== expected.length || !timingSafeEqual(actual, expected)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const db = createServerSupabase()
+  if (!db) return NextResponse.json({ error: 'Database unavailable' }, { status: 503 })
+  let sent = 0, failed = 0, skipped = 0
   try {
-    const supabase = createServerSupabase()
-    if (!supabase) {
-      results.push('Supabase not configured — skipping reminder check')
-      return NextResponse.json({ ok: true, results, errors })
-    }
-
-    const { data: citations, error } = await supabase
-      .from('citations')
-      .select('*')
-      .in('status', ['pending', 'in_review', 'appealing'])
-
-    if (error) {
-      errors.push(`DB query failed: ${error.message}`)
-      return NextResponse.json({ ok: false, errors }, { status: 500 })
-    }
-
-    const now = Date.now()
-
-    for (const c of citations || []) {
-      if (!c.response_deadline) continue
-
-      const diffMs = new Date(c.response_deadline).getTime() - now
-      const daysRemaining = Math.ceil(diffMs / 86400000)
-
-      if (daysRemaining <= 7 && daysRemaining > 0) {
-        try {
-          await sendDeadlineAlertEmail(
-            c.email,
-            c.first_name || 'Valued Customer',
-            c.citation_number,
-            c.response_deadline,
-            daysRemaining,
-          )
-          results.push(`Email reminder sent to ${c.email} for ${c.citation_number} (${daysRemaining}d remaining)`)
-        } catch (e) {
-          errors.push(`Email failed for ${c.citation_number}: ${e}`)
-        }
-      }
-
-      if (daysRemaining <= 2 && daysRemaining > 0 && c.phone) {
-        try {
-          await sendDeadlineAlert48hSMS(c.phone, c.citation_number, c.response_deadline)
-          results.push(`SMS reminder sent to ${c.phone} for ${c.citation_number}`)
-        } catch (e) {
-          errors.push(`SMS failed for ${c.citation_number}: ${e}`)
-        }
+    const { data, error } = await db.from('citations').select('id,email,phone,first_name,citation_number,response_deadline,preferred_contact').in('status',['pending','in_review','appealing'])
+      .gt('response_deadline',new Date().toISOString()).lte('response_deadline',new Date(Date.now()+7*86400000).toISOString())
+    if (error) throw error
+    for (const c of data || []) {
+      const days = Math.ceil((new Date(c.response_deadline).getTime()-Date.now())/86400000)
+      for (const channel of ['email','sms']) {
+        if (channel === 'sms' && (days > 2 || !c.phone || !['sms','both'].includes(c.preferred_contact))) continue
+        if (channel === 'email' && !['email','both'].includes(c.preferred_contact || 'email')) continue
+        const key = { citation_id: c.id, deadline: c.response_deadline, channel, day: new Date().toISOString().slice(0,10) }
+        const { error: claimError } = await db.from('reminder_deliveries').insert(key)
+        if (claimError?.code === '23505') { skipped++; continue }
+        if (claimError) throw claimError
+        const ok = channel === 'email'
+          ? await sendDeadlineAlertEmail(c.email,c.first_name,c.citation_number,c.response_deadline,days)
+          : await sendDeadlineAlert48hSMS(c.phone,c.citation_number,c.response_deadline)
+        const { error: saveError } = await db.from('reminder_deliveries').update({ state: ok ? 'sent' : 'failed' }).match(key)
+        if (saveError) throw saveError
+        if (ok) sent++; else failed++
       }
     }
-  } catch (e) {
-    errors.push(`Cron error: ${e}`)
-  }
-
-  return NextResponse.json({ ok: errors.length === 0, results, errors })
+    return NextResponse.json({ ok: failed===0, sent, failed, skipped }, { status: failed ? 502 : 200 })
+  } catch { return NextResponse.json({ error: 'Reminder run failed', sent, failed, skipped }, { status: 503 }) }
 }

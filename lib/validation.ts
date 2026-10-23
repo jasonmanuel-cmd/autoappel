@@ -4,7 +4,8 @@ export const citationSchema = z.object({
   firstName: z.string().min(1, 'First name is required').max(100),
   lastName: z.string().min(1, 'Last name is required').max(100),
   email: z.string().email('Invalid email address').max(255),
-  phone: z.string().optional(),
+  phone: z.string().max(30).optional(),
+  preferredContact: z.enum(['email', 'sms', 'both']).default('email'),
   citationNumber: z.string().min(1, 'Citation number is required').max(50),
   citationDate: z.string().optional(),
   county: z.string().min(1, 'County is required').max(100),
@@ -43,8 +44,8 @@ export const contactSchema = z.object({
 
 export const checkoutSchema = z.object({
   plan: z.string().min(1, 'Plan is required').max(100),
-  amount: z.number().min(1, 'Amount must be at least 1'),
-  citation_id: z.string().optional(),
+  amount: z.number().optional(),
+  citation_id: z.string().uuid(),
   promoCode: z.string().optional(),
 })
 

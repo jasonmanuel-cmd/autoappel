@@ -19,6 +19,7 @@ export default function IntakePage() {
   const router = useRouter()
   const [step, setStep] = useState(0)
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [challengeVersion, setChallengeVersion] = useState(0)
   const [loading, setLoading] = useState(false)
   const [authLoading, setAuthLoading] = useState(true)
   const [authenticated, setAuthenticated] = useState(false)
@@ -31,6 +32,7 @@ export default function IntakePage() {
         if (supabase) {
           const { data: { user } } = await supabase.auth.getUser()
           setAuthenticated(!!user)
+          if (user?.email) setForm(f => ({ ...f, email: user.email! }))
         }
       } catch {}
       setAuthLoading(false)
@@ -114,48 +116,17 @@ export default function IntakePage() {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       }
-      store.saveCitation(citation)
-      
-      try {
-        await fetch('/api/citations', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...citation, turnstileToken: turnstileTokenRef.current }),
-        })
-      } catch (err) {
-        console.error('Failed to submit citation to server:', err)
-      }
-
-      try {
-        const firstName = form.firstName || form.email.split('@')[0]
-        await fetch('/api/notifications/email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'welcome', email: form.email, firstName, citationNumber: form.citationNumber }),
-        })
-      } catch (err) {
-        console.error('Failed to send confirmation email:', err)
-      }
-
-      if (form.phone && form.preferredContact !== 'email') {
-        try {
-          await fetch('/api/notifications/sms', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              type: 'submission_decision',
-              phoneNumber: form.phone,
-              citationNumber: form.citationNumber,
-              submissionType: 'appeal',
-              decision: 'approved',
-            }),
-          })
-        } catch (err) {
-          console.error('Failed to send SMS notification:', err)
-        }
-      }
-
-      router.push(`/payment/service?citation_id=${citation.id}`)
+      const response = await fetch('/api/citations', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...citation, turnstileToken: turnstileTokenRef.current }),
+      })
+      const result = await response.json()
+      if (!response.ok || !result.success || !result.data?.id) throw new Error(result.error || 'Submission failed. Please try again.')
+      router.push(`/payment/service?citation_id=${encodeURIComponent(result.data.id)}`)
+    } catch (error) {
+      setErrors({ submit: error instanceof Error ? error.message : 'Submission failed. Please try again.' })
+      onTurnstileExpire()
+      setChallengeVersion(v => v + 1)
     } finally {
       setLoading(false)
     }
@@ -163,8 +134,8 @@ export default function IntakePage() {
 
   const field = (label: string, key: string, type = 'text', placeholder = '') => (
     <div key={key}>
-      <label className="label">{label}</label>
-      <input
+      <label className="label" htmlFor={key}>{label}</label>
+      <input id={key}
         type={type}
         className="input"
         placeholder={placeholder}
@@ -239,8 +210,8 @@ export default function IntakePage() {
               {field('Email Address', 'email', 'email', 'john@email.com')}
               {field('Phone Number', 'phone', 'tel', '(555) 123-4567')}
               <div>
-                <label className="label">How should we contact you?</label>
-                <select className="input" value={form.preferredContact} onChange={e => set('preferredContact', e.target.value as any)} disabled={loading}>
+                <label className="label" htmlFor="field-2">How should we contact you?</label>
+                <select id="field-2" className="input" value={form.preferredContact} onChange={e => set('preferredContact', e.target.value as any)} disabled={loading}>
                   <option value="email">Email</option>
                   <option value="sms">Text Message (SMS)</option>
                   <option value="both">Both Email & Text</option>
@@ -267,8 +238,8 @@ export default function IntakePage() {
               {field('Response Deadline', 'responseDeadline', 'date')}
               <p className="text-xs text-subtle">If you know your response deadline, enter it here. This helps us track urgency.</p>
               <div>
-                <label className="label">County</label>
-                <select className="input" value={form.county} onChange={e => set('county', e.target.value)} disabled={loading}>
+                <label className="label" htmlFor="field-3">County</label>
+                <select id="field-3" className="input" value={form.county} onChange={e => set('county', e.target.value)} disabled={loading}>
                   <option value="">Select county...</option>
                   <option value="Harris">Harris County (Houston)</option>
                   <option value="Fort Bend">Fort Bend County</option>
@@ -283,8 +254,8 @@ export default function IntakePage() {
               {field('Court Name', 'court', 'text', 'Houston Municipal Court')}
               {field('City/Jurisdiction', 'jurisdiction', 'text', 'Houston, TX')}
               <div>
-                <label className="label">Violation Type</label>
-                <select className="input" value={form.violationType} onChange={e => set('violationType', e.target.value)} disabled={loading}>
+                <label className="label" htmlFor="field-4">Violation Type</label>
+                <select id="field-4" className="input" value={form.violationType} onChange={e => set('violationType', e.target.value)} disabled={loading}>
                   <option value="">Select violation type...</option>
                   {VIOLATION_TYPES.map(v => <option key={v} value={v}>{v}</option>)}
                 </select>
@@ -364,12 +335,13 @@ export default function IntakePage() {
                 {errors.disclaimerAcknowledged && <p className="text-danger text-xs">{errors.disclaimerAcknowledged}</p>}
               </div>
 
-              <Turnstile
-                siteKey="0x4AAAAAADi_eC_XdAiWpakE"
+              <Turnstile key={challengeVersion}
+                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''}
                 onSuccess={onTurnstileSuccess}
                 onError={onTurnstileError}
                 onExpire={onTurnstileExpire}
               />
+              {errors.submit && <p role="alert" className="text-danger">{errors.submit}</p>}
               {errors.turnstile && <p className="text-danger text-xs">{errors.turnstile}</p>}
             </>
           )}

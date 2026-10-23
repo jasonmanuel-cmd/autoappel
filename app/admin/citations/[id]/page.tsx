@@ -1,5 +1,8 @@
 'use client'
 
+import { computeRisk } from '@/lib/deadlines'
+
+import SubmissionList from '@/components/SubmissionList'
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
@@ -140,7 +143,7 @@ export default function AdminCitationDetailPage() {
           court: row.court,
           jurisdiction: row.jurisdiction,
           violationType: row.violation_type,
-          riskLevel: row.risk_level,
+          riskLevel: computeRisk(row.response_deadline),
           status: row.status,
           paymentStatus: row.payment_status,
           serviceFeeStatus: row.service_fee_status,
@@ -295,7 +298,7 @@ export default function AdminCitationDetailPage() {
             </div>
             <div className="text-right">
               <span className={`text-sm font-semibold px-3 py-1 rounded border block mb-2 ${getRiskColor(citation.riskLevel)}`}>
-                {citation.riskLevel.toUpperCase()}
+                {citation.responseDeadline ? citation.riskLevel.toUpperCase() : 'DEADLINE NEEDED'}
               </span>
               <span className={`text-sm font-semibold px-3 py-1 rounded border block ${getStatusColor(citation.status)}`}>
                 {citation.status.toUpperCase()}
@@ -482,6 +485,7 @@ export default function AdminCitationDetailPage() {
             </div>
           </div>
         </div>
+        <SubmissionList citationId={citationId} />
       </div>
     </div>
   )

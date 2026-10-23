@@ -12,6 +12,10 @@ export function rateLimit(opts: {
     check: (identifier: string) => {
       const store = stores.get(storeKey)!
       const now = Date.now()
+      if (store.size > 10000) {
+        for (const [key, entry] of store) if (entry.resetAt <= now) store.delete(key)
+        if (store.size > 10000 && !store.has(identifier)) return { allowed: false, remaining: 0 }
+      }
       const record = store.get(identifier)
 
       if (!record || now > record.resetAt) {

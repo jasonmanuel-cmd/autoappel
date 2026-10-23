@@ -4,7 +4,7 @@ import { createServerClient } from '@supabase/ssr'
 import { rateLimit } from '@/lib/rate-limit'
 
 const adminRoutes = [
-  '/admin/dashboard',
+  '/admin',
   '/control-panel', '/ambassadors', '/treasury', '/red-vault', '/qa',
 ]
 
@@ -15,7 +15,7 @@ const customerRoutes = [
 
 const protectedRoutes = [...adminRoutes, ...customerRoutes]
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   const clientIp = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
@@ -28,15 +28,9 @@ export async function middleware(request: NextRequest) {
   const isProtectedRoute = protectedRoutes.some(route => pathname === route || pathname.startsWith(`${route}/`))
   if (!isProtectedRoute) return NextResponse.next()
 
-  if (process.env.NODE_ENV === 'production') {
-    const demoCookie = request.cookies.get('aa_demo')?.value
-    if (demoCookie === 'true') {
-      return NextResponse.redirect(new URL('/login', request.url))
-    }
-  }
-
-  if (pathname === '/verify-email') {
-    return NextResponse.next()
+  if (pathname === '/admin/login' || pathname === '/verify-email') return NextResponse.next()
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY.startsWith('PASTE_')) {
+    return NextResponse.redirect(new URL('/login?error=service_unavailable', request.url))
   }
 
   let supabaseResponse = NextResponse.next({ request })
@@ -63,6 +57,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
+  if (adminRoutes.some(route => pathname === route || pathname.startsWith(`${route}/`)) && user.app_metadata?.role !== 'admin') {
+    return new NextResponse('Administrator access required', { status: 403 })
+  }
+
   if (customerRoutes.some(route => pathname === route || pathname.startsWith(`${route}/`))) {
     if (!user.email_confirmed_at) {
       return NextResponse.redirect(new URL('/verify-email', request.url))
@@ -76,7 +74,7 @@ export const config = {
   matcher: [
     '/dashboard/:path*',
     '/verify-email/:path*',
-    '/admin/dashboard/:path*',
+    '/admin/:path*',
     '/control-panel/:path*',
     '/ambassadors/:path*',
     '/treasury/:path*',

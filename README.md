@@ -1,3 +1,5 @@
+> **October 2026 repair/release notes:** Read [FIXES_AND_RELEASE.md](FIXES_AND_RELEASE.md) before setup or deployment. It supersedes older deployment/readiness claims in this repository. The versioned security/payment migration and provider setup are mandatory; the base schema alone is not a complete installation.
+
 # AutoAppeal™ — Houston
 
 Professional traffic citation filing platform built for the Apollo Build™ framework under LAGNAF™ network LLC. Multi-city deployable architecture for citation paperwork assistance, deadline tracking, and client management.

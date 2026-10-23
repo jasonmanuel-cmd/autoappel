@@ -1,7 +1,6 @@
 @import '../assets/css/design-tokens.css';
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@config '../tailwind.config.ts';
 
 @keyframes fade-in {
   from { opacity: 0; }
@@ -84,4 +83,12 @@ body {
   .risk-orange { color: var(--orange-400); }
   .risk-red    { color: var(--red-400); }
   .risk-expired{ color: var(--gray-400); }
+}
+
+/* Bright brand-red surfaces need dark text to meet small-text contrast. */
+.bg-primary.text-white { color: #000; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  .animate-fade-in { opacity: 1; }
 }

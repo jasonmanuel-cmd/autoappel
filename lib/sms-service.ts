@@ -1,12 +1,5 @@
 import twilio from 'twilio'
 
-const twilioClient = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-)
-
-const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER || '+1234567890'
-
 export type SMSType = 'deadline_alert_48h' | 'payment_received' | 'submission_decision'
 
 interface SMSData {
@@ -20,7 +13,7 @@ function generateSMSContent(type: SMSType, data: SMSData): string {
       return `AppealMyTickets.com: URGENT - Only 48 hours left to respond to citation ${data.citationNumber}. Deadline: ${data.deadline}. Visit your dashboard to take action.`
 
     case 'payment_received':
-      return `AppealMyTickets.com: Payment received for citation ${data.citationNumber}. Amount: $${data.amount}. Your citation is now resolved. Thank you!`
+      return `AppealMyTickets.com: Payment received for citation ${data.citationNumber}. Amount: $${data.amount}. Your strategy service payment is recorded; this does not resolve your court citation. Thank you!`
 
     case 'submission_decision':
       return `AppealMyTickets.com: Your ${data.submissionType} for citation ${data.citationNumber} has been ${data.decision}. Check your email for details.`
@@ -32,6 +25,8 @@ function generateSMSContent(type: SMSType, data: SMSData): string {
 
 export async function sendSMS(type: SMSType, data: SMSData): Promise<boolean> {
   try {
+    if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN || !process.env.TWILIO_PHONE_NUMBER) return false
+    const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
     const body = generateSMSContent(type, data)
 
     if (!body) {
@@ -40,7 +35,7 @@ export async function sendSMS(type: SMSType, data: SMSData): Promise<boolean> {
     }
 
     const result = await twilioClient.messages.create({
-      from: twilioPhoneNumber,
+      from: process.env.TWILIO_PHONE_NUMBER,
       to: data.to,
       body,
     })

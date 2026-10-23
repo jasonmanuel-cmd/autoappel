@@ -78,12 +78,12 @@ export default function TreasuryPage() {
         <div className="card mb-6 space-y-3">
           <h3 className="font-bold">New Treasury Profile</h3>
           <div>
-            <label className="label">Entity Name</label>
-            <input className="input" value={form.entityName} onChange={e => setForm(f => ({ ...f, entityName: e.target.value }))} />
+            <label className="label" htmlFor="field-1">Entity Name</label>
+            <input id="field-1" className="input" value={form.entityName} onChange={e => setForm(f => ({ ...f, entityName: e.target.value }))} />
           </div>
           <div>
-            <label className="label">Banking Method</label>
-            <select className="input" value={form.bankingMethod} onChange={e => setForm(f => ({ ...f, bankingMethod: e.target.value as TreasuryProfile['bankingMethod'] }))}>
+            <label className="label" htmlFor="field-2">Banking Method</label>
+            <select id="field-2" className="input" value={form.bankingMethod} onChange={e => setForm(f => ({ ...f, bankingMethod: e.target.value as TreasuryProfile['bankingMethod'] }))}>
               <option value="zelle">Zelle</option>
               <option value="ach">ACH Transfer</option>
               <option value="direct">Direct Bank Transfer</option>

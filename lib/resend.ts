@@ -14,8 +14,7 @@ function getClient(): Resend | null {
 export async function sendEmail(to: string, subject: string, html: string) {
   const resend = getClient()
   if (!resend) {
-    console.log(`[MOCK EMAIL] To: ${to} | Subject: ${subject}`)
-    return { success: true, messageId: `mock_${crypto.randomUUID().slice(0, 8)}` }
+    return { success: false, messageId: undefined }
   }
 
   const result = await resend.emails.send({
@@ -33,8 +32,8 @@ export async function sendConfirmationEmail(to: string, citationNumber: string) 
   const html = `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
       <h1 style="color:#ff2400">AppealMyTicket<span style="color:#ff2400">S</span>.com — Citation Received</h1>
-      <p>Your citation <strong>${citationNumber}</strong> has been submitted successfully.</p>
-      <p>Track your appeal status anytime at <a href="https://AppealMyTickets.com/track">AppealMyTickets.com/track</a></p>
+      <p>Your citation <strong>${citationNumber.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]!))}</strong> has been submitted successfully.</p>
+      <p>Track your appeal status anytime at <a href="https://www.appealmytickets.com/track">AppealMyTickets.com/track</a></p>
       <hr style="border:none;border-top:1px solid #e2e8f0"/>
       <p style="color:#64748b;font-size:12px">LAGNAF™ network LLC — Houston Deployment</p>
     </div>`
@@ -45,7 +44,7 @@ export async function sendDeadlineReminder(to: string, citationNumber: string, d
   const html = `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
       <h1 style="color:#ff2400">AppealMyTicket<span style="color:#ff2400">S</span>.com — Deadline Reminder</h1>
-      <p>Citation <strong>${citationNumber}</strong> has <strong>${daysLeft} day${daysLeft !== 1 ? 's' : ''}</strong> remaining.</p>
+      <p>Citation <strong>${citationNumber.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]!))}</strong> has <strong>${daysLeft} day${daysLeft !== 1 ? 's' : ''}</strong> remaining.</p>
       <p>Risk level: <strong style="color:${riskLevel === 'red' ? '#dc2626' : riskLevel === 'orange' ? '#ea580c' : '#ca8a04'}">${riskLevel.toUpperCase()}</strong></p>
       <hr style="border:none;border-top:1px solid #e2e8f0"/>
       <p style="color:#64748b;font-size:12px">LAGNAF™ network LLC — Houston Deployment</p>
@@ -59,7 +58,7 @@ export async function sendCitationVerificationEmail(data: { email: string; citat
     county: data.county,
     firstName: data.firstName,
     expectedFormat: data.expectedFormat,
-    dashboardUrl: 'https://AppealMyTickets.com/dashboard',
+    dashboardUrl: 'https://www.appealmytickets.com/dashboard',
   })
   return sendEmail(data.email, 'Please Verify Your Citation Number', html)
 }

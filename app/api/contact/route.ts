@@ -1,3 +1,4 @@
+import { api, authenticated } from '@/lib/auth-server'
 import { NextResponse } from 'next/server'
 import { NextRequest } from 'next/server'
 import { serverStore } from '@/lib/server-store'
@@ -46,7 +47,8 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET() {
+export const GET = api(async request => {
+  await authenticated(request, true)
   const contacts = await serverStore.getContacts()
   return NextResponse.json({ success: true, data: contacts })
-}
+})

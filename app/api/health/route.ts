@@ -1,22 +1,12 @@
 import { NextResponse } from 'next/server'
-
-function envOk(key: string): boolean {
-  const v = process.env[key]
-  return !!v && !v.startsWith('PASTE_')
-}
-
+import { createServerSupabase } from '@/lib/supabase'
 export async function GET() {
-  const services = {
-    status: 'operational',
-    timestamp: new Date().toISOString(),
-    services: {
-      app: { status: 'ok' },
-      database: envOk('NEXT_PUBLIC_SUPABASE_URL') && envOk('NEXT_PUBLIC_SUPABASE_ANON_KEY') ? { status: 'configured' } : { status: 'mock', message: 'Supabase env vars not set' },
-      email: process.env.RESEND_API_KEY && !process.env.RESEND_API_KEY.startsWith('PASTE_') ? { status: 'configured' } : { status: 'mock' },
-      sms: process.env.TWILIO_ACCOUNT_SID && !process.env.TWILIO_ACCOUNT_SID.startsWith('PASTE_') ? { status: 'configured' } : { status: 'mock' },
-      hubspot: process.env.HUBSPOT_ACCESS_TOKEN && !process.env.HUBSPOT_ACCESS_TOKEN.startsWith('PASTE_') ? { status: 'configured' } : { status: 'mock' },
-    },
+  const db = createServerSupabase()
+  let database = 'unavailable'
+  if (db) {
+    try { const { error } = await db.from('citations').select('id', { head: true, count: 'exact' }); if (!error) database = 'ok' } catch {}
   }
-
-  return NextResponse.json({ success: true, data: services })
+  const configured = (name: string) => !!process.env[name] && !process.env[name]?.startsWith('PASTE_')
+  const ready = database === 'ok' && ['RESEND_API_KEY','TURNSTILE_SECRET_KEY','NEXT_PUBLIC_TURNSTILE_SITE_KEY','SQUARE_ACCESS_TOKEN','SQUARE_LOCATION_ID','SQUARE_ENV','SQUARE_WEBHOOK_SIGNATURE_KEY','SQUARE_WEBHOOK_URL','NEXT_PUBLIC_APP_URL','CRON_SECRET'].every(configured)
+  return NextResponse.json({ status: ready ? 'ready' : 'degraded', database, note: 'Readiness checks configuration and database connectivity, not provider delivery.' }, { status: ready ? 200 : 503 })
 }

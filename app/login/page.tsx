@@ -58,11 +58,7 @@ export default function CustomerLoginPage() {
     const result = await store.signUpWithSupabase(email, password)
     setLoading(false)
     if (result.success) {
-      fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      }).catch(() => {})
+
       setSuccess('Account created! Please check your email to verify, then sign in.')
       setAuthMode('login')
       setEmail('')
@@ -93,8 +89,8 @@ export default function CustomerLoginPage() {
           {authMode === 'login' ? (
             <form onSubmit={handleLogin} className="space-y-4">
               <div>
-                <label className="label">Email Address</label>
-                <input
+                <label className="label" htmlFor="field-1">Email Address</label>
+                <input id="field-1"
                   type="email"
                   className="input"
                   value={email}
@@ -105,8 +101,8 @@ export default function CustomerLoginPage() {
                 />
               </div>
               <div>
-                <label className="label">Password</label>
-                <input
+                <label className="label" htmlFor="field-2">Password</label>
+                <input id="field-2"
                   type="password"
                   className="input"
                   value={password}
@@ -138,8 +134,8 @@ export default function CustomerLoginPage() {
           ) : (
             <form onSubmit={handleSignUp} className="space-y-4">
               <div>
-                <label className="label">Email Address</label>
-                <input
+                <label className="label" htmlFor="field-3">Email Address</label>
+                <input id="field-3"
                   type="email"
                   className="input"
                   value={email}
@@ -150,8 +146,8 @@ export default function CustomerLoginPage() {
                 />
               </div>
               <div>
-                <label className="label">Password</label>
-                <input
+                <label className="label" htmlFor="field-4">Password</label>
+                <input id="field-4"
                   type="password"
                   className="input"
                   value={password}
@@ -164,8 +160,8 @@ export default function CustomerLoginPage() {
                 </p>
               </div>
               <div>
-                <label className="label">Confirm Password</label>
-                <input
+                <label className="label" htmlFor="field-5">Confirm Password</label>
+                <input id="field-5"
                   type="password"
                   className="input"
                   value={confirmPassword}
